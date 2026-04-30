@@ -1,0 +1,96 @@
+﻿body {
+    font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    color: #232323;
+    background-color: #fff;
+}
+
+header, footer, nav, section {
+    display: block;
+}
+
+
+/* Styles for basic forms
+-----------------------------------------------------------*/
+fieldset {
+    border: 1px solid #ddd;
+    padding: 0 1.4em 1.4em 1.4em;
+    margin: 0 0 1.5em 0;
+}
+
+legend {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+textarea {
+    min-height: 75px;
+}
+
+.editor-label {
+    margin: 1em 0 0 0;
+}
+
+.editor-field {
+    margin: 0.5em 0 0 0;
+}
+
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #f00;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f00;
+    background-color: #fee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+@media (min-width: 320px) { 
+  section{padding-top:50px} 
+  #example {font-size:7px;} /*1rem = 16px*/
+  #Paging{font-size:7px;}
+}
+@media (min-width: 544px) {  
+  #example {font-size:8px;} /*1rem = 16px*/
+  #Paging{font-size:8px;}
+}
+ 
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {  
+  #example  {font-size:9px;} /*1rem = 16px*/
+  #Paging{font-size:9px;}
+}
+ 
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  #example  {font-size:10px;} /*1rem = 16px*/
+  #Paging{font-size:10px;}
+}
+ 
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {  
+  #example  {font-size:14px;} /*1rem = 16px*/    
+  #Paging{font-size:14px;}
+}
+.form-2 p:last-of-type {
+   
+    padding-left: 90px;
+}
+.form-2 h1 .log-in {
+    color: #6c6763;
+    padding-left: 125px;
+}

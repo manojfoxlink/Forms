@@ -1,0 +1,480 @@
+﻿@model ChecklistForm.Models.CheckListProcessTourDataaModelView
+@{
+    ViewBag.Title = "ChecklistProcessTourDataa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    Html.RenderPartial("_ErrorMessage");
+}
+<style>
+    .padding {
+        padding: 10px;
+    }
+
+    .table-container {
+        max-height: 500px; /* Adjust as needed */
+        overflow-y: auto; /* Enables vertical scrolling */
+        border: 1px solid #ccc;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f9f9f9; /* Optional: Background color */
+            z-index: 10; /* Keeps the header on top */
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table tbody td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+    .custom-dropdown {
+        width: 68px;
+        height: 34px;
+    }
+</style>
+@using (Html.BeginForm("ChecklistProcessTourDataa", "CheckList", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    <div class="box box-solid box-default">
+        <div class="box-header">
+
+            <h3 class="box-title">A246C Visual Inspection</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "--select Project--", new { @class = "form-control", onchange = "ddlModelNoByProject();ddlVisualsByprojectChecklist()();ddlProjectChangedChecklist();", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ModelId, new SelectList(Model.ModelNos, "ModelId", "Model", 0), "--Select Model--", new { @class = "form-control", onchange = "ddlGetPartNoByModel()", required = "required" })
+
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                </div>
+                                @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.StationId, new SelectList(Model.Stations, "StationId", "StationName", 0), "--select Station--", new { @class = "form-control", required = "required" })
+
+
+                                    </div>*@
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.VisualsId, new SelectList(Model.Visualss, "VisualsId", "Visual", 0), "--select Inspection--", new { @class = "form-control", required = "required" })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.PartId, new SelectList(Model.PartNos, "PartId", "Part", 0), "--Select Part--", new { @class = "form-control", required = "required" })
+
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                </div>
+                                @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.TextBoxFor(x => x.Model, new { placeholder = "Model", @class = "form-control", autocomplete = "off", @required = true })
+                                    </div>*@
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ProdLineLeader, new { placeholder = "Production LineLeader", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.CheckedBy, new { placeholder = "CheckedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ApprovedBy, new { placeholder = "ApprovedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box padding ">
+                <div class="row">
+                    <table class="table table-bordered table-hover table-responsive" role="grid" aria-describedby="example3_info" id="QuastionTable">
+                        <thead>
+
+                            <tr role="row">
+                                <th style="display:none">
+                                    DataId
+                                </th>
+                                <th>
+                                    SNo
+                                </th>
+                                <th>
+                                    Station Name
+                                </th>
+                                <th>
+                                    InpectionProject
+                                </th>
+                                @*<th>
+                                        ModelNo
+                                    </th>*@
+                                <th>
+                                    SampleSize
+                                </th>
+                                <th>
+                                    InspectionSpecifaction
+                                </th>
+                                <th>
+                                    Result
+                                </th>
+                                @*<th>
+                                        Section2
+                                    </th>
+                                    <th>
+                                        Section3
+                                    </th>
+                                    <th>
+                                        Section4
+                                    </th>
+                                    <th>
+                                        Section5
+                                    </th>*@
+                                <th>
+                                    DefectiveNumber
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+    int row = 1;
+    int TotalCount = 0;
+                            }
+
+                            @foreach (System.Data.DataRow item in Model.dtProcess.Rows)
+                            {
+                                <tr>
+                                    @{
+                                TotalCount = (Int32)@item["TotalCount"];
+
+                                    }
+
+
+                                    <td style="display:none">
+                                        @item["DataId"].ToString()
+                                    </td>
+
+
+                                    @if (row > (Int32)item["TotalCount"])
+                                    {
+                                        row = 1;
+
+
+                                    }
+
+                                    <td>
+                                        @item["SNo"].ToString()
+                                    </td>
+                                    @if (row == 1)
+                                    {
+
+                                        <td rowspan="@TotalCount">
+                                            @item["StationName"].ToString()
+                                        </td>
+                                    }
+                                    @*<td>
+                                            @item["StationName"].ToString()
+                                        </td>*@
+                                    <td>
+                                        @item["InpectionProject"].ToString()
+                                    </td>
+                                    @*<td>
+                                            @item["ModelNo"].ToString()
+                                        </td>*@
+                                    <td>
+                                        @item["SampleSize"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["InspectionSpecifaction"].ToString()
+                                    </td>
+
+                                    <td>
+                                        <input type="text" class="form-control custom-dropdown" name="Section1" id="@item["DataId"].ToString()" />
+                                    </td>
+                                    @*<td>
+                                            <input type="text" class="form-control" name="Section2" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="Section3" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="Section4" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="Section5" />
+                                        </td>*@
+                                    <td>
+                                        <input type="text" class="form-control" name="DefectiveNumber" id="@item["DataId"].ToString()" />
+                                    </td>
+                                    <td>
+                                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Save</button>
+                                    </td>
+
+                                    @if (row == TotalCount)
+                                    {
+                                        row = 1;
+                                    }
+                                    else
+                                    {
+                                        row += 1;
+                                    }
+
+                                </tr>
+
+
+
+                            }
+
+
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+
+                    </table>
+
+                </div>
+
+                <div class="row padding">
+                    <div class="col-xs-10 right">
+
+                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@*<div id="dialog-upload" title="Upload Attachments" style="display:none;" class="form-control">
+        <h4 id="CheckListIteam" class="alert-success"></h4>
+        <div class="col-xs-12 row">
+            <div class="col-xs-4">
+                File Upload :
+            </div>
+            <div class="col-xs-8">
+                <input class="form-control" type="file" id="FileUpload1" />
+                <input class="btn btn-success" type="button" style="margin:5px;" id="btnUpload" onclick="uploadFile()" value="Upload" />
+                <label style="color:green" id="lblUploadStatus">Succesfully Uploaded</label>
+            </div>
+        </div>
+        <div class="col-xs-12 row">
+            <input type="hidden" id="hdnDocId" />
+
+        </div>
+    </div>*@
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+
+
+
+<script>
+    function Save() {
+
+        //  var table = $("#QuastionTable");
+        var CheckListResult = [];
+        var fills = [];
+        var i = 0;
+        var J = 0;
+        var k = 0;
+
+
+
+
+        var table = $("table tbody");
+        var formData = new FormData();
+        var LineId = $("#LineId").val();
+        var ProjectId = $("#ProjectId").val();
+        var ProdLineLeader = $("#ProdLineLeader").val();
+        var CheckedBy = $("#CheckedBy").val();
+        var ApprovedBy = $("#ApprovedBy").val();
+        //var Model = $("#Model").val();
+        var ModelId = $("#ModelId").val();
+        var PartId = $("#PartId").val();
+
+        debugger;
+
+        if (LineId != 0 && ProjectId != 0 && ProdLineLeader != "" && CheckedBy != "" && ApprovedBy != "" && ModelId != 0 && PartId != 0) {
+            table.find('tr').each(function (i) {
+                debugger;
+                var $tds = $(this).find('td'),
+                    checkItemObservation = $tds.eq(7).find('input').val();
+
+                if ((typeof checkItemObservation != "undefined")) {
+                    var DataId = $tds.eq(0).text().trim();
+
+
+                    var Section1 = $tds.eq(6).find('input').val();
+                    //var Section2 = $tds.eq(6).find('input').val();
+                    //var Section3 = $tds.eq(7).find('input').val();
+                    //var Section4 = $tds.eq(8).find('input').val();
+                    //var Section5 = $tds.eq(9).find('input').val();
+                    var DefectiveNumber = $tds.eq(7).find('input').val();
+
+
+                    if (Section1 == "") {
+                        $tds.eq(6).find('input').val("");
+                        $('#' + DataId).css("border", '1px solid red');
+                    }
+                    else {
+                        $('#' + DataId).css("border", '1px solid green');
+                    }
+
+
+
+                    //if (Section2 != "") {
+                    //    if (Section2 == "") {
+                    //        $tds.eq(6).find('input').val("");
+                    //        $('#' + DataId).css("border", '1px solid red');
+                    //    } else {
+                    //        $('#' + DataId).css("border", '1px solid green');
+                    //    }
+                    //}
+
+                    //if (Section3 != "") {
+                    //    if (Section3 == "") {
+                    //        $tds.eq(7).find('input').val("");
+                    //        $('#' + DataId).css("border", '1px solid red');
+                    //    } else {
+                    //        $('#' + DataId).css("border", '1px solid green');
+                    //    }
+                    //}
+
+                    //if (Section4 != "") {
+                    //    if (Section4 == "") {
+                    //        $tds.eq(8).find('input').val("");
+                    //        $('#' + DataId).css("border", '1px solid red');
+                    //    } else {
+                    //        $('#' + DataId).css("border", '1px solid green');
+                    //    }
+                    //}
+
+                    //if (Section5 != "") {
+                    //    if (Section5 == "") {
+                    //        $tds.eq(9).find('input').val("");
+                    //        $('#' + DataId).css("border", '1px solid red');
+                    //    } else {
+                    //        $('#' + DataId).css("border", '1px solid green');
+                    //    }
+                    //}
+
+
+                    if (DefectiveNumber == "") {
+                        $tds.eq(7).find('input').val("");
+                        $('#' + DataId).css("border", '1px solid red');
+                    }
+                    else {
+                        $('#' + DataId).css("border", '1px solid green');
+                    }
+                }
+                else {
+                    var DataId = $tds.eq(0).text().trim();
+
+
+                    var Section1 = $tds.eq(5).find('input').val();
+
+                    var DefectiveNumber = $tds.eq(6).find('input').val();
+
+
+                    if (Section1 == "") {
+                        $tds.eq(5).find('input').val("");
+                        $('#' + DataId).css("border", '1px solid red');
+                    } else {
+                        $('#' + DataId).css("border", '1px solid green');
+                    }
+
+
+                    if (DefectiveNumber == "") {
+                        $tds.eq(6).find('input').val("");
+                        $('#' + DataId).css("border", '1px solid red');
+                    }
+                    else {
+                        $('#' + DataId).css("border", '1px solid green');
+                    }
+                }
+
+
+
+
+
+                if (Section1 != "" && DefectiveNumber != "") {
+                    CheckListResult[J] = {
+                        'DataId': DataId, 'Section1': Section1, 'DefectiveNumber': DefectiveNumber
+                    };
+                    J++;
+                }
+                i++;
+            });
+
+            var reqListObj = new Object();
+            reqListObj.ProcessTourDataaResults = CheckListResult;
+            reqListObj.LineId = LineId;
+            reqListObj.ProjectId = ProjectId;
+            reqListObj.ProdLineLeader = ProdLineLeader;
+            reqListObj.CheckedBy = CheckedBy;
+            reqListObj.ApprovedBy = ApprovedBy;
+            //reqListObj.Model = Model;
+            reqListObj.ModelId = ModelId;
+            reqListObj.PartId = PartId;
+
+            if (CheckListResult.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/CheckList/SaveChecklistProcessTourDataa",
+                    data: JSON.stringify(reqListObj),
+                    success: function (data) {
+                        //window.location.reload();
+                        $("#btnSearch").click();
+                    },
+                    error: function () {
+                        // alert('error');
+                    }
+
+                })
+            }
+            else {
+                alert("Alteast one Part needed for Creating TO Request");
+            }
+        } else {
+            alert("Please Select LineId");
+        }
+
+
+    }
+</script>
+
+
+

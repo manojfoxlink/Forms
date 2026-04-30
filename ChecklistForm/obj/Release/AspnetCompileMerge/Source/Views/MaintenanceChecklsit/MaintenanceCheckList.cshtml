@@ -1,0 +1,353 @@
+﻿@model ChecklistForm.Models.MaintenanceCheckListModelView
+@{
+    ViewBag.Title = "MaintenanceCheckList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    Html.RenderPartial("_ErrorMessage");
+}
+<style>
+    .padding {
+        padding: 10px;
+    }
+    </style >
+@using (Html.BeginForm("MaintenanceCheckList", "MaintenanceChecklsit", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    <div class="box box-solid box-default">
+        <div class="box-header">
+
+            <h3 class="box-title"> MAINATENANCE CHECKSHEET</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required"})
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "--select Project--", new { @class = "form-control", onchange = "ddlProjectsChanged3()", required = "required" })
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.MachineId, new SelectList(Model.Machines, "MachineId", "MachineName", 0), "--select Machine--", new { @class = "form-control", required = "required" })
+                                </div>
+                                @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.FreqId, new SelectList(Model.Frequencies, "FreqId", "Freq", 0), "--select Frequency--", new { @class = "form-control", required = "required" })
+                                </div>*@
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.DRILeader, new { placeholder = "Maintenance DRI ", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.LineLeader, new { placeholder = "LineLeader", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box padding">
+                <div class="row">
+                    <table class="table table-bordered table-hover" role="grid" aria-describedby="example3_info" id="QuastionTable">
+                        <thead>
+                            <tr role="row">
+                                @*<th>
+                                    Machine
+                                </th>*@
+                                @*<th>
+                                    Activity
+                                </th>*@
+                                <th style="display:none">
+                                    PartsId
+                                </th>
+                                <th>
+                                    S.No
+                                </th>
+                                <th>
+                                   Part Of Inspection
+                                </th>
+                                <th>
+                                    Freq
+                                </th>
+                                <th>
+                                    Standard Condition
+                                </th>
+                                <th>
+                                    Result
+                                </th>
+                                <th>
+                                    Remarks
+                                </th>
+                                @*<th>
+                                        Severity
+                                    </th>*@
+
+                                @*<th>
+
+                                    </th>*@
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+    //int row = 1;
+    //int TotalCount = 0;
+
+    //int row2 = 1;
+    //int TCount = 0;
+                            }
+                            @foreach (System.Data.DataRow item in Model.dtChecklist.Rows)
+                            {
+                                <tr>
+                                    
+                                    
+                                    @*@{
+                                TotalCount = (Int32)@item["TotalCount"];
+                                    }
+
+                                    @if (row > (Int32)item["TotalCount"])
+                                    {
+                                        row = 1;
+
+
+                                    }
+                                    @if (row == 1)
+                                    {
+
+
+                                        <td rowspan="@TotalCount">
+
+                                            @item["Activity"].ToString()
+
+
+
+                                        </td>
+                                    }*@
+                                    <td style="display:none">
+                                        @item["PartsId"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Sno"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["PartOfInspection"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Freq"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["StandardCondition"].ToString()
+                                    </td>
+                                    <td>
+                                        <input type="checkbox"  name="Result" id="@item["PartsId"].ToString()" />
+                                       
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control"  name="Remarks" id="@item["PartsId"].ToString()" />
+                                    </td>
+                                    <td>
+                                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Save</button>
+                                    </td>
+
+                                    @*@if (row == TotalCount)
+                                    {
+                                        row = 1;
+                                    }
+                                    else
+                                    {
+                                        row += 1;
+                                    }*@
+
+                                   
+                                </tr>
+
+
+
+                            }
+
+
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+
+                    </table>
+
+                </div>
+
+                <div class="row padding">
+                    <div class="col-xs-10 right">
+
+                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@*<div id="dialog-upload" title="Upload Attachments" style="display:none;" class="form-control">
+        <h4 id="CheckListIteam" class="alert-success"></h4>
+        <div class="col-xs-12 row">
+            <div class="col-xs-4">
+                File Upload :
+            </div>
+            <div class="col-xs-8">
+                <input class="form-control" type="file" id="FileUpload1" />
+                <input class="btn btn-success" type="button" style="margin:5px;" id="btnUpload" onclick="uploadFile()" value="Upload" />
+                <label style="color:green" id="lblUploadStatus">Succesfully Uploaded</label>
+            </div>
+        </div>
+        <div class="col-xs-12 row">
+            <input type="hidden" id="hdnDocId" />
+
+        </div>
+    </div>*@
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+
+
+
+
+<script>
+
+
+    
+    
+    function Save() {
+        
+        var CheckListResult = [];
+        var fills = [];
+        var i = 0;
+        var J = 0;
+        var k = 0;
+        
+
+        debugger;
+
+        var table = $("table tbody");
+        var formData = new FormData();
+        var LineId = $("#LineId").val();
+        var DRILeader = $("#DRILeader").val();
+        var LineLeader = $("#LineLeader").val();
+        var Result = false;
+        if (LineId != 0 && DRILeader != "" && LineLeader!= "") {
+            
+            table.find('tr').each(function (i) {
+                var $tds = $(this).find('td'),
+                    checkItemObservation = $tds.eq(5).find('input').val()
+                if (typeof checkItemObservation != "undefined") {
+                    
+                    
+                    var PartsId = $tds.eq(0).text().trim();
+                    debugger;
+                     if($('#' + PartsId).is(':checked'))
+                    {
+                          Result = true;
+                     }
+                    else
+                     {
+                         Result = false;
+                     }
+
+                    var Remarks = $tds.eq(6).find('input').val();
+
+                    if (Result == null)
+                    {
+                        
+                            $tds.eq(5).find('input').val("");
+                            $('#' + PartsId).css("border", '1px solid red');
+                         
+                    }
+                    else
+                    {
+                        $('#' + PartsId).css("border", '1px solid green');
+                    }
+
+                    if (Remarks == null) {
+
+                        $tds.eq(6).find('input').val("");
+                        $('#' + PartsId).css("border", '1px solid red');
+
+                    }
+                    else {
+                        $('#' + PartsId).css("border", '1px solid green');
+                    }
+
+                } 
+
+
+
+
+
+                if ((Result == true || (Result == true && Remarks != ""))) {
+                    CheckListResult[J] = {
+                        'PartsId': PartsId, 'Result': Result, 'Remarks': Remarks
+                    };
+                    J++;
+                }
+                i++;
+            });
+
+            var reqListObj = new Object();
+            reqListObj.CheckListMaintenanceResults = CheckListResult;
+            reqListObj.LineId = LineId;
+            reqListObj.DRILeader = DRILeader;
+            reqListObj.LineLeader = LineLeader;
+
+            if (CheckListResult.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/MaintenanceChecklsit/SaveMaintenanceChecklist",
+                    data: JSON.stringify(reqListObj),
+                    success: function (data) {
+                        //   window.location.reload();
+                        $("#btnSearch").click();
+                    },
+                    error: function () {
+                        // alert('error');
+                    }
+
+                })
+            }
+            else {
+                alert("Alteast one Part needed for Creating TO Request");
+            }
+        } else {
+            alert("Please Select LineId");
+        }
+    }
+
+    //$(document).ready(function () {
+    //    debugger;
+
+    //        var LineId = $("#LineId").val();
+
+    //        if (LineId != 0)
+    //        $("#btnSearch").click();
+
+    //});
+
+</script>
+
+

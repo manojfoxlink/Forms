@@ -1,0 +1,499 @@
+﻿@model ChecklistForm.Models.CheckListFunctionalOOBTrackingResultlView
+@{
+    ViewBag.Title = "CheckListFunctionalOOBTracking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .padding {
+        padding: 10px;
+        overflow: auto;
+    }
+</style>
+
+<div class="box box-solid box-default">
+    <div class="box-header">
+        @Html.ValidationSummary(false)
+        <h3 class="box-title">Functional OOB Tracking</h3>
+    </div><!-- /.box-header -->
+    <div class="box-body">
+        @using (Html.BeginForm("CheckListFunctionalOOBTracking", "CheckList", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+        {
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+                                @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.ModelId, new SelectList(Model.ModelNos, "ModelId", "Model", 0), "--Select Model--", new { @class = "form-control", onchange = "ddlGetPartNoByModel()", required = "required" })
+
+                                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.PartId, new SelectList(Model.PartNos, "PartId", "Part", 0), "--Select Part--", new { @class = "form-control", required = "required" })
+
+                                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                    </div>*@
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ProdLineLeader, new { placeholder = "Production LineLeader", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.CheckedBy, new { placeholder = "CheckedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ApprovedBy, new { placeholder = "ApprovedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.Prodll, new { placeholder = "Prod LL", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.qcll, new { placeholder = "Qc LL", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (Model.ProjectId == 0)
+        {
+            <div class="box padding ">
+                <input type="button" class="btn btn-success btn-flat" value="Add row" onclick="addRow('dataTable')" />
+                @*<div class="row padding">
+                    <table border="1" style="border: 2px solid #ccc;  margin: 0 auto;">
+                        <thead>
+                            <tr>
+                                <th>Shift</th>
+                                <th>Inspection type</th>
+                                <th>Sample Quantity</th>
+                                <th>Defect QTY</th>
+                                <th>Defect rate</th>
+                                <th>Defect Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: center;">A OR B</td>
+                                <td style="text-align: center;">Cosmetic</td>
+                                <td style="text-align: center;">315</td>
+                                <td style="text-align: center;">0</td>
+                                <td style="text-align: center;">0</td>
+                                <td style="text-align: center;">0</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;">A OR B</td>
+                                <td style="text-align: center;">NIATE</td>
+                                <td style="text-align: center;">32</td>
+                                <td style="text-align: center;">0</td>
+                                <td style="text-align: center;">0</td>
+                                <td style="text-align: center;">0</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;">A OR B</td>
+                                <td style="text-align: center;">APP</td>
+                                <td style="text-align: center;">32</td>
+                                <td style="text-align: center;">0</td>
+                                <td style="text-align: center;">0</td>
+                                <td style="text-align: center;">0</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;">A OR B</td>
+                                <td style="text-align: center;">Dongle</td>
+                                <td style="text-align: center;">116</td>
+                                <td style="text-align: center;">0</td>
+                                <td style="text-align: center;">0</td>
+                                <td style="text-align: center;">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>*@
+                    <div class="row">
+
+                        <table border="1" width="100%" id="dataTable">
+                            <thead>
+                                <tr role="row">
+                                    <th>
+                                        Work Order
+                                    </th>
+                                    <th>
+                                        Inpection Type
+                                    </th>
+                                    <th>
+                                        Cable Serial No
+                                    </th>
+                                    <th>
+                                        Carton Box Number
+                                    </th>
+                                    <th>
+                                        NG Qty
+                                    </th>
+                                    <th>
+                                        Defect Description
+                                    </th>
+                                    @*<th>
+                                ProdLL
+                            </th>
+                            <th>
+                                QC LL
+                            </th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+
+
+                                    <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].WorkOrder, new { placeholder = " Enter Work Order", @class = "form-control", @id = "txtWorkOrder" })</td>
+                                    <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].Inpection, new { placeholder = " Enter InpectionType", @class = "form-control", @id = "txtInpection" })</td>
+                                    <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].CableSNo, new { placeholder = "Enter Cable SNo", @class = "form-control", @id = "txtCableSNo" })</td>
+                                    <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].CartonBoxNumber, new { placeholder = "Enter Carton BoxNumber", @class = "form-control", @id = "txtCartonBoxNumber" })</td>
+                                    <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].NgQty, new { placeholder = "Enter NG Quantity", @class = "form-control", @id = "txtNgQty" })</td>
+                                    <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].DefectDescription, new { placeholder = "Enter Defect Description", @class = "form-control", @id = "txtDefectDescription" })</td>
+                                    @*<td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].Prodll, new { placeholder = "Enter Prod LL", @class = "form-control", @id = "txtProdll" })</td>
+                            <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].qcll, new { placeholder = "Enter QC LL", @class = "form-control", @id = "txtqcll" })</td>*@
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="hide">
+                        <table id="newrow" width="100%" border="1">
+                            <thead>
+                                <tr role="row">
+                                    <th>
+                                        Work Order
+                                    </th>
+                                    <th>
+                                        Inpection Type
+                                    </th>
+                                    <th>
+                                        Cable Serial No
+                                    </th>
+                                    <th>
+                                        Carton Box Number
+                                    </th>
+                                    <th>
+                                        NG Qty
+                                    </th>
+                                    <th>
+                                        Defect Description
+                                    </th>
+                                    @*<th>
+                                ProdLL
+                            </th>
+                            <th>
+                                QC LL
+                            </th>*@
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+
+
+                                    <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].WorkOrder, new { placeholder = " Enter Work Order", @class = "form-control", @id = "txtWorkOrder" })</td>
+                                    <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].Inpection, new { placeholder = " Enter InpectionType", @class = "form-control", @id = "txtInpection" })</td>
+                                    <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].CableSNo, new { placeholder = "Enter Cable SNo", @class = "form-control", @id = "txtCableSNo" })</td>
+                                    <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].CartonBoxNumber, new { placeholder = "Enter Carton BoxNumber", @class = "form-control", @id = "txtCartonBoxNumber" })</td>
+                                    <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].NgQty, new { placeholder = "Enter NG Quantity", @class = "form-control", @id = "txtNgQty" })</td>
+                                    <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].DefectDescription, new { placeholder = "Enter Defect Description", @class = "form-control", @id = "txtDefectDescription" })</td>
+                                    @*<td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].Prodll, new { placeholder = "Enter Prod LL", @class = "form-control", @id = "txtProdll" })</td>
+                            <td>@Html.TextBoxFor(model => model.CheckListFunctionalOOBTrackingResults[0].qcll, new { placeholder = "Enter QC LL", @class = "form-control", @id = "txtqcll" })</td>*@
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="row padding">
+                        <div class="col-xs-10 right">
+
+                            <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+
+
+                        </div>
+
+                    </div>
+                </div>
+        }
+    </div>
+</div>
+
+
+@*<div id="dialog-upload" title="Upload Attachments" style="display:none;" class="form-control">
+        <h4 id="CheckListIteam" class="alert-success"></h4>
+        <div class="col-xs-12 row">
+            <div class="col-xs-4">
+                File Upload :
+            </div>
+            <div class="col-xs-8">
+                <input class="form-control" type="file" id="FileUpload1" />
+                <input class="btn btn-success" type="button" style="margin:5px;" id="btnUpload" onclick="uploadFile()" value="Upload" />
+                <label style="color:green" id="lblUploadStatus">Succesfully Uploaded</label>
+            </div>
+        </div>
+        <div class="col-xs-12 row">
+            <input type="hidden" id="hdnDocId" />
+
+        </div>
+    </div>*@
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+
+
+
+<script>
+    function addRow(tableID) {
+        debugger;
+
+        //$('#dataTable tbody').append(t1[0]);model.DimentionInsp
+        var t1 = $('#newrow').dataTable().fnGetNodes();
+
+        // initialize table
+        var t = $('#dataTable').DataTable();
+        var row = $('#dataTable tr').length;
+        // add row
+
+        //t.row.add( [1,2,3] ).draw();
+
+        var rowHtml = t1[0].outerHTML
+        console.log(rowHtml);
+       
+        //console.log(rowHtml);
+        rowHtml = rowHtml.replace("txtWorkOrder", "txtWorkOrder" + row);
+        console.log(rowHtml);
+
+        rowHtml = rowHtml.replace("txtInpection", "txtInpection" + row);
+        console.log(rowHtml);
+
+        //rowHtml = rowHtml.replace("select2-container", "select2-containerremove");
+        
+       // rowHtml = rowHtml.replace("ddlInpection", "ddlInpection" + row);
+
+        rowHtml = rowHtml.replace("txtCableSNo", "txtCableSNo" + row);
+        console.log(rowHtml);
+
+        rowHtml = rowHtml.replace("txtCartonBoxNumber", "txtCartonBoxNumber" + row);
+        console.log(rowHtml);
+        rowHtml = rowHtml.replace("txtNgQty", "txtNgQty" + row);
+        console.log(rowHtml);
+        rowHtml = rowHtml.replace("txtDefectDescription", "txtDefectDescription" + row);
+        console.log(rowHtml);
+        //rowHtml = rowHtml.replace("txtProdll", "txtProdll" + row);
+        //console.log(rowHtml);
+        //rowHtml = rowHtml.replace("txtqcll", "txtqcll" + row);
+        //console.log(rowHtml);
+        t.row.add($(rowHtml)).draw();
+
+        //$('#ddlCable' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+        //$('#ddlSR' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlPlugShellC70' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlPlugShellC91' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlBootC70' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlBootC91' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlFacePlateC70' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlFacePlateC91' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlPapperCollar' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //    $(" #dataTable_wrapper").removeClass("dataTables_wrapper form-inline dt-bootstrap no-footer");
+
+        //    $('.select2-containerremove').remove();
+
+        //    $("#txtqty" + row).change(function () {
+        //        ValiditadeQty($(this).attr('class').split(' ').pop());
+        //    });
+
+        //    $("#txtRecQty" + row).change(function () {
+        //        ValiditadeQty($(this).attr('class').split(' ').pop());
+        //    });
+    }
+
+
+
+    function Save() {
+        //  var table = $("#QuastionTable");
+        var CheckListResult = [];
+        var fills = [];
+        var i = 0;
+        var J = 0;
+        var k = 0;
+        debugger;
+
+
+
+        var table = $("table tbody");
+        var formData = new FormData();
+        var LineId = $("#LineId").val();
+        //var ProjectId = $("#ProjectId").val();
+        var ProdLineLeader = $("#ProdLineLeader").val();
+        var CheckedBy = $("#CheckedBy").val();
+        var ApprovedBy = $("#ApprovedBy").val();
+        var Prodll = $("#Prodll").val();
+        var qcll = $("#qcll").val();
+        if (LineId != 0 && ProdLineLeader != "" && CheckedBy != "" && ApprovedBy != "" && Prodll != "" && qcll !="") {
+            debugger;
+            table.find('tr').each(function (i) {
+                var $tds = $(this).find('td'),
+                    checkItemObservation = $tds.eq(5).find('input').val()
+
+                if ((typeof checkItemObservation != "undefined")) {
+                    
+
+                    
+                    var WorkOrder = $tds.eq(0).find('input').val();
+                    var Inpection = $tds.eq(1).find('input').val();
+                    var CableSNo = $tds.eq(2).find('input').val();
+                    var CartonBoxNumber = $tds.eq(3).find('input').val();
+                    var NgQty = $tds.eq(4).find('input').val();
+                    var DefectDescription = $tds.eq(5).find('input').val();
+                    
+
+                     if (WorkOrder != "") {
+                        if (WorkOrder == "") {
+                            $tds.eq(0).find('input').val("");
+                            $('#' + WorkOrder).css("border", '1px solid red');
+                        } else {
+                            $('#' + WorkOrder).css("border", '1px solid green');
+                        }
+                     }
+
+                     if (Inpection != "") {
+                         if (Inpection == "") {
+                             $tds.eq(1).find('input').val("");
+                             $('#' + Inpection).css("border", '1px solid red');
+                         } else {
+                             $('#' + Inpection).css("border", '1px solid green');
+                         }
+                     }
+                    else if (CableSNo != "") {
+                        if (CableSNo == "") {
+                            $tds.eq(2).find('input').val("");
+                            $('#' + CableSNo).css("border", '1px solid red');
+                        } else {
+                            $('#' + CableSNo).css("border", '1px solid green');
+                        }
+                    }
+                    else if (CartonBoxNumber != "") {
+                        if (CartonBoxNumber == "") {
+                            $tds.eq(3).find('input').val("");
+                            $('#' + CartonBoxNumber).css("border", '1px solid red');
+                        } else {
+                            $('#' + CartonBoxNumber).css("border", '1px solid green');
+                        }
+                    }
+
+                    else if (NgQty != "") {
+                        if (NgQty == "") {
+                            $tds.eq(4).find('input').val("");
+                            $('#' + NgQty).css("border", '1px solid red');
+                        } else {
+                            $('#' + NgQty).css("border", '1px solid green');
+                        }
+                    }
+
+                    else if (DefectDescription != "") {
+                        if (DefectDescription == "") {
+                            $tds.eq(5).find('input').val("");
+                            $('#' + DefectDescription).css("border", '1px solid red');
+                        } else {
+                            $('#' + DefectDescription).css("border", '1px solid green');
+                        }
+                    }
+                    
+
+                }
+               
+
+
+
+                if ((Inpection != "" && WorkOrder != "" && CableSNo != "" && CartonBoxNumber != "" && NgQty != "" && DefectDescription != "")) {
+                    CheckListResult[J] = {
+                        'Inpection': Inpection, 'WorkOrder': WorkOrder, 'CableSNo': CableSNo, 'CartonBoxNumber': CartonBoxNumber, 'NgQty': NgQty, 'DefectDescription': DefectDescription
+                    };
+                    J++;
+                }
+                i++;
+            });
+            var reqListObj = new Object();
+            reqListObj.CheckListFunctionalOOBTrackingResults = CheckListResult;
+            reqListObj.LineId = LineId;
+            reqListObj.ProdLineLeader = ProdLineLeader;
+            reqListObj.CheckedBy = CheckedBy;
+            reqListObj.ApprovedBy = ApprovedBy;
+            reqListObj.Prodll = Prodll;
+            reqListObj.qcll = qcll;
+            if (CheckListResult.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/CheckList/SaveCheckListFunctionalOOBTracking",
+                    data: JSON.stringify(reqListObj),
+                    success: function (data) {
+                        window.location.reload();
+                        //$("#btnSearch").click();
+                    },
+                    error: function () {
+                        // alert('error');
+                    }
+
+                })
+            }
+            else {
+                alert("Alteast one Part needed for Creating TO Request");
+            }
+        } else {
+            alert("Please Select LineId");
+        }
+    }
+
+</script>

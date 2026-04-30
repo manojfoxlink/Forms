@@ -1,0 +1,111 @@
+﻿@model ChecklistForm.Models.ChecklistLimitsViewModel
+@{
+    ViewBag.Title = "CheckListLimits";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    Html.RenderPartial("_ErrorMessage");
+}
+@using (Html.BeginForm("ChecklistLimits", "Master", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary( true )
+  
+
+    
+    <div class="box box-solid box-warning">
+        <div class="box-header">
+            @*<h3 class="box-title">Create New ID</h3*@>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+
+            <div class="register-box">
+                <div class="register-logo">
+                    <a href="#"><b>CheckList Creation </b></a>
+                </div>
+
+                <div class="register-box-body">
+                    @*<p class="login-box-msg">Register a new membership</p>*@
+
+                    <form action=".." method="post">
+                        <div class="form-group has-feedback">
+                            @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "Select Project", new { @class = "form-control select2", @style = "width: 100%", onchange = "ddlProjectChanged()", required = "required" })<br />
+                            @Html.ValidationMessageFor(model => model.ProjectId, "", new { @class = "text-danger" })
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+
+                        </div>
+                        <div class="form-group has-feedback">
+                            @Html.DropDownListFor(model => model.StationId, new SelectList(Model.Stations, "StationId", "StationName", 0), "Select Station", new { @class = "form-control select2", @style = "width: 100%", onchange = "ddlStationChanged()", required = "required" })<br />
+                            @Html.ValidationMessageFor(model => model.StationId, "", new { @class = "text-danger" })
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+
+                        </div>
+                        <div class="form-group has-feedback">
+                            
+                            @Html.DropDownListFor(model => model.SubStationId, new SelectList(Model.SubStations, "SubStationId", "SubStationName", 0), "Select SubStation", new { @class = "form-control select2", @style = "width: 100%", onchange = "ddlSubStationChanged()", required = "required" })<br />
+                            @Html.ValidationMessageFor(model => model.SubStationId, "", new { @class = "text-danger" })
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+
+                        </div>
+                        <div class="form-group has-feedback">
+                            @Html.DropDownListFor(x => x.ParameterId, new SelectList(Model.Parameters, "ParameterId", "ParameterName", 0), "--select Parameter--", new { @class = "form-control", required = "required" })<br />
+                            @Html.ValidationMessageFor(model => model.ParameterId, "", new { @class = "text-danger" })
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+
+                        </div>
+                        <div class="form-group has-feedback">
+                            @Html.TextBoxFor(x => x.LowerLimit, new { placeholder = "Lower Limit", @class = "form-control", autocomplete = "off",@required=true })
+                            @Html.ValidationMessageFor(model => model.LowerLimit, "", new { @class = "text-danger" })
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        </div>
+                       
+                        <div class="form-group has-feedback">
+                            @Html.TextBoxFor(x => x.UpperLimit, new { placeholder = "Upper Limit", @class = "form-control", autocomplete = "off",@required=true })
+                            @Html.ValidationMessageFor(model => model.UpperLimit, "", new { @class = "text-danger" })
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+
+                            </div>
+                            <div class="col-xs-4">
+                                <button type="submit" class="btn btn-success btn-block btn-flat">Submit</button>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-xs-4">
+
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2">
+
+                            </div>
+                            <div class="col-xs-8">
+                                <h3 class="text-danger">@ViewBag.ResultMessage</h3>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-xs-2">
+
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </form>
+
+
+
+
+                </div>
+                <!-- /.form-box -->
+            </div>
+        </div><!-- /.box-body -->
+    </div>
+
+
+}

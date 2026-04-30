@@ -1,0 +1,10 @@
+G:\MyProject\Forms\DOL\bin\Release\DOL.dll
+G:\MyProject\Forms\DOL\bin\Release\DOL.pdb
+G:\MyProject\Forms\DOL\obj\Release\DOL.csprojResolveAssemblyReference.cache
+G:\MyProject\Forms\DOL\obj\Release\DOL.dll
+G:\MyProject\Forms\DOL\obj\Release\DOL.pdb
+E:\MyProject\Forms\DOL\bin\Release\DOL.dll
+E:\MyProject\Forms\DOL\bin\Release\DOL.pdb
+E:\MyProject\Forms\DOL\obj\Release\DOL.csprojResolveAssemblyReference.cache
+E:\MyProject\Forms\DOL\obj\Release\DOL.dll
+E:\MyProject\Forms\DOL\obj\Release\DOL.pdb

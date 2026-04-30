@@ -1,0 +1,438 @@
+﻿@model ChecklistForm.Models.ProdCheckListQualityAuditModelView
+@{
+    ViewBag.Title = "RACAProdQualityAuditChecklist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .padding {
+        padding: 10px;
+    }
+
+    .table-container {
+        max-height: 500px; /* Adjust as needed */
+        overflow-y: auto; /* Enables vertical scrolling */
+        border: 1px solid #ccc;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f9f9f9; /* Optional: Background color */
+            z-index: 10; /* Keeps the header on top */
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table tbody td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+    .custom-dropdown {
+        width: 80px;
+        height: 34px;
+    }
+
+    
+</style>
+
+@using (Html.BeginForm("RACAProdQualityAuditChecklist", "CheckList", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    <div class="box box-solid box-default">
+        <div class="box-header">
+
+            <h3 class="box-title">RACA FOR CIP AUDIT SHEET</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required" })
+
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "--select Project--", new { @class = "form-control", onchange = "ddlBatchByProjectCheckList();", required = "required" })
+
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.BatchId, new SelectList(Model.Batches, "BatchId", "BatchName", 0), "--select Batch--", new { @class = "form-control", onchange = "ddlZoneByBatchCheckList();", required = "required" })
+
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.ZoneId, new SelectList(Model.Zones, "ZoneId", "ZoneName", 0), "--select Zone--", new { @class = "form-control", onchange = "ddlProdModuleByProjectCheckList();ddlProductionLineLeaderByBatch();", required = "required" })
+
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.ModuleId, new SelectList(Model.Modules, "ModuleId", "Module", 0), "--select Station--", new { @class = "form-control", required = "required" })
+
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.ProdId, new SelectList(Model.LineLeaders, "ProdId", "LineLeader", 0), "--select Production Line Leader--", new { @class = "form-control", required = "required" })
+
+
+                                    </div>*@
+                                @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.ModelId, new SelectList(Model.ModelNos, "ModelId", "Model", 0), "--Select Model--", new { @class = "form-control", onchange = "ddlGetPartNoByModel()", required = "required" })
+
+                                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.PartId, new SelectList(Model.PartNos, "PartId", "Part", 0), "--Select Part--", new { @class = "form-control", required = "required" })
+
+                                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                    </div>*@
+                                @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.TextBoxFor(x => x.ProdLineLeader, new { placeholder = "Production LineLeader", @class = "form-control", autocomplete = "off", @required = true })
+                                    </div>*@
+                                @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.TextBoxFor(x => x.ShiftLeader, new { placeholder = "Shift Leader", @class = "form-control", autocomplete = "off", @required = true })
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.TextBoxFor(x => x.CheckedBy, new { placeholder = "Checked By", @class = "form-control", autocomplete = "off", @required = true })
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.TextBoxFor(x => x.VerifiedBy, new { placeholder = "Verified By", @class = "form-control", autocomplete = "off", @required = true })
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.TextBoxFor(x => x.ApprovedBy, new { placeholder = "Approved By", @class = "form-control", autocomplete = "off", @required = true })
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.TextBoxFor(x => x.AuditedBy, new { placeholder = "Audited By", @class = "form-control", autocomplete = "off", @required = true })
+                                    </div>*@
+
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box padding">
+                <div class="row table-container">
+                    <table class="table table-bordered table-hover" role="grid" aria-describedby="example3_info" id="QuastionTable">
+                        <thead>
+                            <tr role="row">
+
+                                <th style="display:none">
+                                    FACAId
+                                </th>
+                                <th>
+                                    CreatedDate
+                                </th>
+                                @*<th>
+                                        SNO
+                                    </th>*@
+                                <th>
+                                    Project
+                                </th>
+                                <th>
+                                    Line
+                                </th>
+                                <th>
+                                    Batch
+                                </th>
+                                <th>
+                                    Zone
+                                </th>
+                                <th>
+                                    Station
+                                </th>
+                                <th>
+                                    Activity Description
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+                                    Line Leader
+                                </th>
+                                <th>
+                                    Root Cause
+                                </th>
+                                <th>
+                                    Corrective Action
+                                </th>
+                                <th>
+                                    Preventive Action
+                                </th>
+                                <th>
+                                    Upload
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            @foreach (System.Data.DataRow item in Model.dtChecklist.Rows)
+                            {
+                                <tr>
+                                    <td style="display:none">
+                                        @item["FACAId"].ToString()
+                                    </td>
+                                    <td>
+                                        @Convert.ToDateTime(item["CreateDate"]).ToString("dd/MM/yyyy")
+                                     </td>
+                                    <td>
+                                        @item["ProjectName"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["LineName"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["BatchName"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["ZoneName"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Module"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Points"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Status"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Descrription"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["RootCause"].ToString()
+                                        @*<input type="text" class="form-control" name="RootCause" id="@item["FACAId"].ToString()" />*@
+                                    </td>
+                                    <td>
+                                        @item["CorrectiveAction"].ToString()
+                                        @*<input type="text" class="form-control" name="CorrectiveAction" id="@item["FACAId"].ToString()" />*@
+                                    </td>
+                                    <td>
+                                        @item["PreventiveAction"].ToString()
+                                        @*<input type="text" class="form-control" name="PreventiveAction" id="@item["FACAId"].ToString()" />*@
+                                    </td>
+                                    <td>
+                                        @if (@item["Image"].ToString() != "")
+                                        {
+
+
+
+                                            <a href="@Url.Action("Download", "CheckList", new { Image = @item["Image"].ToString() })" target="_blank" title="List View" class="links">
+                                                <img alt="List View" src="@Url.Content(@item["Image"].ToString())" width="150" height="150">
+                                                @*<img alt="List View" src="@Url.Content(@item["Image"].ToString())" style="max-height:100%;max-width:100%;">*@
+                                            </a>
+
+                                        }
+                                    </td>
+                                    <td>
+                                        @item["LineLeader"].ToString()
+                                    </td>
+                                    
+                                    @*<td>
+                                        <input class="form-control" type="file" name="Image" id="FileUpload1-@item["FACAId"].ToString()" />
+                                        <input class="btn btn-success" id="btnUpload-@item["FACAId"].ToString()" type="button" style="margin:5px;" onclick="uploadFile(@item["FACAId"].ToString())" value="Upload" />
+                                        <label id="lblUploadStatu-@item["FACAId"].ToString()"></label>
+                                    </td>
+                                    <td style="display:none">
+                                        <input type="text" id="Path-@item["FACAId"].ToString()" />
+                                    </td>*@
+                                    <td>
+                                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Save</button>
+                                    </td>
+                                </tr>
+
+                            }
+
+
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+
+                    </table>
+                    @*<div class="pagination">
+                            @if (Model.PageNumber > 1)
+                            {
+                                <a href="@Url.Action("FACAProdQualityAuditChecklist", new { pageNumber = Model.PageNumber - 1, pageSize = Model.PageSize })">Previous</a>
+                            }
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                if (i == Model.PageNumber)
+                                {
+                                    <span>@i</span>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("FACAProdQualityAuditChecklist", new { pageNumber = i, pageSize = Model.PageSize })">@i</a>
+                                }
+                            }
+                            @if (Model.PageNumber < Model.TotalPages)
+                            {
+                                <a href="@Url.Action("FACAProdQualityAuditChecklist", new { pageNumber = Model.PageNumber + 1, pageSize = Model.PageSize })">Next</a>
+                            }
+                        </div>
+                        <p>Page @Model.PageNumber of @Model.TotalPages</p>
+                        <p>Total Items: @Model.TotalItems</p>*@
+                </div>
+
+                <div class="row padding">
+                    <div class="col-xs-10 right">
+
+                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@*<div id="dialog-upload" title="Upload Attachments" style="display:none;" class="form-control">
+        <h4 id="CheckListIteam" class="alert-success"></h4>
+        <div class="col-xs-12 row">
+            <div class="col-xs-4">
+                File Upload :
+            </div>
+            <div class="col-xs-8">
+                <input class="form-control" type="file" id="FileUpload1" />
+                <input class="btn btn-success" type="button" style="margin:5px;" id="btnUpload" onclick="uploadFile()" value="Upload" />
+                <label style="color:green" id="lblUploadStatus">Succesfully Uploaded</label>
+            </div>
+        </div>
+        <div class="col-xs-12 row">
+            <input type="hidden" id="hdnDocId" />
+
+        </div>
+    </div>*@
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+
+
+
+<script>
+
+    function Save() {
+        var CheckListResult = [];
+
+        var table = $("table tbody");
+        debugger;
+        table.find('tr').each(function (i) {
+            var $tds = $(this).find('td');
+            var FACAId = $tds.eq(0).text().trim();
+            var Image, CorrectiveAction, PreventiveAction,RootCause;
+            // debugger;
+            if ($tds.length > 13) {
+                RootCause = $tds.eq(10).find('input').val();
+                CorrectiveAction = $tds.eq(11).find('input').val();
+                PreventiveAction = $tds.eq(12).find('input').val();
+                Image = $tds.eq(14).find('input').val();
+            }
+
+            // Ensure BOTH Description and Image have data before adding to the array
+            if (FACAId && CorrectiveAction && RootCause && PreventiveAction) { // Modified condition
+                CheckListResult.push({
+                    FACAId: FACAId,
+                    CorrectiveAction: CorrectiveAction,
+                    RootCause: RootCause,
+                    PreventiveAction: PreventiveAction,
+                    Image: Image
+                });
+            }
+        }); // End of row loop
+
+        if (CheckListResult.length > 0) {
+            var reqListObj = {
+                ProdCheckListQualityAuditResults: CheckListResult,
+            };
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "/CheckList/SaveRACAProdQualityAuditChecklist",
+                data: JSON.stringify(reqListObj),
+                success: function (data) {
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.error("AJAX Error:", error);
+                    alert("Error saving data. Please check the console for details.");
+                }
+            });
+        } else {
+            alert("No data to save.");
+        }
+    }
+
+
+    function uploadFile(id) {
+        //debugger;
+        if (window.FormData !== undefined) {
+            var fileUpload = $("#FileUpload1-" + id).get(0);
+            var files = fileUpload.files;
+            if (files.length > 0) {
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                $.ajax({
+                    url: '/CheckList/UploadDocument',
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    success: function (result) {
+                        //var id = $('#hdnDocId').val();
+                        $('#Path-' + id).val(result);
+                        $('#lblUploadStatus-' + id).show();
+                        $('#btnUpload-' + id).css("display", "none");
+                        $('#lblUploadStatu-' + id).text("Succesfully Uploaded");
+                        $("#FileUpload1-" + id).val(null);
+                        //$('#hdnDocId').val(" ");
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+            } else {
+                alert("Choose the File");
+
+            }
+        } else {
+            alert("FormData is not supported.");
+        }
+
+    }
+
+</script>

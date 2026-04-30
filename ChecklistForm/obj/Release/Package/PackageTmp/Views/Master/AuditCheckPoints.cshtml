@@ -1,0 +1,103 @@
+﻿@model ChecklistForm.Models.AuditCheckPointViewModel
+@{
+    ViewBag.Title = "AuditCheckPoints";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    Html.RenderPartial("_ErrorMessage");
+}
+@using (Html.BeginForm("AuditCheckPoints", "Master", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+
+    <div class="box box-solid box-warning">
+        <div class="box-header">
+            @*<h3 class="box-title">Create New ID</h3*@>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+
+            <div class="register-box">
+                <div class="register-logo">
+                    <a href="#"><b>CheckPoints Creation</b></a>
+                </div>
+
+                <div class="register-box-body">
+                    @*<p class="login-box-msg">Register a new membership</p>*@
+
+                    <form action=".." method="post">
+                        <div class="form-group has-feedback">
+                            @Html.DropDownListFor(x => x.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "--select Project--", new { @class = "form-control", onchange = "ddlOperationsByProject()", required = "true" })
+                            @Html.ValidationMessageFor(model => model.ProjectId, "", new { @class = "text-danger" })
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+
+                        </div>
+                        <div class="form-group has-feedback">
+                            @Html.DropDownListFor(x => x.OperationId, new SelectList(Model.Operationss, "OperationId", "Operation", 0), "--select Operation--", new { @class = "form-control", required = "true" })
+                            @Html.ValidationMessageFor(model => model.OperationId, "", new { @class = "text-danger" })
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+
+                        </div>
+                        <div class="form-group has-feedback">
+                            @Html.TextBoxFor(x => x.CheckPoints, new { placeholder = "CheckPoint", @class = "form-control", autocomplete = "off", @required = "true" })
+                            @Html.ValidationMessageFor(model => model.CheckPoints, "", new { @class = "text-danger" })
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        </div>
+
+                        <div class="form-group has-feedback">
+                            @Html.TextBoxFor(x => x.Dept, new { placeholder = "Department", @class = "form-control", autocomplete = "off", @required = "true" })
+                            @Html.ValidationMessageFor(model => model.Dept, "", new { @class = "text-danger" })
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        </div>
+                        @*<div class="form-group has-feedback">
+                            <input type="file" name="file" id="file" />
+                        </div>*@
+
+                        <div class="row">
+                            <div class="col-xs-4">
+
+                            </div>
+                            <div class="col-xs-4">
+                                <button type="submit" class="btn btn-success btn-block btn-flat">Submit</button>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-xs-4">
+
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2">
+
+                            </div>
+                            <div class="col-xs-8">
+                                <h3 class="text-danger">@ViewBag.ResultMessage</h3>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-xs-2">
+
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </form>
+
+
+
+
+                </div>
+                <!-- /.form-box -->
+            </div>
+        </div><!-- /.box-body -->
+    </div>
+
+
+
+
+
+}

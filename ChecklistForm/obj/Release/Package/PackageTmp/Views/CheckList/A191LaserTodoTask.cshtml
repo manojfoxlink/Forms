@@ -1,0 +1,597 @@
+﻿@model ChecklistForm.Models.WorkFlowViewModel
+@{
+    ViewBag.Title = "A191LaserTodoTask";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    table {
+        overflow-y: scroll; /* Always show vertical scrollbar */
+        overflow-x: auto; /* Show horizontal scrollbar when needed */
+    }
+
+    .padding {
+        padding: 10px;
+    }
+
+    #example1_wrapper {
+        overflow: auto;
+    }
+</style>
+<div class="box box-solid box-default">
+    <div class="box-header">
+        <h3 class="box-title">A191M Laser Engraving Validation</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="box-body ">
+        @using (Html.BeginForm("A191LaserTodoTask", "CheckList", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form", onsubmit = "showLoader(this);" }))
+        {
+            @Html.AntiForgeryToken()
+
+            {
+                Html.RenderPartial("_ErrorMessage");
+            }
+
+            <div class="box padding ">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            @*<div class="row">
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.MenuId, new SelectList(Model.Menuss, "MenuId", "Menu", 0), "--select Menu--", new { @class = "form-control", required = "required" })
+
+
+                                    </div>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+                <table id="example1" class="table table-bordered table-hover" role="grid" aria-describedby="example1_info">
+                    <thead>
+                        <tr role="row">
+                            <td style="display:none;">
+                                Pid
+                            </td>
+                            <td style="display:none;">
+                                ResultId
+                            </td>
+                            @*<td style="display:none;">
+                                MenuId
+                            </td>*@
+                            <td style="display:none;">
+                                LaserId
+                            </td>
+                            <td style="display:none;">
+                                TaskId
+                            </td>
+                            <td style="display:none;">
+                                ApproveId
+                            </td>
+                            <th>
+                                <input type="checkbox" id="selectAll" name="selectAll" />
+                            </th>
+
+                            <th>
+                                Locations
+                            </th>
+                            <th>
+                                Specification
+                            </th>
+                            <th>
+                                LSL
+                            </th>
+                            <th>
+                                USL
+                            </th>
+                            <th>
+                                Value 1
+                            </th>
+                            <th>
+                                Serail No
+                            </th>
+                            <th>
+                                Value 2
+                            </th>
+                            <th>
+                                Serail No
+                            </th>
+                            <th>
+                                Value 3
+                            </th>
+                            <th>
+                                Serail No
+                            </th>
+                            <th>
+                                Value 4
+                            </th>
+                            <th>
+                                Serail No
+                            </th>
+                            <th>
+                                Value 5
+                            </th>
+                            <th>
+                                Serail No
+                            </th>
+                            <th>
+                                Value 6
+                            </th>
+                            <th>
+                                Serail No
+                            </th>
+                            <th>
+                                Result
+                            </th>
+                            <th>
+                                Root Cause
+                            </th>
+                            <th>
+                                Corrective Action
+                            </th>
+                            <th>
+                                Preventive Action
+                            </th>
+
+                            @if (Model.WorkFlowList != null && Model.WorkFlowList.Rows.Count > 0 && Convert.ToInt32(Model.WorkFlowList.Rows[0]["TaskId"]) == 20)
+                            {
+                                <th>
+                                    Validation
+                                </th>
+                                <th>
+                                    Remarks
+                                </th>
+                            }
+                            @if (Model.WorkFlowList != null && Model.WorkFlowList.Rows.Count > 0 && Convert.ToInt32(Model.WorkFlowList.Rows[0]["TaskId"]) == 10)
+                            {
+                                <th>
+                                    Validation
+                                </th>
+                            }
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (System.Data.DataRow binRow in Model.WorkFlowList.Rows)
+                        {
+                            <tr>
+
+                                <td style="display:none;">
+
+                                    @binRow["Pid"].ToString()
+                                </td>
+                                <td style="display:none;">
+
+                                    @binRow["ResultId"].ToString()
+                                </td>
+                                @*<td style="display:none;">
+
+                                    @binRow["MenuId"].ToString()
+                                </td>*@
+                                <td style="display:none;">
+
+                                    @binRow["LaserId"].ToString()
+                                </td>
+                                <td style="display:none;">
+
+                                    @binRow["TaskId"].ToString()
+                                </td>
+                                <td style="display:none;">
+
+                                    @binRow["ApproveId"].ToString()
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="@binRow["Pid"].ToString()" class="checkboxes" name="chk" value="@binRow["ResultId"].ToString()" />
+                                </td>
+                                <td>
+                                    @binRow["Locations"].ToString()
+                                </td>
+                                <td>
+                                    @binRow["Specification"].ToString()
+                                </td>
+                                <td>
+                                    @binRow["Minimum"].ToString()
+                                </td>
+                                <td>
+                                    @binRow["Maximum"].ToString()
+                                </td>
+                                <td>
+                                    @binRow["Sno1"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["SerialNo1"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["Sno2"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["SerialNo2"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["Sno3"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["SerialNo3"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["Sno4"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["SerialNo4"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["Sno5"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["SerialNo5"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["Sno6"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["SerialNo6"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["Result"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["RootCause"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["CorrectiveAction"].ToString()
+
+                                </td>
+                                <td>
+                                    @binRow["PreventiveAction"].ToString()
+
+                                </td>
+
+
+                                @if (binRow["TaskId"] != DBNull.Value && Convert.ToInt32(binRow["TaskId"]) == 20)
+                                {
+                                    <td>
+                                        @binRow["Queryy"].ToString()
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="Remark" id="@binRow["ResultId"].ToString()" />
+                                    </td>
+                                }
+
+                                @if (binRow["TaskId"] != DBNull.Value && Convert.ToInt32(binRow["TaskId"]) == 10)
+                                {
+                                    <td>
+                                        <input type="text" class="form-control" name="Query" id="@binRow["ResultId"].ToString()" />
+                                    </td>
+
+                                }
+
+
+                            </tr>
+
+
+                        }
+                    </tbody>
+                    <tfoot>
+
+                    </tfoot>
+
+                </table>
+            </div>
+            @*<div class="row padding">
+
+
+
+
+                    <div class="col-lg-offset-3 col-md-3 col-sm-2 col-xs-0">
+
+
+                        <label>Query</label>
+                        <textarea class="form-control" rows="3" placeholder="Enter ..." spellcheck="false" id="Qurey"></textarea>
+
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+
+                    </div>
+                </div>*@
+
+            <div class="row padding">
+
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-0">
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+
+                </div>
+                <div class="col-lg-4 col-md-2 col-sm-2 col-xs-0">
+                    @*<button type="button" id="Approve" onclick="Approval()" class="btn btn-primary btn-outline-primary">Approve</button>
+                        <button type="button" id="Reject" onclick="Rejected()" class="btn btn-danger btn-outline-danger">Reject</button>*@
+
+                    <button type="button" id="Approve" onclick="Approval()" class="btn btn-primary">Approve</button>
+                    <button type="button" id="Reject" onclick="Rejected()" class="btn btn-danger">Reject</button>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-1">
+
+                </div>
+
+            </div>
+
+        }
+    </div>
+</div>
+
+
+
+
+
+<div id="dialog-upload" title="Upload Images" style="display:none;" class="form-control">
+
+
+</div>
+
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui-1.12.2.min.js"></script>
+
+
+<script>
+    //$('#selectAll').click(function (e) {
+    //    debugger;
+    //   // $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
+    //    var table = $(e.target).closest('table');
+    //    $('td input:checkbox', table).prop('checked', this.checked);
+    //});
+    //  $("input[name='gender']:checked").val();
+    function openUploadDialog(leave, employeeid) {
+        debugger
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/WorkFlow/FlowTask",
+            data: '{ Leaveid:"' + leave + '", empId:"' + employeeid + '" }',
+            dataType: "html",
+            success: function (data) {
+                $('#dialog-upload').html(data);
+            },
+            error: function () {
+                // alert('error');
+            }
+
+        })
+        dialogOpen();
+    }
+    function dialogOpen() {
+        $("#dialog-upload").dialog({
+            modal: false,
+            width: 600,
+            height: 800,
+            buttons: {
+                //Submit: function () {
+                //    //var obj = new Object();
+                //    //obj.DocId = $('#hdnDocId').val();
+                //    //obj.ProjectId = $('#hdnProjectId').val();
+                //    //obj.CategoryID = $('#hdnCategoryId').val();
+                //    //obj.SubCategoryID = $('#hdnSubCategoryId').val();
+                //    //obj.ChildCategoryID = $('#hdnChildCategoryId').val();
+                //    //obj.DocumentName = $('#txtDocName').val();
+                //    //obj.Filepath = $('#hdnFilepath').val();
+
+                //    //submitDocument(obj);
+                //},
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+    $(function () {
+        $('#selectAll').click(function () {
+            debugger;
+            if (this.checked) {
+                $(".checkboxes").prop("checked", true);
+            } else {
+                $(".checkboxes").prop("checked", false);
+            }
+        });
+    });
+
+    function Approval() {
+        debugger;
+
+        //   showLoader();
+        // var Qurey = $("#Qurey").val();
+
+        var isflag = false;
+        var WorkFlowViewModel = [];
+
+        var J = 0;
+        var table = $("#example1 tbody");
+
+        table.find('tr').each(function (i) {
+            var $tds = $(this).find('td');
+            var id = $tds.eq(0).text().trim();
+
+            var isflageach = false;
+            if ($('#' + id).is(':checked')) {
+                isflag = true;
+                isflageach = true;
+            }
+            debugger;
+            if (isflageach) {
+
+                //$('#LeaveType' + id).css("border", '1px solid green');
+                $('#Reason' + id).css("border", '1px solid green');
+                var Pid = $tds.eq(0).text().trim();
+                var ResultId = $tds.eq(1).text().trim();
+                //var MenuId = $tds.eq(2).text().trim();
+                var LaserId = $tds.eq(2).text().trim();
+                var TaskId = $tds.eq(3).text().trim();
+                var ApproveId = $tds.eq(4).text().trim();
+                var Remark = $tds.eq(27).find('input').val();
+                var Query = $tds.eq(26).find('input').val();
+
+                WorkFlowViewModel[J] = {
+                    'Pid': Pid, 'ResultId': ResultId, 'LaserId': LaserId, 'TaskId': TaskId, 'ApproveId': ApproveId, 'Reason': Query, 'Remark': Remark
+                };
+                J++;
+            }
+        });
+
+        if (isflag) {
+            var reqListObj = new Object();
+            reqListObj.viewModelsResult = WorkFlowViewModel;
+
+            if (WorkFlowViewModel.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/CheckList/A191LaserApprove",
+                    data: JSON.stringify(reqListObj),
+                    success: function (data) {
+                        window.location.reload();
+                    },
+                    error: function () {
+                        // alert('error');
+                    }
+                })
+            }
+            else {
+                alert("At least one checkbox needs to be selected");
+            }
+        } else {
+            alert("Please select at least one checkbox");
+            return false;
+        }
+    }
+
+
+
+
+    function Rejected() {
+        debugger;
+
+        var Qurey = $("#Qurey").val();
+
+        var isflag = false;
+        var WorkFlowViewModel = [];
+
+        var J = 0;
+        var table = $("#example1 tbody");
+
+        table.find('tr').each(function (i) {
+            var $tds = $(this).find('td');
+            var id = $tds.eq(0).text().trim();
+
+            var isflageach = false;
+            if ($('#' + id).is(':checked')) {
+                isflag = true;
+                isflageach = true;
+            }
+            if (isflageach) {
+
+                //$('#LeaveType' + id).css("border", '1px solid green');
+                $('#Reason' + id).css("border", '1px solid green');
+                var Pid = $tds.eq(0).text().trim();
+                var ResultId = $tds.eq(1).text().trim();
+                //var MenuId = $tds.eq(2).text().trim();
+                var LaserId = $tds.eq(2).text().trim();
+                var TaskId = $tds.eq(3).text().trim();
+                var ApproveId = $tds.eq(4).text().trim();
+                var Remark = $tds.eq(27).find('input').val();
+                var Query = $tds.eq(26).find('input').val();
+
+                WorkFlowViewModel[J] = {
+                    'Pid': Pid, 'ResultId': ResultId,  'LaserId': LaserId, 'TaskId': TaskId, 'ApproveId': ApproveId, 'Reason': Query, 'Remark': Remark
+                };
+                J++;
+            }
+        });
+
+        if (isflag) {
+            var reqListObj = new Object();
+            reqListObj.viewModelsResult = WorkFlowViewModel;
+
+            if (WorkFlowViewModel.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/CheckList/A191LaserReject",
+                    data: JSON.stringify(reqListObj),
+                    success: function (data) {
+                        window.location.reload();
+                    },
+                    error: function () {
+                        // alert('error');
+                    }
+                })
+            } else {
+                alert("At least one checkbox needed to be selected");
+            }
+        } else {
+            alert("Please select at least one checkbox");
+            return false;
+        }
+    }
+
+    //function uploadFile(id) {
+    //    debugger;
+    //    if (window.FormData !== undefined) {
+    //        var fileUpload = $("#FileUpload1-" + id).get(0);
+    //        var files = fileUpload.files;
+    //        if (files.length > 0) {
+    //            // Create FormData object
+    //            var fileData = new FormData();
+
+    //            // Looping over all files and add it to FormData object
+    //            for (var i = 0; i < files.length; i++) {
+    //                fileData.append(files[i].name, files[i]);
+    //            }
+
+    //            $.ajax({
+    //                url: '/WorkFlow/UploadDocument',
+    //                type: "POST",
+    //                contentType: false, // Not to set any content header
+    //                processData: false, // Not to process data
+    //                data: fileData,
+    //                success: function (result) {
+    //                    //var id = $('#hdnDocId').val();
+    //                    $('#Path-' + id).val(result);
+    //                    $('#lblUploadStatus-' + id).show();
+    //                    $('#btnUpload-' + id).css("display", "none");
+    //                    $('#lblUploadStatu-' + id).text("Succesfully Uploaded");
+    //                    $("#FileUpload1-" + id).val(null);
+    //                    //$('#hdnDocId').val(" ");
+    //                },
+    //                error: function (err) {
+    //                    alert(err.statusText);
+    //                }
+    //            });
+    //        } else {
+    //            alert("Choose the File");
+
+    //        }
+    //    } else {
+    //        alert("FormData is not supported.");
+    //    }
+
+    //}
+
+</script>

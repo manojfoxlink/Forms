@@ -1,0 +1,224 @@
+﻿@using System.Data
+@model ChecklistForm.Models.CheckListMaintenanceModelView
+
+@{
+    ViewBag.Title = "ParameterCheckListMaintenanceResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .padding {
+        padding: 10px;
+    }
+
+    #example1_wrapper {
+        overflow: auto;
+    }
+</style>
+
+@using (Html.BeginForm("ParameterCheckListMaintenanceResult", "Report"))
+{
+    @Html.AntiForgeryToken()
+    <div class="box box-solid box-default">
+        <div class="box-header">
+            <h3 class="box-title">Maintenance CheckList Report</h3>
+        </div>
+
+        @{
+    Html.RenderPartial("_ErrorMessage");
+        }
+        <div class="box-body">
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control"})
+
+
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ShiftId, new SelectList(Model.Shifts, "shiftId", "ShiftName", 0), "--select Shift--", new { @class = "form-control" })
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "--select Project--", new { @class = "form-control", onchange = "ddlProjectsChanged5()" })
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.DropDownListFor(model => model.MachineId, new SelectList(Model.Machines, "MachineId", "MachineName", 0), "--select Machine--", new { @class = "form-control"})
+
+
+                                </div>
+                              
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.TextBoxFor(model => model.FromDate, new { @class = "form-control", @Id = "datepicker"})
+
+
+                                </div>
+
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.TextBoxFor(model => model.ToDate, new { @class = "form-control", @Id = "datepicker1"})
+
+
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row padding">
+                @*<table class="table table-bordered table-hover bg-light-blue-gradient" role="grid" aria-describedby="example3_info" id="QuastionTable">
+                    <thead>
+                        <tr role="row" class="bg-light-blue-gradient">
+                            <th style="display:none">
+                                PartsId
+                            </th>
+                            <th>
+                                S.No
+                            </th>
+                            <th>
+                                Part Of Inspection
+                            </th>
+                            <th>
+                                Freq
+                            </th>
+                            <th>
+                                Standard Condition
+                            </th>
+                            <th>
+                                Result
+                            </th>
+                            <th>
+                                Remarks
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (System.Data.DataRow item in Model.dtReports.Rows)
+                        {
+                            if (@item["PartsId"].ToString() == "1")
+                            {
+                                <tr>
+                                    <td colspan="11" class="bg-gray">@item["Createdtime"].ToString()</td>
+                                </tr>
+                            }
+
+                            <tr>
+
+
+                                <td style="display:none">
+                                    @item["PartsId"].ToString()
+                                </td>
+                                <td>
+                                    @item["Sno"].ToString()
+                                </td>
+                                <td>
+                                    @item["PartOfInspection"].ToString()
+                                </td>
+                                <td>
+                                    @item["Freq"].ToString()
+                                </td>
+                                <td>
+                                    @item["StandardCondition"].ToString()
+                                </td>
+                                <td>
+                                    @item["Result"].ToString()
+                                </td>
+                                <td>
+                                    @item["Remarks"].ToString()
+                                </td>
+
+
+                            </tr>
+
+
+
+                        }
+
+
+                    </tbody>
+                    <tfoot>
+
+                    </tfoot>
+
+                </table>*@
+
+
+
+       @if (Model.dtReports.Rows.Count > 0)
+        {
+    <table id="example1" class="table table-bordered table-hover" role="grid" aria-describedby="example3_info">
+        <thead>
+            <tr >
+                @foreach (DataColumn col in Model.dtReports.Columns)
+                {
+                    <th>@col.ColumnName</th>
+                }
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.dtReports.Rows)
+            {
+
+                <tr>
+                    @foreach (System.Data.DataColumn col in Model.dtReports.Columns)
+                    {
+                        <td>@row[col.ColumnName]</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+
+
+
+
+            </div>
+            @if (Model.dtReports.Rows.Count > 0)
+            {
+                <div class="row padding">
+
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-0">
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                        <label>Export Format File :</label>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                       @Html.DropDownListFor(model => model.ExportType, new SelectList(Model.ExportTypes, Model.ExportType), new { @class = "form-control select2 select2-hidden-accessible", target = "_blank", @style = "width: 100%;" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                        <button type="submit" name="Command" id="btnExport" value="Export" class="btn btn-primary btn-flat">Export File</button>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-1">
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    </div>
+}
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />

@@ -1,0 +1,380 @@
+﻿
+@model ChecklistForm.Models.CheckListCircuitRecordViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    Html.RenderPartial("_ErrorMessage");
+}
+
+@*<h2>Index</h2>*@
+@using (Html.BeginForm("Index", "CheckListCircuitRecord", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+     <div class="box box-solid box-default">
+        <div class="box-header">
+
+            <h3 class="box-title">Visual Inspection</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                
+                            </div>
+                            <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required" })
+
+
+                            </div>
+                            <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "--select Project--", new { @class = "form-control", onchange = "ddlModelNoByProject2()", required = "required" })
+
+
+                            </div>
+                            <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                @Html.DropDownListFor(model => model.ModelId, new SelectList(Model.ModelNos, "ModelId", "Model", 0), "--Select Model--", new { @class = "form-control", onchange = "ddlGetPartNoByModel2()", required = "required" })
+
+                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            </div>
+                            <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                @Html.DropDownListFor(model => model.PartId, new SelectList(Model.PartNos, "PartId", "Part", 0), "--Select Part--", new { @class = "form-control", required = "required" })
+
+                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            </div>
+
+
+                            <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                @Html.TextBoxFor(x => x.ProdLineLeader, new { placeholder = "Production LineLeader", @class = "form-control", autocomplete = "off", @required = true })
+                            </div>
+
+                            <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                @Html.TextBoxFor(x => x.CheckedBy, new { placeholder = "CheckedBy", @class = "form-control", autocomplete = "off", @required = true })
+                            </div>
+
+                            <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                @Html.TextBoxFor(x => x.ApprovedBy, new { placeholder = "ApprovedBy", @class = "form-control", autocomplete = "off", @required = true })
+                            </div>
+                            @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                @Html.TextBoxFor(x => x.ModelNo, new { placeholder = "Model Number", @class = "form-control", autocomplete = "off", @required = true })
+                            </div>*@
+
+                            <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box padding">
+                <div class="row">
+                    <table class="table table-bordered table-hover" role="grid" aria-describedby="example3_info" id="QuastionTable">
+                        <thead>
+                            <tr>
+                                <td style="color:red">
+                                    <b>NOTE:-</b><b>Notation need to show on top of the check sheet</b>
+                                    <br />
+                                    <b>
+                                        N-NA
+                                    </b>
+                                    <br />
+                                    <b>
+                                        V-OK
+                                    </b>
+                                    <br />
+                                    <b>
+                                        X-NG
+                                    </b>
+
+                                </td>
+                            </tr>
+                            <tr role="row">
+
+                                @*<th>
+                                    RecordId
+                                </th>*@
+                                @*<th style="display:none">
+                                    RecordId
+                                </th>
+                                <th style="display:none">
+                                    RecordId
+                                </th>*@
+                                <th>
+                                    Inspection item
+                                </th>
+                                <th style="display:none">
+                                    RecordId
+                                </th>
+                                @*<th style="display:none">
+                                    ProjectId
+                                </th>*@
+                                <th>
+                                    Model Number
+                                </th>
+                                <th>
+                                    Units
+                                </th>
+                               <th>
+                                   Result
+                               </th>
+                                <th>
+                                    AdverseNumber
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@{
+    //int row = 1;
+    //int TotalCount = 0;
+                            }*@
+                            @foreach (System.Data.DataRow item in Model.dtChecklist.Rows)
+                            {
+                                <tr>
+                                    @*@{
+                                TotalCount = (Int32)@item["TotalCount"];
+                                    }
+
+                                    @if (row > (Int32)item["TotalCount"])
+                                    {
+                                        row = 1;
+
+
+                                    }
+                                    @if (row == 1)
+                                    {
+
+
+                                        <td rowspan="@TotalCount">
+
+                                            @item["SubStationName"].ToString()
+
+
+
+                                        </td>
+                                    }*@
+                                    @*<td style="display:none">
+                                        @item["ParameterId"].ToString()
+                                    </td>
+                                    <td style="display:none">
+                                        @item["LimitId"].ToString()
+                                    </td>*@
+                                    <td>
+                                        @item["Inspectionitem"].ToString()
+                                    </td>
+                                    <td style="display:none">
+                                        @item["RecordId"].ToString()
+                                    </td>
+                                    @*<td style="display:none">
+                                        @item["ProjectId"].ToString()
+                                    </td>*@
+                                    <td>
+                                        @item["ModelNumber"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["InspecSpecification"].ToString()
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="Result" id="@item["RecordId"].ToString()" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="AdverseNumber" id="@item["RecordId"].ToString()" />
+                                    </td>
+                                    <td>
+                                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+                                    </td>
+                                    @*<td>
+                                        @item["Result"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["AdverseNumber"].ToString()
+                                    </td>*@
+                                    @*@if (row == TotalCount)
+                                    {
+                                        row = 1;
+                                    }
+                                    else
+                                    {
+                                        row += 1;
+                                    }*@
+                                </tr>
+                                
+                                
+
+                            }
+
+
+                        </tbody>
+                        <tfoot>
+                            
+                        </tfoot>
+
+                    </table>
+
+                </div>
+
+                <div class="row padding">
+                    <div class="col-xs-10 right">
+
+                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+
+<script>
+    function Save()
+    {
+        
+        //  var table = $("#QuastionTable");
+        var CheckListResult = [];
+        var fills = [];
+        var i = 0;
+        var J = 0;
+        var k = 0;
+        
+
+
+
+        var table = $("table tbody");
+        var formData = new FormData();
+        var LineId = $("#LineId").val();
+        var ProjectId = $("#ProjectId").val();
+        var ProdLineLeader = $("#ProdLineLeader").val();
+        var CheckedBy = $("#CheckedBy").val();
+        var ApprovedBy = $("#ApprovedBy").val();
+        var ModelId = $("#ModelId").val();
+        var PartId = $("#PartId").val();
+        debugger;
+
+        if (LineId != 0 && ProjectId != 0 && ProdLineLeader != "" && CheckedBy != "" && ApprovedBy != "" && ModelId != 0 && PartId != 0)
+        {
+            table.find('tr').each(function (i) {
+                debugger;
+                var $tds = $(this).find('td'),
+                    checkItemObservation = $tds.eq(4).find('input').val();
+                checkItemObservation2 = $tds.eq(5).find('input').val();
+                if ((typeof checkItemObservation != "undefined") && (typeof checkItemObservation2 != "undefined")) {
+                    var RecordId = $tds.eq(1).text().trim();
+                    // var LimitedId = $tds.eq(2).text().trim();
+
+                    var Result = $tds.eq(4).find('input').val();
+                    var AdverseNumber = $tds.eq(5).find('input').val();
+
+                    if (Result == "") {
+
+                        $tds.eq(4).find('input').val("");
+                        $('#' + RecordId).css("border", '1px solid red');
+
+                    }
+                    else {
+                        $('#' + RecordId).css("border", '1px solid green');
+                    }
+
+                    if (AdverseNumber == "") {
+                        $tds.eq(5).find('input').val("");
+
+                        $('#' + RecordId).css("border", '1px solid red');
+                    }
+
+                    else {
+                        //$tds.eq(4).find('input').val("");
+                        //$('#' + RecordId).css("border", '1px solid green');
+                        //$tds.eq(5).find('input').val("");
+
+                        $('#' + RecordId).css("border", '1px solid green');
+                    }
+                }
+
+                else {
+
+                    var RecordId = $tds.eq(0).text().trim();
+
+                    var Result = $tds.eq(3).find('input').val();
+                    var AdverseNumber = $tds.eq(4).find('input').val();
+
+                    if (Result == "") {
+
+                        $tds.eq(3).find('input').val("");
+                        $('#' + RecordId).css("border", '1px solid red');
+
+                    }
+                    else {
+                        $('#' + RecordId).css("border", '1px solid green');
+                    }
+
+                    if (AdverseNumber == "") {
+                        $tds.eq(4).find('input').val("");
+
+                        $('#' + RecordId).css("border", '1px solid red');
+                    }
+
+                    else {
+                        //$tds.eq(4).find('input').val("");
+                        //$('#' + RecordId).css("border", '1px solid green');
+                        //$tds.eq(5).find('input').val("");
+
+                        $('#' + RecordId).css("border", '1px solid green');
+                    }
+
+                }
+
+
+
+                if (Result != "" && AdverseNumber != "" && checkItemObservation != null && checkItemObservation2 != null) {
+                    CheckListResult[J] = {
+                        'RecordId': RecordId, 'Result': Result, 'AdverseNumber': AdverseNumber
+                    };
+                    J++;
+                }
+                i++;
+            });
+
+            var reqListObj = new Object();
+            reqListObj.CheckListRecordResults = CheckListResult;
+            reqListObj.LineId = LineId;
+            reqListObj.ProjectId = ProjectId;
+            reqListObj.ProdLineLeader = ProdLineLeader;
+            reqListObj.CheckedBy = CheckedBy;
+            reqListObj.ApprovedBy = ApprovedBy;
+            reqListObj.ModelId = ModelId;
+            reqListObj.PartId = PartId;
+            if (CheckListResult.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/CheckListCircuitRecord/SaveCheckCiruit",
+                    data: JSON.stringify(reqListObj),
+                    success: function (data) {
+                        //window.location.reload();
+                        $("#btnSearch").click();
+                    },
+                    error: function () {
+                        // alert('error');
+                    }
+
+                })
+            }
+            else {
+                alert("Alteast one Part needed for Creating TO Request");
+            }
+        } else {
+            alert("Please Select LineId");
+        }
+
+        
+    }
+</script>

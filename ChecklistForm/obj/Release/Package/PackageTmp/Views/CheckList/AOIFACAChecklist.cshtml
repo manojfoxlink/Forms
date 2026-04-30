@@ -1,0 +1,421 @@
+﻿@model ChecklistForm.Models.A246CAOICheckListModelView
+@{
+    ViewBag.Title = "AOIFACAChecklist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .padding {
+        padding: 10px;
+    }
+
+    .table-container {
+        max-height: 500px; /* Adjust as needed */
+        overflow-y: auto; /* Enables vertical scrolling */
+        border: 1px solid #ccc;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f9f9f9; /* Optional: Background color */
+            z-index: 10; /* Keeps the header on top */
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table tbody td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+    .custom-dropdown {
+        width: 80px;
+        height: 34px;
+    }
+
+    .pagination {
+        display: flex; /* Use flexbox for layout */
+        justify-content: center; /* Center the pagination links horizontally */
+        align-items: center; /* Center vertically if needed */
+        margin-top: 20px; /* Add some space above the pagination */
+    }
+
+        .pagination a, .pagination span {
+            padding: 8px 12px; /* Add padding for better touch targets and visual spacing */
+            margin: 0 5px; /* Add space between links */
+            text-decoration: none; /* Remove underlines from links */
+            border: 1px solid #ddd; /* Add a subtle border */
+            border-radius: 4px; /* Rounded corners */
+            color: #333; /* Default link color */
+        }
+
+            .pagination a:hover {
+                background-color: #f0f0f0; /* Light background on hover */
+            }
+
+        .pagination span {
+            background-color: #007bff; /* Highlight the current page */
+            color: white;
+            border-color: #007bff;
+        }
+
+            .pagination a:disabled, .pagination span:disabled {
+                opacity: 0.5; /* Indicate disabled state */
+                pointer-events: none; /* Prevent clicks on disabled elements */
+            }
+
+        /* Optional: Add a subtle shadow for depth */
+        .pagination a, .pagination span {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+            /*Optional: change color of hover*/
+            .pagination a:hover {
+                background-color: #e0e0e0;
+            }
+</style>
+@using (Html.BeginForm("AOIFACAChecklist", "CheckList", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    <div class="box box-solid box-default">
+        <div class="box-header">
+
+            <h3 class="box-title">FACA FOR AOI</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+
+
+
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box padding">
+                <div class="row table-container">
+                    <table class="table table-bordered table-hover" role="grid" aria-describedby="example3_info" id="QuastionTable">
+                        <thead>
+                            <tr role="row">
+
+                                <th style="display:none">
+                                    ResultId
+                                </th>
+                                <th>
+                                    Line
+                                </th>
+                                <th>
+                                    Machine
+                                </th>
+                                <th>
+                                    Work Station
+                                </th>
+                                <th>
+                                    Inspection Project
+                                </th>
+                                <th>
+                                    Inspection Specifications
+                                </th>
+                                <th>
+                                    Frequency
+                                </th>
+                                <th>
+                                    section
+                                </th>
+                                
+                                <th>
+                                    LSL
+                                </th>
+                                <th>
+                                    USL
+                                </th>
+                                <th>
+                                    Value1
+                                </th>
+                                <th>
+                                    Value2
+                                </th>
+                                <th>
+                                    Value3
+                                </th>
+                                <th>
+                                    Value4
+                                </th>
+                                <th>
+                                    Value5
+                                </th>
+                                <th>
+                                    Result
+                                </th>
+                                <th>
+                                    Root Cause
+                                </th>
+                                <th>
+                                    Corrective Action
+                                </th>
+                                <th>
+                                    Preventive Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            @foreach (System.Data.DataRow item in Model.dtChecklist.Rows)
+                            {
+                                <tr>
+                                    <td style="display:none">
+                                        @item["ResultId"].ToString()
+                                    </td>
+                                    @*<td>
+                                            @item["SNO"].ToString()
+                                        </td>*@
+                                    <td>
+                                        @item["LineName"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Machine"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["WorkStation"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["InspectionProject"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["InspectionSpecifications"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Frequency"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Section"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["StartSpec"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["EndSpec"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Value1"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Value2"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Value3"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Value4"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Value5"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["InspectionResults"].ToString()
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="RootCause" id="@item["ResultId"].ToString()" />
+                                    </td>
+
+                                    <td>
+                                        <input type="text" class="form-control" name="CorrectiveAction" id="@item["ResultId"].ToString()" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="PreventiveAction" id="@item["ResultId"].ToString()" />
+                                    </td>
+                                    <td>
+                                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Save</button>
+                                    </td>
+                                </tr>
+
+                            }
+
+
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+
+                    </table>
+                    @*<div class="pagination">
+                            @if (Model.PageNumber > 1)
+                            {
+                                <a href="@Url.Action("FACAProdQualityAuditChecklist", new { pageNumber = Model.PageNumber - 1, pageSize = Model.PageSize })">Previous</a>
+                            }
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                if (i == Model.PageNumber)
+                                {
+                                    <span>@i</span>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("FACAProdQualityAuditChecklist", new { pageNumber = i, pageSize = Model.PageSize })">@i</a>
+                                }
+                            }
+                            @if (Model.PageNumber < Model.TotalPages)
+                            {
+                                <a href="@Url.Action("FACAProdQualityAuditChecklist", new { pageNumber = Model.PageNumber + 1, pageSize = Model.PageSize })">Next</a>
+                            }
+                        </div>
+                        <p>Page @Model.PageNumber of @Model.TotalPages</p>
+                        <p>Total Items: @Model.TotalItems</p>*@
+                </div>
+
+                <div class="row padding">
+                    <div class="col-xs-10 right">
+
+                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@*<div id="dialog-upload" title="Upload Attachments" style="display:none;" class="form-control">
+        <h4 id="CheckListIteam" class="alert-success"></h4>
+        <div class="col-xs-12 row">
+            <div class="col-xs-4">
+                File Upload :
+            </div>
+            <div class="col-xs-8">
+                <input class="form-control" type="file" id="FileUpload1" />
+                <input class="btn btn-success" type="button" style="margin:5px;" id="btnUpload" onclick="uploadFile()" value="Upload" />
+                <label style="color:green" id="lblUploadStatus">Succesfully Uploaded</label>
+            </div>
+        </div>
+        <div class="col-xs-12 row">
+            <input type="hidden" id="hdnDocId" />
+
+        </div>
+    </div>*@
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+
+
+
+<script>
+
+    function Save() {
+        var CheckListResult = [];
+
+        var table = $("table tbody");
+        debugger;
+        table.find('tr').each(function (i) {
+            var $tds = $(this).find('td');
+            var ResultId = $tds.eq(0).text().trim();
+            var Image, Descrription, RootCause, CorrectiveAction, PreventiveAction;
+            debugger;
+            if ($tds.length > 19) {
+                debugger;
+                RootCause = $tds.eq(16).find('input').val();
+                CorrectiveAction = $tds.eq(17).find('input').val();
+                PreventiveAction = $tds.eq(18).find('input').val();
+            }
+
+            // Ensure BOTH Description and Image have data before adding to the array
+            if (ResultId && RootCause && PreventiveAction && CorrectiveAction) { // Modified condition
+                CheckListResult.push({
+                    ResultId: ResultId,
+                    RootCause: RootCause,
+                    PreventiveAction: PreventiveAction,
+                    CorrectiveAction: CorrectiveAction
+                });
+            }
+        }); // End of row loop
+
+        if (CheckListResult.length > 0) {
+            var reqListObj = {
+                A246CAOICheckListResults: CheckListResult,
+            };
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "/CheckList/SaveAOIFACAChecklist",
+                data: JSON.stringify(reqListObj),
+                success: function (data) {
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.error("AJAX Error:", error);
+                    alert("Error saving data. Please check the console for details.");
+                }
+            });
+        } else {
+            alert("No data to save.");
+        }
+    }
+
+
+    function uploadFile(id) {
+        //debugger;
+        if (window.FormData !== undefined) {
+            var fileUpload = $("#FileUpload1-" + id).get(0);
+            var files = fileUpload.files;
+            if (files.length > 0) {
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                $.ajax({
+                    url: '/CheckList/UploadDocument',
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    success: function (result) {
+                        //var id = $('#hdnDocId').val();
+                        $('#Path-' + id).val(result);
+                        $('#lblUploadStatus-' + id).show();
+                        $('#btnUpload-' + id).css("display", "none");
+                        $('#lblUploadStatu-' + id).text("Succesfully Uploaded");
+                        $("#FileUpload1-" + id).val(null);
+                        //$('#hdnDocId').val(" ");
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+            } else {
+                alert("Choose the File");
+
+            }
+        } else {
+            alert("FormData is not supported.");
+        }
+
+    }
+
+</script>
+

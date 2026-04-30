@@ -1,0 +1,115 @@
+﻿@model ChecklistForm.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+@*<h2>Login</h2>*@
+<head>
+    <title></title>
+    <style>
+        body {
+            /*font-family: 'Lato', Calibri, Arial, sans-serif;
+            font-weight: 300;
+            font-size: 15px;
+            color: #333;
+            -webkit-font-smoothing: antialiased;
+            overflow-y: scroll;
+            overflow-x: hidden;*/
+            background-image: url(../Images/Forms.jpg);
+            /*background-size: cover; 
+            background-repeat: no-repeat;
+            background-position: center center;*/
+        }
+    </style>
+</head>
+<div id="bg">
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form", onsubmit = "showLoader(this);" }))
+    {
+
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(s => s.ReturnUrl)
+        @Html.HiddenFor(s => s.hdrandomSeed)
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="container">
+
+            <header class="codrops-top">
+                <h1><strong>FORMS APPLICATION</strong></h1>
+                <h2>Login Form</h2>
+
+            </header>
+            @{
+        Html.RenderPartial("_ErrorMessage");
+            }
+            <section class="main">
+                <div class="form-2">
+                    <h1><span class="log-in">Log in</span> </h1>
+                    <p class="float">
+                        <label for="login"><i class="icon-user"></i>User ID</label>
+                        @*<input type="text" name="login" placeholder="Username or email">*@
+                        @Html.TextBoxFor(e => e.UserId, new { placeholder = "Username" })
+                        @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+                    </p>
+                    <p class="float">
+                        <label for="password"><i class="icon-lock"></i>Password</label>
+                        @*<input type="password" name="password" placeholder="Password" class="showpassword">*@
+                        @Html.PasswordFor(e => e.Password, new { placeholder = "Password", @class = "showpassword" })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </p>
+                    <p class="clearfix">
+                        <input type="submit" name="submit" value="Log in" id="btnLogin">
+
+                    </p>
+                </div>
+            </section>
+        </div>
+
+    }
+
+
+</div>
+<script src="~/Scripts/jquery-1.12.2.js"></script>
+<script src="~/Scripts/md5.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnLogin').click(function () {
+            debugger;
+            if ($('#Password').val() != "") {
+                var seed = $('#hdrandomSeed');
+                return md5auth(seed.val());
+            }
+            $("#frm").submit();
+        });
+    });
+
+    $(function () {
+        var controls = $(".disable");
+        controls.bind("paste", function () {
+            return false;
+        });
+        controls.bind("drop", function () {
+            return false;
+        });
+        controls.bind("cut", function () {
+            return false;
+        });
+        controls.bind("copy", function () {
+            return false;
+        });
+    });
+</script>
+
+
+<script type="text/javascript">
+    function md5auth(seed) {
+        debugger;
+        var password1 = $('#Password');
+        var password = password1.val();
+        var hash = calcMD5(seed + calcMD5(password).toUpperCase());
+        password1.val(hash.toUpperCase());
+        return true;
+    }
+</script>

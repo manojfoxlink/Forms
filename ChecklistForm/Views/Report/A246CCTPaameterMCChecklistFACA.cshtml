@@ -1,0 +1,215 @@
+﻿@model ChecklistForm.Models.RptParameterA246CTPaameterMCChecklistModelView
+
+@{
+    ViewBag.Title = "A246CCTPaameterMCChecklistFACA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("A246CCTPaameterMCChecklistFACA", "Report"))
+{
+    @Html.AntiForgeryToken()
+    <div class="box box-solid box-default">
+        <div class="box-header">
+            <h3 class="box-title">A246C CTP Parameter MC Line1 FACA</h3>
+        </div>
+
+        @{
+    Html.RenderPartial("_ErrorMessage");
+        }
+        <div class="box-body">
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box padding">
+                <div class="row table-container">
+                    <table class="table table-bordered table-hover" role="grid" aria-describedby="example3_info" id="QuastionTable">
+                        <thead>
+                            <tr role="row">
+
+                                <th>
+                                    Station No
+                                </th>
+                                <th>
+                                    Station
+                                </th>
+                                <th>
+                                    Equipment Name/Model
+                                </th>
+                                <th>
+                                    Parameter items
+                                </th>
+                                <th>
+                                    Unit
+                                </th>
+                                <th>
+                                    LSL
+                                </th>
+                                <th>
+                                    USL
+                                </th>
+                                <th>
+                                    Value
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            @foreach (System.Data.DataRow item in Model.dtReports.Rows)
+                            {
+                                <tr>
+
+                                    <td style="display:none">
+                                        @item["LimitId"].ToString()
+                                    </td>
+
+
+
+                                    <td>
+
+                                        @item["StationNo"].ToString()
+                                    </td>
+                                    <td>
+
+                                        @item["Station"].ToString()
+                                    </td>
+                                    <td>
+
+                                        @item["EquipmentModel"].ToString()
+                                    </td>
+
+
+
+                                    <td>
+                                        @item["Parameter"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["unit"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["LSL"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["USL"].ToString()
+                                    <td>
+                                        @item["Value"].ToString()
+                                    </td>
+
+
+                                </tr>
+
+
+
+                            }
+
+
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+
+                    </table>
+
+                    
+
+
+
+                </div>
+                <!-- Pagination Controls -->
+                <div id="paginationControls">
+                    <button id="prevBtn">Previous</button>
+                    <span id="pageNumber">Page 1</span>
+                    <button id="nextBtn">Next</button>
+                </div>
+            </div>
+
+
+            
+
+        </div>
+        
+
+        
+    </div>
+}
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+
+<script>
+    $(document).ready(function () {
+        var rowsPerPage = 10; // Number of rows per page
+        var currentPage = 1;  // Default to page 1
+        var rows = $('#QuastionTable tbody tr'); // Get all rows
+        var totalPages = Math.ceil(rows.length / rowsPerPage); // Total number of pages
+
+        function showPage(page) {
+            // Calculate start and end indices of rows to display
+            var start = (page - 1) * rowsPerPage;
+            var end = start + rowsPerPage;
+
+            // Hide all rows
+            rows.hide();
+
+            // Show the rows for the current page
+            rows.slice(start, end).show();
+
+            // Update page number display
+            $('#pageNumber').text('Page ' + page);
+        }
+
+        // Initialize the first page
+        showPage(currentPage);
+
+        // Previous button click handler
+        $('#prevBtn').click(function () {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        });
+
+        // Next button click handler
+        $('#nextBtn').click(function () {
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

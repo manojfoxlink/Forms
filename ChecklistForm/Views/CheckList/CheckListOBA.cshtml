@@ -1,0 +1,588 @@
+﻿@model ChecklistForm.Models.CheckListOBAModelView
+@{
+    ViewBag.Title = "CheckListOBA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    Html.RenderPartial("_ErrorMessage");
+}
+<style>
+    .padding {
+        padding: 10px;
+        overflow:auto;
+    }
+</style>
+
+    <div class="box box-solid box-default">
+        <div class="box-header">
+            @Html.ValidationSummary(false)
+            <h3 class="box-title">OBA CheckList</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+@using (Html.BeginForm("CheckListOBA", "CheckList", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.BoxNo, new { placeholder = "Box No / Tray No", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.PalletNo, new { placeholder = "Pallet No", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "--select Project--", new { @class = "form-control", onchange = "ddlModelNoByProject();ddlPaperCollarByProject();ddlFacePlateC70ByProject();ddlFacePlateC91ByProject();ddlPlugShellC70ByProject();ddlPlugShellC91ByProject();ddlBootC70ByProject();ddlBootC91ByProject();ddlCableByProject();ddlSRByProject();", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ModelId, new SelectList(Model.ModelNos, "ModelId", "Model", 0), "--Select Model--", new { @class = "form-control", onchange = "ddlGetPartNoByModel()", required = "required" })
+
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.PartId, new SelectList(Model.PartNos, "PartId", "Part", 0), "--Select Part--", new { @class = "form-control", required = "required" })
+
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ProdLineLeader, new { placeholder = "Production LineLeader", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.CheckedBy, new { placeholder = "CheckedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ApprovedBy, new { placeholder = "ApprovedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+}
+         @if(Model.PaperCollars.Count>0)
+         {
+            <div class="box padding " >
+                <input type="button" class="btn btn-success btn-flat" value="Add row" onclick="addRow('dataTable')" />
+                <div class="row">
+                    <table border="1" width="100%" id="dataTable">
+                        <thead>
+                            <tr role="row">
+                                <th>
+                                    Cable SerialNo
+                                </th>
+                                <th>
+                                    Cable
+                                </th>
+                                <th>
+                                    SR
+                                </th>
+                                <th>
+                                    Plug Shell C70
+                                </th>
+                                <th>
+                                    Plug Shell C91
+                                </th>
+                                <th>
+                                    Boot C70
+                                </th>
+                                <th>
+                                    Boot C91
+                                </th>
+
+                                <th>
+                                    FacePlate C70
+                                </th>
+                                <th>
+                                    FacePlate C91
+                                </th>
+                                <th>
+                                    Paper Collar
+                                </th>
+                                <th>
+                                    Remarks
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                     <td>@Html.TextBoxFor(model => model.CheckListOBAResults[0].CableSerialNo, new { placeholder = "Cable SerialNo", @class = "form-control", @id = "txtCableSerialNo" })</td>
+                    <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].CableId, new SelectList(Model.Cables, "CableId", "Cablee", 0), "--Select Cable --", new { @class = "form-control select2 select2-hidden-accessible", @style = "width: 100%;", @id = "ddlCable" })</td>
+                    <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].SRId, new SelectList(Model.SRes, "SRId", "SR", 0), "--Select SR --", new { @class = "form-control select2 select2-hidden-accessible", @style = "width: 100%;", @id = "ddlSR" })</td>
+                    <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].PlugId, new SelectList(Model.PlugShelles, "PlugId", "PlugShell", 0), "--Select PlugShellC70 --", new { @class = "form-control select2 select2-hidden-accessible", @style = "width: 100%;", @id = "ddlPlugShellC70" })</td>
+                    <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].PlugShellId, new SelectList(Model.PlugShells, "PlugShellId", "PlugShelll", 0), "--Select PlugShellC91 --", new { @class = "form-control select2 select2-hidden-accessible", @style = "width: 100%;", @id = "ddlPlugShellC91" })</td>
+
+                    <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].BootId, new SelectList(Model.Boots, "BootId", "Boot", 0), "--Select BootC70 --", new { @class = "form-control select2 select2-hidden-accessible", @style = "width: 100%;", @id = "ddlBootC70" })</td>
+                    <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].BoottId, new SelectList(Model.Bootts, "BoottId", "Boott", 0), "--Select BootC91 --", new { @class = "form-control select2 select2-hidden-accessible", @style = "width: 100%;", @id = "ddlBootC91" })</td>
+                    <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].FacePlateId, new SelectList(Model.FacePlates, "FacePlateId", "FacePlate", 0), "--Select FacePlateC70 --", new { @class = "form-control select2 select2-hidden-accessible", @style = "width: 100%;", @id = "ddlFacePlateC70" })</td>
+                    <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].FaceePlateId, new SelectList(Model.FacePlatess, "FaceePlateId", "FacePlate", 0), "--Select FacePlateC91 --", new { @class = "form-control select2 select2-hidden-accessible", @style = "width: 100%;", @id = "ddlFacePlateC91" })</td>
+                    <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].CollarId, new SelectList(Model.PaperCollars, "CollarId", "Collar", 0), "--Select Paper Collar --", new { @class = "form-control select2 select2-hidden-accessible", @style = "width: 100%;", @id = "ddlPapperCollar" })</td>
+                    <td>@Html.TextBoxFor(model => model.CheckListOBAResults[0].Remark, new { placeholder = "Enter Remark", @class = "form-control", @id = "txtRemark" })</td>
+                               
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="hide">
+                    <table id="newrow" width="100%" border="1">
+                        <thead>
+                            <tr role="row">
+                                <th>
+                                    Cable SerialNo
+                                </th>
+                                <th>
+                                    Cable
+                                </th>
+                                <th>
+                                    SR
+                                </th>
+                                <th>
+                                    Plug Shell C70
+                                </th>
+                                <th>
+                                    Plug Shell C91
+                                </th>
+                                <th>
+                                    Boot C70
+                                </th>
+                                <th>
+                                    Boot C91
+                                </th>
+
+                                <th>
+                                    FacePlate C70
+                                </th>
+                                <th>
+                                    FacePlate C91
+                                </th>
+                                <th>
+                                    Paper Collar
+                                </th>
+                                <th>
+                                    Remarks
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Html.TextBoxFor(model => model.CheckListOBAResults[0].CableSerialNo, new { placeholder = "Cable SerialNo", @class = "form-control", @id = "txtCableSerialNo" })</td>
+                                <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].CableId, new SelectList(Model.Cables, "CableId", "Cablee", 0), "--Select Cable --", new { @class = "form-control select", @style = "width: 100%;", @id = "ddlCable" })</td>
+                                <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].SRId, new SelectList(Model.SRes, "SRId", "SR", 0), "--Select SR --", new { @class = "form-control select3", @style = "width: 100%;", @id = "ddlSR", @required = "true" })</td>
+                                <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].PlugId, new SelectList(Model.PlugShelles, "PlugId", "PlugShell", 0), "--Select PlugShellC70 --", new { @class = "form-control select3", @style = "width: 100%;", @required = "true", @id = "ddlPlugShellC70" })</td>
+                                <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].PlugShellId, new SelectList(Model.PlugShells, "PlugShellId", "PlugShelll", 0), "--Select PlugShellC91 --", new { @class = "form-control select4", @style = "width: 100%;", @required = "true", @id = "ddlPlugShellC91" })</td>
+
+                                <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].BootId, new SelectList(Model.Boots, "BootId", "Boot", 0), "--Select BootC70 --", new { @class = "form-control select5", @style = "width: 100%;", @id = "ddlBootC70", @required = "true" })</td>
+                                <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].BoottId, new SelectList(Model.Bootts, "BoottId", "Boott", 0), "--Select BootC91 --", new { @class = "form-control select6", @style = "width: 100%;", @id = "ddlBootC91", @required = "true" })</td>
+                                <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].FacePlateId, new SelectList(Model.FacePlates, "FacePlateId", "FacePlate", 0), "--Select FacePlateC70 --", new { @class = "form-control select7", @style = "width: 100%;", @required = "true", @id = "ddlFacePlateC70" })</td>
+                                <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].FaceePlateId, new SelectList(Model.FacePlatess, "FaceePlateId", "FacePlate", 0), "--Select FacePlateC91 --", new { @class = "form-control select8", @style = "width: 100%;", @required = "true", @id = "ddlFacePlateC91" })</td>
+                                <td>@Html.DropDownListFor(model => model.CheckListOBAResults[0].CollarId, new SelectList(Model.PaperCollars, "CollarId", "Collar", 0), "--Select Paper Collar --", new { @class = "form-control select9", @style = "width: 100%;", @required = "true", @id = "ddlPapperCollar" })</td>
+                                <td>@Html.TextBoxFor(model => model.CheckListOBAResults[0].Remark, new { placeholder = "Enter Remark", @class = "form-control", @id = "txtRemark" })</td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="row padding">
+                    <div class="col-xs-10 right">
+
+                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+
+
+                    </div>
+
+                </div>
+            </div>
+         }
+        </div>
+    </div>
+
+
+@*<div id="dialog-upload" title="Upload Attachments" style="display:none;" class="form-control">
+        <h4 id="CheckListIteam" class="alert-success"></h4>
+        <div class="col-xs-12 row">
+            <div class="col-xs-4">
+                File Upload :
+            </div>
+            <div class="col-xs-8">
+                <input class="form-control" type="file" id="FileUpload1" />
+                <input class="btn btn-success" type="button" style="margin:5px;" id="btnUpload" onclick="uploadFile()" value="Upload" />
+                <label style="color:green" id="lblUploadStatus">Succesfully Uploaded</label>
+            </div>
+        </div>
+        <div class="col-xs-12 row">
+            <input type="hidden" id="hdnDocId" />
+
+        </div>
+    </div>*@
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+
+
+
+<script>
+    function addRow(tableID) {
+        debugger;
+
+        //$('#dataTable tbody').append(t1[0]);model.DimentionInsp
+        var t1 = $('#newrow').dataTable().fnGetNodes();
+
+        // initialize table
+        var t = $('#dataTable').DataTable();
+        var row = $('#dataTable tr').length;
+        // add row
+
+        //t.row.add( [1,2,3] ).draw();
+
+        var rowHtml = t1[0].outerHTML
+        console.log(rowHtml);
+        rowHtml = rowHtml.replace("txtCableSerialNo", "txtCableSerialNo" + row);
+        console.log(rowHtml);
+        rowHtml = rowHtml.replace("select2-container", "select2-containerremove");
+        rowHtml = rowHtml.replace("select3-container", "select2-containerremove");
+
+        rowHtml = rowHtml.replace("ddlCable", "ddlCable" + row);
+        rowHtml = rowHtml.replace("ddlSR", "ddlSR" + row);
+        rowHtml = rowHtml.replace("ddlPlugShellC70", "ddlPlugShellC70" + row);
+        rowHtml = rowHtml.replace("ddlPlugShellC91", "ddlPlugShellC91" + row);
+        rowHtml = rowHtml.replace("ddlBootC70", "ddlBootC70" + row);
+        rowHtml = rowHtml.replace("ddlBootC91", "ddlBootC91" + row);
+        rowHtml = rowHtml.replace("ddlFacePlateC70", "ddlFacePlateC70" + row);
+        rowHtml = rowHtml.replace("ddlFacePlateC91", "ddlFacePlateC91" + row);
+        
+        rowHtml = rowHtml.replace("ddlPapperCollar", "ddlPapperCollar" + row);
+        rowHtml = rowHtml.replace("txtRemark", "txtRemark" + row);
+        console.log(rowHtml);
+        t.row.add($(rowHtml)).draw();
+
+        //$('#ddlCable' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+        //$('#ddlSR' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlPlugShellC70' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlPlugShellC91' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlBootC70' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlBootC91' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlFacePlateC70' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlFacePlateC91' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlPapperCollar' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+    //    $(" #dataTable_wrapper").removeClass("dataTables_wrapper form-inline dt-bootstrap no-footer");
+
+    //    $('.select2-containerremove').remove();
+
+    //    $("#txtqty" + row).change(function () {
+    //        ValiditadeQty($(this).attr('class').split(' ').pop());
+    //    });
+
+    //    $("#txtRecQty" + row).change(function () {
+    //        ValiditadeQty($(this).attr('class').split(' ').pop());
+    //    });
+    }
+
+
+
+    function Save() {
+        //  var table = $("#QuastionTable");
+        var CheckListResult = [];
+        var fills = [];
+        var i = 0;
+        var J = 0;
+        var k = 0;
+        debugger;
+
+
+
+        var table = $("table tbody");
+        var formData = new FormData();
+        var LineId = $("#LineId").val();
+        var ProjectId = $("#ProjectId").val();
+        var ProdLineLeader = $("#ProdLineLeader").val();
+        var BoxNo = $("#BoxNo").val();
+        var PalletNo = $("#PalletNo").val();
+        var CheckedBy = $("#CheckedBy").val();
+        var ApprovedBy = $("#ApprovedBy").val();
+        var ModelId = $("#ModelId").val();
+        var PartId = $("#PartId").val();
+        if (LineId != 0 && ProjectId != 0 && BoxNo != "" && PalletNo != "" &&  ProdLineLeader != "" && CheckedBy != "" && ApprovedBy != ""  && ModelId != 0 && PartId != 0) {
+            debugger;
+            table.find('tr').each(function (i) {
+                var $tds = $(this).find('td'),
+                    checkItemObservation = $tds.eq(10).find('input').val()
+
+                if ((typeof checkItemObservation != "undefined")) {
+                    //var TempId = $tds.eq(0).text().trim();
+
+                    var CableSerialNo = $tds.eq(0).find('input').val();
+                    var CableId = $tds.eq(1).find('select').val();
+                    var SRId = $tds.eq(2).find('select').val();
+                    var PlugId = $tds.eq(3).find('select').val();
+                    var PlugShellId = $tds.eq(4).find('select').val();
+                    var BootId = $tds.eq(5).find('select').val();
+                    var BoottId = $tds.eq(6).find('select').val();
+                    var FacePlateId = $tds.eq(7).find('select').val();
+                    var FaceePlateId = $tds.eq(8).find('select').val();
+                    var CollarId = $tds.eq(9).find('select').val();
+                    var Remark = $tds.eq(10).find('input').val();
+
+                    if (CableSerialNo != "") {
+                        if (CableSerialNo == "") {
+                            $tds.eq(0).find('input').val("");
+                            $('#' + CableSerialNo).css("border", '1px solid red');
+                        } else {
+                            $('#' + CableSerialNo).css("border", '1px solid green');
+                        }
+                    }
+                    else if (CableId != "") {
+                        if (CableId == "") {
+                            $tds.eq(1).find('select').val("");
+                            $('#' + CableId).css("border", '1px solid red');
+                        } else {
+                            $('#' + CableId).css("border", '1px solid green');
+                        }
+                    }
+
+                    else if (SRId != "") {
+                        if (SRId == "") {
+                            $tds.eq(2).find('select').val("");
+                            $('#' + SRId).css("border", '1px solid red');
+                        } else {
+                            $('#' + SRId).css("border", '1px solid green');
+                        }
+                    }
+
+                    else if (PlugId != "") {
+                        if (PlugId == "") {
+                            $tds.eq(3).find('select').val("");
+                            $('#' + PlugId).css("border", '1px solid red');
+                        } else {
+                            $('#' + PlugId).css("border", '1px solid green');
+                        }
+                    }
+
+                    else if (PlugShellId != "") {
+                        if (PlugShellId == "") {
+                            $tds.eq(4).find('select').val("");
+                            $('#' + PlugShellId).css("border", '1px solid red');
+                        } else {
+                            $('#' + PlugShellId).css("border", '1px solid green');
+                        }
+                    }
+
+                    else if (BootId != "") {
+                        if (BootId == "") {
+                            $tds.eq(5).find('select').val("");
+                            $('#' + BootId).css("border", '1px solid red');
+                        } else {
+                            $('#' + BootId).css("border", '1px solid green');
+                        }
+                    }
+
+
+                    else if (BoottId != "") {
+                        if (BoottId == "") {
+                            $tds.eq(6).find('select').val("");
+                            $('#' + BoottId).css("border", '1px solid red');
+                        } else {
+                            $('#' + BoottId).css("border", '1px solid green');
+                        }
+                    }
+
+
+                    else if (FacePlateId != "") {
+                        if (FacePlateId == "") {
+                            $tds.eq(7).find('select').val("");
+                            $('#' + FacePlateId).css("border", '1px solid red');
+                        } else {
+                            $('#' + FacePlateId).css("border", '1px solid green');
+                        }
+                    }
+
+                    else if (FaceePlateId != "") {
+                        if (FaceePlateId == "") {
+                            $tds.eq(8).find('select').val("");
+                            $('#' + FaceePlateId).css("border", '1px solid red');
+                        } else {
+                            $('#' + FacePlateId).css("border", '1px solid green');
+                        }
+                    }
+
+                    else if (CollarId != "") {
+                        if (CollarId == "") {
+                            $tds.eq(9).find('select').val("");
+                            $('#' + CollarId).css("border", '1px solid red');
+                        } else {
+                            $('#' + CollarId).css("border", '1px solid green');
+                        }
+                    }
+
+                    else if (Remark != "") {
+                        if (Remark == "") {
+                            $tds.eq(10).find('input').val("");
+                            $('#' + Remark).css("border", '1px solid red');
+                        } else {
+                            $('#' + Remark).css("border", '1px solid green');
+                        }
+                    }
+
+                    
+
+
+                }
+                //else {
+
+                //    var SpecId = $tds.eq(0).text().trim();
+
+                //    var Value1 = $tds.eq(2).find('input').val();
+                //    var Value2 = $tds.eq(3).find('input').val();
+                //    var Value3 = $tds.eq(4).find('input').val();
+                //    var Value4 = $tds.eq(5).find('input').val();
+                //    var Value5 = $tds.eq(6).find('input').val();
+
+
+                //    if (Value1 != "") {
+                //        if (Value1 == "") {
+                //            $tds.eq(2).find('input').val("");
+                //            $('#' + SpecId).css("border", '1px solid red');
+                //        } else {
+                //            $('#' + SpecId).css("border", '1px solid green');
+                //        }
+                //    }
+                //    else if (Value2 != "") {
+                //        if (Value2 == "") {
+                //            $tds.eq(3).find('input').val("");
+                //            $('#' + SpecId).css("border", '1px solid red');
+                //        } else {
+                //            $('#' + SpecId).css("border", '1px solid green');
+                //        }
+                //    }
+
+                //    else if (Value3 != "") {
+                //        if (Value3 == "") {
+                //            $tds.eq(4).find('input').val("");
+                //            $('#' + SpecId).css("border", '1px solid red');
+                //        } else {
+                //            $('#' + SpecId).css("border", '1px solid green');
+                //        }
+                //    }
+
+                //    else if (Value4 != "") {
+                //        if (Value4 == "") {
+                //            $tds.eq(5).find('input').val("");
+                //            $('#' + SpecId).css("border", '1px solid red');
+                //        } else {
+                //            $('#' + SpecId).css("border", '1px solid green');
+                //        }
+                //    }
+
+                //    else if (Value5 != "") {
+                //        if (Value5 == "") {
+                //            $tds.eq(6).find('input').val("");
+                //            $('#' + SpecId).css("border", '1px solid red');
+                //        } else {
+                //            $('#' + SpecId).css("border", '1px solid green');
+                //        }
+                //    }
+                //}
+
+
+
+                if ((CableSerialNo != "" && CableId != 0 && SRId != 0 && PlugId != 0 && PlugShellId != 0 && BootId != 0 && BoottId != 0 && FacePlateId != 0 && FaceePlateId != 0 && Remark != "" && CollarId !=0)) {
+                    CheckListResult[J] = {
+                        'CableSerialNo': CableSerialNo, 'CableId': CableId, 'SRId': SRId, 'PlugId': PlugId, 'PlugShellId': PlugShellId, 'BootId': BootId, 'BoottId': BoottId, 'FacePlateId': FacePlateId, 'FaceePlateId': FaceePlateId, 'Remark': Remark, 'CollarId': CollarId
+                    };
+                    J++;
+                }
+                i++;
+            });
+            var reqListObj = new Object();
+            reqListObj.CheckListOBAResults = CheckListResult;
+            reqListObj.LineId = LineId;
+            reqListObj.ProjectId = ProjectId;
+            reqListObj.BoxNo = BoxNo;
+            reqListObj.PalletNo = PalletNo;
+            reqListObj.ProdLineLeader = ProdLineLeader;
+            reqListObj.CheckedBy = CheckedBy;
+            reqListObj.ApprovedBy = ApprovedBy;
+            reqListObj.ModelId = ModelId;
+            reqListObj.PartId = PartId;
+            if (CheckListResult.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/CheckList/SaveCheckOBA",
+                    data: JSON.stringify(reqListObj),
+                    success: function (data) {
+                        window.location.reload();
+                        //$("#btnSearch").click();
+                    },
+                    error: function () {
+                        // alert('error');
+                    }
+
+                })
+            }
+            else {
+                alert("Alteast one Part needed for Creating TO Request");
+            }
+        } else {
+            alert("Please Select LineId");
+        }
+    }
+
+</script>

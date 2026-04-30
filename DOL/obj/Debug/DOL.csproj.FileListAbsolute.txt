@@ -1,0 +1,28 @@
+G:\MyProject\Forms\DOL\bin\Debug\DOL.dll
+G:\MyProject\Forms\DOL\bin\Debug\DOL.pdb
+G:\MyProject\Forms\DOL\obj\Debug\DOL.dll
+G:\MyProject\Forms\DOL\obj\Debug\DOL.pdb
+G:\MyProject\Forms\DOL\obj\Debug\DOL.csprojResolveAssemblyReference.cache
+D:\Manoj\Forms\DOL\bin\Debug\DOL.dll
+D:\Manoj\Forms\DOL\bin\Debug\DOL.pdb
+D:\Manoj\Forms\DOL\obj\Debug\DOL.dll
+D:\Manoj\Forms\DOL\obj\Debug\DOL.pdb
+E:\Forms\DOL\bin\Debug\DOL.dll
+E:\Forms\DOL\bin\Debug\DOL.pdb
+E:\Forms\DOL\obj\Debug\DOL.csprojResolveAssemblyReference.cache
+E:\Forms\DOL\obj\Debug\DOL.dll
+E:\Forms\DOL\obj\Debug\DOL.pdb
+D:\MyProject\Forms\DOL\bin\Debug\DOL.dll
+D:\MyProject\Forms\DOL\bin\Debug\DOL.pdb
+D:\MyProject\Forms\DOL\obj\Debug\DOL.dll
+D:\MyProject\Forms\DOL\obj\Debug\DOL.pdb
+E:\MyProject\Forms\DOL\bin\Debug\DOL.dll
+E:\MyProject\Forms\DOL\bin\Debug\DOL.pdb
+E:\MyProject\Forms\DOL\obj\Debug\DOL.csprojResolveAssemblyReference.cache
+E:\MyProject\Forms\DOL\obj\Debug\DOL.dll
+E:\MyProject\Forms\DOL\obj\Debug\DOL.pdb
+D:\Old Data\MyProject\Forms\DOL\bin\Debug\DOL.dll
+D:\Old Data\MyProject\Forms\DOL\bin\Debug\DOL.pdb
+D:\Old Data\MyProject\Forms\DOL\obj\Debug\DOL.dll
+D:\Old Data\MyProject\Forms\DOL\obj\Debug\DOL.pdb
+D:\Old Data\MyProject\Forms\DOL\obj\Debug\DOL.csprojResolveAssemblyReference.cache

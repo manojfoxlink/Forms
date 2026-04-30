@@ -1,0 +1,361 @@
+﻿@model ChecklistForm.Models.OutGoingInspectionResultModelView
+@{
+    ViewBag.Title = "CheckListOutGoingInspection";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    Html.RenderPartial("_ErrorMessage");
+}
+<style>
+    .padding {
+        padding: 10px;
+    }
+</style>
+
+<div class="box box-solid box-default">
+    <div class="box-header">
+
+        <h3 class="box-title">OQC Outgoing Inspection Record</h3>
+    </div><!-- /.box-header -->
+    <div class="box-body">
+
+        <div class="box padding">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    @using (Html.BeginForm("CheckListOutGoingInspection", "CheckList", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                    {
+                         @Html.AntiForgeryToken()
+                         @Html.ValidationSummary(true)
+                        <div class="form-group">
+                            <div class="row padding">
+                               
+                                @*<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required" })
+
+
+                                </div>*@
+
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "--select Project--", new { @class = "form-control", required = "required" })
+                                </div>
+                                @*<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ProdLineLeader, new { placeholder = "Production LineLeader", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>*@
+                                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.CheckedBy, new { placeholder = "CheckedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ApprovedBy, new { placeholder = "ApprovedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                    <div class="row padding bg-gray-active">
+                        <div class="row padding">
+                            <b>Customer:</b>                  <b>APPLE</b>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                            Customer P/N
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                            @Html.TextBoxFor(x => x.CustomerPin, new { placeholder = "Customer P/N", @class = "form-control", autocomplete = "off", @required = true })
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                            LotSize
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                            @Html.TextBoxFor(x => x.LotSize, new { placeholder = "Lot Size", @class = "form-control", autocomplete = "off", @required = true })
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                            Date
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                            @DateTime.Now.Date
+                        </div>
+                    </div>
+                    <div class="row padding bg-gray-active">
+
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                            FinishedProductNo
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                            @Html.TextBoxFor(x => x.FinishedProductNo, new { placeholder = "Finished Product No", @class = "form-control", autocomplete = "off", @required = true })
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                            Rev
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                            @Html.TextBoxFor(x => x.Rev, new { placeholder = "Rev", @class = "form-control", autocomplete = "off", @required = true })
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                            PackingListNo
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                            @Html.TextBoxFor(x => x.PackingListNo, new { placeholder = "Packing List No", @class = "form-control", autocomplete = "off", @required = true })
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <hr />
+                        <div class="col-lg-12 col-md-3 col-sm-4 col-xs-12">
+                            <div class="col-lg-3">
+                                inspection method
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.CheckBoxFor(x => x.InspectResult, new { placeholder = "SampleInspection", autocomplete = "off", @required = true }) sampling inspection
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.CheckBoxFor(x => x.InspectResult1, new { placeholder = "100% Inspection", autocomplete = "off", @disabled = "disabled" }) 100% inspection
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.CheckBoxFor(x => x.InspectResult2, new { placeholder = "Others", autocomplete = "off", @disabled = "disabled" }) others
+                            </div>
+                        </div>
+                        <hr />
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="box padding">
+            <div class="row">
+                <table class="table table-bordered table-hover" role="grid" aria-describedby="example3_info" id="QuastionTable">
+                    <thead>
+                        <tr role="row">
+                            <th style="display:none">
+                                ContentId
+                            </th>
+                            <th>
+                                Inspection items
+                            </th>
+
+                            <th>
+                                Inspection Spec
+                            </th>
+                            <th>
+                                Inspection Contents
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+
+                        }
+
+                        @foreach (System.Data.DataRow item in Model.dtChecklist.Rows)
+                        {
+
+                            <tr>
+                                <td style="display:none">
+                                    @item["ContentId"].ToString()
+                                </td>
+
+                                <td>
+                                    @item["Item"].ToString()
+                                </td>
+                                <td>
+                                    @item["Inspecs"].ToString()
+                                </td>
+                                <td>
+                                    @item["Contents"].ToString()
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="Result" id="@item["ContentId"].ToString()" />
+                                </td>
+                                @*<td>
+                                    <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Save</button>
+                                </td>*@
+
+
+                            </tr>
+
+
+
+                        }
+
+
+                    </tbody>
+                    <tfoot>
+
+                    </tfoot>
+
+                </table>
+
+            </div>
+
+            <div class="row padding">
+                <div class="col-xs-10 right">
+
+                    <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-xs-2">
+
+                </div>
+                <div class="col-xs-8">
+                    <h3 class="text-danger">@ViewBag.ResultMessage</h3>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-2">
+
+                </div>
+                <!-- /.col -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<div id="dialog-upload" title="Upload Attachments" style="display:none;" class="form-control">
+        <h4 id="CheckListIteam" class="alert-success"></h4>
+        <div class="col-xs-12 row">
+            <div class="col-xs-4">
+                File Upload :
+            </div>
+            <div class="col-xs-8">
+                <input class="form-control" type="file" id="FileUpload1" />
+                <input class="btn btn-success" type="button" style="margin:5px;" id="btnUpload" onclick="uploadFile()" value="Upload" />
+                <label style="color:green" id="lblUploadStatus">Succesfully Uploaded</label>
+            </div>
+        </div>
+        <div class="col-xs-12 row">
+            <input type="hidden" id="hdnDocId" />
+
+        </div>
+    </div>*@
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+
+
+
+<script>
+
+
+
+
+    function Save() {
+        //  var table = $("#QuastionTable");
+        var CheckListResult = [];
+        var fills = [];
+        var i = 0;
+        var J = 0;
+        var k = 0;
+        debugger;
+
+
+
+        var table = $("table tbody");
+        var formData = new FormData();
+        //var LineId = $("#LineId").val();
+        var ProjectId = $("#ProjectId").val();
+        //var ProdLineLeader = $("#ProdLineLeader").val();
+        var CheckedBy = $("#CheckedBy").val();
+        var ApprovedBy = $("#ApprovedBy").val();
+
+        var CustomerPin = $("#CustomerPin").val();
+        var LotSize = $("#LotSize").val();
+        var FinishedProductNo = $("#FinishedProductNo").val();
+        var Rev = $("#Rev").val();
+        var PackingListNo = $("#PackingListNo").val();
+        var InspectResult = $("#InspectResult").val();
+        debugger;
+        if (ProjectId != 0 && CheckedBy != "" && ApprovedBy != "" && CustomerPin != "" && LotSize != "" && FinishedProductNo != "" && Rev != "" && PackingListNo != "") {
+
+            table.find('tr').each(function (i) {
+                var $tds = $(this).find('td'),
+                    checkItemObservation = $tds.eq(4).find('input').val()
+
+                if ((typeof checkItemObservation != "undefined")) {
+                    var ContentId = $tds.eq(0).text().trim();
+
+                    var Result = $tds.eq(4).find('input').val();
+
+                    if (Result != "") {
+                        $tds.eq(4).find('input').val("");
+                    }
+
+                    else {
+                        $('#' + ContentId).css("border", '1px solid red');
+                    }
+                }
+                else {
+                    var ContentId = $tds.eq(0).text().trim();
+
+                    var Result = $tds.eq(3).find('input').val();
+
+
+                    if (Result != "") {
+                        $tds.eq(3).find('input').val("");
+                    }
+
+                    else {
+                        $('#' + ContentId).css("border", '1px solid red');
+                    }
+
+                }
+
+
+                if (Result != "") {
+                    CheckListResult[J] = {
+                        'ContentId': ContentId, 'Result': Result
+                    };
+                    J++;
+                }
+                i++;
+            });
+            var reqListObj = new Object();
+            reqListObj.CheckListoutGoingInspectionResults = CheckListResult;
+            //reqListObj.LineId = LineId;
+            reqListObj.ProjectId = ProjectId;
+            //reqListObj.ProdLineLeader = ProdLineLeader;
+            reqListObj.CheckedBy = CheckedBy;
+            reqListObj.ApprovedBy = ApprovedBy;
+            reqListObj.CustomerPin = CustomerPin;
+            reqListObj.LotSize = LotSize;
+            reqListObj.FinishedProductNo = FinishedProductNo;
+            reqListObj.Rev = Rev;
+            reqListObj.PackingListNo = PackingListNo;
+            reqListObj.InspectResult = InspectResult;
+            if (CheckListResult.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/CheckList/SaveOutGoingInspection",
+                    data: JSON.stringify(reqListObj),
+                    success: function (data) {
+                        //   window.location.reload();
+                        $("#btnSearch").click();
+                    },
+                    error: function () {
+                        // alert('error');
+                    }
+
+                })
+            }
+            else {
+                alert("Alteast one Part needed for Creating TO Request");
+            }
+        } else {
+            alert("Please Select Customer P/N,LOTSize and Remaining Details");
+        }
+    }
+
+</script>
+
+
+

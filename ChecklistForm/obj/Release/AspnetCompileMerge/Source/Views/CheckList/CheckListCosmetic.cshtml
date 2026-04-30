@@ -1,0 +1,387 @@
+﻿@model ChecklistForm.Models.CheckListCosmeticResultlView
+
+@{
+    ViewBag.Title = "CheckListCosmetic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    Html.RenderPartial("_ErrorMessage");
+}
+
+<style>
+    .padding {
+        padding: 10px;
+    }
+</style>
+@using (Html.BeginForm("CheckListCosmetic", "CheckList", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    <div class="box box-solid box-default">
+        <div class="box-header">
+
+            <h3 class="box-title">Cosmetic CheckList</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "--select Project--", new { @class = "form-control", onchange = "ddlModelNoByProject();", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ModelId, new SelectList(Model.ModelNos, "ModelId", "Model", 0), "--Select Model--", new { @class = "form-control", onchange = "ddlGetPartNoByModel()", required = "required" })
+
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.PartId, new SelectList(Model.PartNos, "PartId", "Part", 0), "--Select Part--", new { @class = "form-control", required = "required" })
+
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ProdLineLeader, new { placeholder = "Production LineLeader", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.CheckedBy, new { placeholder = "CheckedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ApprovedBy, new { placeholder = "ApprovedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box padding">
+                <div class="row">
+                    <table class="table table-bordered table-hover" role="grid" aria-describedby="example3_info" id="QuastionTable">
+                        <thead>
+                            @*<tr>
+                                    <td style="color:red">
+                                        <b>NOTATION:-</b>
+                                        <br />
+                                        <b>
+                                            Good Sample indicates good. it must be OK.
+                                        </b>
+                                        <br />
+                                        <b>
+                                            Good Sample indicates abnormal. it must be NG.
+                                        </b>
+                                        <br />
+                                        <b>
+                                            Fail Sample indicates good. it must be NG.
+                                        </b>
+                                        <br />
+                                        <b>
+                                            Fail Sample indicates abnormal. it must be OK.
+                                        </b>
+
+                                    </td>
+                                </tr>*@
+                            <tr role="row">
+                                <th style="display:none">
+                                    DefectId
+                                </th>
+                                <th>
+                                    Location
+                                </th>
+
+                                <th>
+                                    Defects
+                                </th>
+                                <th>
+                                    Value
+                                </th>
+                                
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+    int row = 1;
+    int TotalCount = 0;
+
+    
+                            }
+
+                            @foreach (System.Data.DataRow item in Model.dtChecklist.Rows)
+                            {
+                                <tr>
+                                    @{
+                                TotalCount = (Int32)@item["TotalCount"];
+                                
+                                    }
+
+
+                                    <td style="display:none">
+                                        @item["DefectId"].ToString()
+                                    </td>
+
+
+                                    @if (row > (Int32)item["TotalCount"])
+                                    {
+                                        row = 1;
+
+
+                                    }
+
+                                    @if (row == 1)
+                                    {
+                                        <td rowspan="@TotalCount">
+                                            @item["Locations"].ToString()
+                                        </td>
+                                    }
+                                    <td>
+                                        @item["Defect"].ToString()
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="Value" />
+                                    </td>
+                                    
+                                    <td>
+                                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Save</button>
+                                    </td>
+
+                                    @if (row == TotalCount)
+                                    {
+                                        row = 1;
+                                    }
+                                    else
+                                    {
+                                        row += 1;
+                                    }
+                                </tr>
+
+
+
+                            }
+
+
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+
+                    </table>
+
+                </div>
+
+                <div class="row padding">
+                    <div class="col-xs-10 right">
+
+                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@*<div id="dialog-upload" title="Upload Attachments" style="display:none;" class="form-control">
+        <h4 id="CheckListIteam" class="alert-success"></h4>
+        <div class="col-xs-12 row">
+            <div class="col-xs-4">
+                File Upload :
+            </div>
+            <div class="col-xs-8">
+                <input class="form-control" type="file" id="FileUpload1" />
+                <input class="btn btn-success" type="button" style="margin:5px;" id="btnUpload" onclick="uploadFile()" value="Upload" />
+                <label style="color:green" id="lblUploadStatus">Succesfully Uploaded</label>
+            </div>
+        </div>
+        <div class="col-xs-12 row">
+            <input type="hidden" id="hdnDocId" />
+
+        </div>
+    </div>*@
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+
+
+
+<script>
+
+
+
+
+    function Save() {
+        //  var table = $("#QuastionTable");
+        var CheckListResult = [];
+        var fills = [];
+        var i = 0;
+        var J = 0;
+        var k = 0;
+        debugger;
+
+
+
+        var table = $("table tbody");
+        var formData = new FormData();
+        var LineId = $("#LineId").val();
+        var ProjectId = $("#ProjectId").val();
+        var ProdLineLeader = $("#ProdLineLeader").val();
+        var CheckedBy = $("#CheckedBy").val();
+        var ApprovedBy = $("#ApprovedBy").val();
+        var ModelId = $("#ModelId").val();
+        var PartId = $("#PartId").val();
+        var flag = false;
+        if (LineId != 0 && ProjectId != 0 && ProdLineLeader != "" && CheckedBy != "" && ApprovedBy != "" && ModelId != 0 && PartId != 0) {
+
+            table.find('tr').each(function (i) {
+                var $tds = $(this).find('td'),
+                    checkItemObservation = $tds.eq(3).find('input').val();
+                //debugger;
+                if ((typeof checkItemObservation != "undefined")) {
+                    var DefectId = $tds.eq(0).text().trim();
+
+                    //var StatusId = $tds.eq(6).find('select').val();
+                    //var Sampling = $tds.eq(6).find('input').val();
+                    var Value = $tds.eq(3).find('input').val();
+                    //var Image = $tds.eq(10).find('input').val();
+
+                    if (Value != 0) {
+                        if (Value == "") {
+                            $tds.eq(3).find('input').val("");
+                            $('#' + DefectId).css("border", '1px solid red');
+                        } else {
+                            $('#' + DefectId).css("border", '1px solid green');
+                        }
+                    }
+
+                }
+                else {
+                    var DefectId = $tds.eq(0).text().trim();
+
+                    var Value = $tds.eq(2).find('input').val();
+
+                    if (Value != 0) {
+                        if (Value == "") {
+                            $tds.eq(2).find('input').val("");
+                            $('#' + DefectId).css("border", '1px solid red');
+                        } else {
+                            $('#' + DefectId).css("border", '1px solid green');
+                        }
+                    }
+                    
+                }
+
+                if ((DefectId != 0 && Value != 0)) {
+                    CheckListResult[J] = {
+                        'DefectId': DefectId, 'Value': Value
+                    };
+                    J++;
+                }
+
+
+
+            });
+            var reqListObj = new Object();
+            reqListObj.CheckListCosmeticResults = CheckListResult;
+            reqListObj.LineId = LineId;
+            reqListObj.ProjectId = ProjectId;
+            reqListObj.ProdLineLeader = ProdLineLeader;
+            reqListObj.CheckedBy = CheckedBy;
+            reqListObj.ApprovedBy = ApprovedBy;
+            reqListObj.ModelId = ModelId;
+            reqListObj.PartId = PartId;
+            if (CheckListResult.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/CheckList/SaveCheckListCosmetic",
+                    data: JSON.stringify(reqListObj),
+                    success: function (data) {
+                        //window.location.reload();
+                        $("#btnSearch").click();
+                    },
+                    error: function () {
+                        // alert('error');
+                    }
+
+                })
+            }
+
+            else {
+                alert("Alteast one Part needed for Creating TO Request");
+            }
+        } else {
+            alert("Please Select LineId");
+        }
+    }
+
+    //function uploadFile(id) {
+    //    debugger;
+    //    if (window.FormData !== undefined) {
+    //        var fileUpload = $("#FileUpload1-" + id).get(0);
+    //        var files = fileUpload.files;
+    //        if (files.length > 0) {
+    //            // Create FormData object
+    //            var fileData = new FormData();
+
+    //            // Looping over all files and add it to FormData object
+    //            for (var i = 0; i < files.length; i++) {
+    //                fileData.append(files[i].name, files[i]);
+    //            }
+
+    //            $.ajax({
+    //                url: '/CheckList/UploadDocument',
+    //                type: "POST",
+    //                contentType: false, // Not to set any content header
+    //                processData: false, // Not to process data
+    //                data: fileData,
+    //                success: function (result) {
+    //                    //var id = $('#hdnDocId').val();
+    //                    $('#Path-' + id).val(result);
+    //                    $('#lblUploadStatus-' + id).show();
+    //                    $('#btnUpload-' + id).css("display", "none");
+    //                    $('#lblUploadStatu-' + id).text("Succesfully Uploaded");
+    //                    $("#FileUpload1-" + id).val(null);
+    //                    //$('#hdnDocId').val(" ");
+    //                },
+    //                error: function (err) {
+    //                    alert(err.statusText);
+    //                }
+    //            });
+    //        } else {
+    //            alert("Choose the File");
+
+    //        }
+    //    } else {
+    //        alert("FormData is not supported.");
+    //    }
+
+    //}
+
+</script>
+
+
+

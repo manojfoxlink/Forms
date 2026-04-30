@@ -1,0 +1,172 @@
+﻿@model IEnumerable<DOL.Menus>
+
+@{
+    ViewBag.Title = "Menus";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("AssignMenus", "Home", FormMethod.Post))
+{
+
+    <div class="box box-solid box-warning">
+        <div class="box-header">
+            <h3 class="box-title">Access Menus</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <div>
+
+            </div>
+            <div class="box">
+                <div class="col-sm-8">
+                    <div class="box-header">
+                        <div class="modal-footer">
+                            <form action="#" method="post">
+                                <div class="input-group">
+
+                                    @Html.TextBox("search", "", new { placeholder = "Type UserID ...", @class = "form-control" })
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-primary btn-flat" id="btn-search">Search</button>
+                                    </span>
+                                    <span class="input-group-text">
+                                        NAME :<span id="lbl-name" class="text-red text-bold"></span>
+                                    </span>
+                                </div>
+
+
+                            </form>
+                            <div>
+                                <h4 id="lblResultMsg" class="text-danger">@ViewBag.ResultMessage</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+                                    <thead>
+                                        <tr role="row" class="odd">
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.MenuId)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ParentMenuId)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Menu)
+                                            </th>
+                                            <th>
+                                                Allow Acess
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.MenuId)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ParentMenuId)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Menu)
+                                                </td>
+
+                                                <td>
+                                                    <input type="checkbox" class="ckelevel"
+                                                           name="SelectedGroups" value="@item.MenuId" id="menu_@item.MenuId"
+                                                           @*@{if (Model.SelectedGroups.Contains(g.SalaryGradeID)) { <text> checked='checked' </text>   } }*@ />
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.MenuId)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ParentMenuId)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Menu)
+                                            </th>
+                                            <th>
+                                                Allow Acess
+                                            </th>
+                                        </tr>
+                                        <tr>
+
+                                            <td colspan="4">
+                                                <div class="text-center">
+                                                    <div class="btn-group-vertical">
+                                                        <button type="submit" id="btn-submit" class="btn btn-info">Save</button>
+                                                    </div>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+
+        </div><!-- /.box-body -->
+    </div>
+
+}
+<script>
+    $("#btn-search").click(function () {
+        debugger;
+        $("#lblResultMsg").html("");
+        $("#lbl-name").html("");
+        var id = $("#search").val()
+        $('input[type=checkbox]').prop('checked', false);
+        debugger;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "SearchForEmp",
+
+            data: "{'ID':'" + id + "'}",
+            success: function (data) {
+
+                //if (data.length>0) {
+                $("#lbl-name").html(data.EmployeeName)
+                if (data.RoleName != 'Admin') {
+                    for (var i = 0; i < data.Menuss.length; i++) {
+                        $("#menu_" + data.Menuss[i].MenuId).prop("checked", true);
+                    }
+                    $('#btn-submit').prop('disabled', false);
+
+                } else {
+                    alert("admin");
+                    $('#btn-submit').prop('disabled', true);
+                }
+                //}else
+                //{
+                //    $("#lblResultMsg").html("This ID IS NOT Crate in WMS:" + id);
+
+                //    $('#btn-submit').prop('disabled', true);
+                //}
+            }, error: function (data) {
+                $("#lblResultMsg").html(id + " User not EXISTS !!!!");
+
+                $('#btn-submit').prop('disabled', true);
+            }
+
+        })
+
+    });
+</script>

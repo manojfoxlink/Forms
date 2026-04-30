@@ -1,0 +1,54 @@
+﻿@model ChecklistForm.Models.NGApprovalFlowModelView
+@{
+    ViewBag.Title = "ControlChartNGApprovalFlow";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    Html.RenderPartial("_ErrorMessage");
+}
+@using (Html.BeginForm("ControlChartNGApprovalFlow", "Master", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form", onsubmit = "showLoader(this);" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    <div class="box box-solid box-default">
+        <div class="box-header">
+            <h3 class="box-title">Control Chart NG Approval Flow Bulk Upload</h3>
+        </div>
+        <div class="box-body">
+            <div class="box padding">
+                <div class="row" style="padding-top: 15px;">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <label>NG Approval Flow</label>
+                                    @Html.TextBoxFor(model => model.UploadFile, "", new { @type = "file", @multiple = "multiple", @class = "form-control", @required = "true" })
+                                </div>
+                                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                                    <button type="button" class="btn btn-success mt-4" onclick="downloadTemplate()">Download</button>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                                    <input type="submit" value="Create" class="btn btn-primary">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+<script>
+
+    function downloadTemplate() {
+        window.location.href = '/UploadFile/XBARNGAPPROVALFLOW.xls';
+
+    }
+</script>
+

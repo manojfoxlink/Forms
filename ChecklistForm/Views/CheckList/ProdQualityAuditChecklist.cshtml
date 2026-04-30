@@ -1,0 +1,960 @@
+﻿@model ChecklistForm.Models.ProdCheckListQualityAuditModelView
+@{
+    ViewBag.Title = "ProdQualityAuditChecklist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    Html.RenderPartial("_ErrorMessage");
+}
+<style>
+    .padding {
+        padding: 10px;
+    }
+
+    .table-container {
+        max-height: 500px; /* Adjust as needed */
+        overflow-y: auto; /* Enables vertical scrolling */
+        border: 1px solid #ccc;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f9f9f9; /* Optional: Background color */
+            z-index: 10; /* Keeps the header on top */
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table tbody td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+    .custom-dropdown {
+        width: 80px;
+        height: 34px;
+    }
+</style>
+@using (Html.BeginForm("ProdQualityAuditChecklist", "CheckList", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    <div class="box box-solid box-default">
+        <div class="box-header">
+
+            <h3 class="box-title">A246C LINE IMPROVEMENT ACTIVITIES AUDIT SHEET</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "--select Project--", new { @class = "form-control", onchange = "ddlBatchByProjectCheckList();", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.BatchId, new SelectList(Model.Batches, "BatchId", "BatchName", 0), "--select Batch--", new { @class = "form-control", onchange = "ddlZoneByBatchCheckList();ddlShiftLeaderByBatchReport();", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ZoneId, new SelectList(Model.Zones, "ZoneId", "ZoneName", 0), "--select Zone--", new { @class = "form-control", onchange = "ddlProdModuleByProjectCheckList();ddlProductionLineLeaderByBatch();", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ModuleId, new SelectList(Model.Modules, "ModuleId", "Module", 0), "--select Station--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ProdId, new SelectList(Model.LineLeaders, "ProdId", "LineLeader", 0), "--select Production Line Leader--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ShiftLeaderId, new SelectList(Model.ProdShiftLeaders, "ShiftLeaderId", "ShiftLeader", 0), "--select ShiftLeader--", new { @class = "form-control", required = "required" })
+                                </div>
+                                @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.ModelId, new SelectList(Model.ModelNos, "ModelId", "Model", 0), "--Select Model--", new { @class = "form-control", onchange = "ddlGetPartNoByModel()", required = "required" })
+
+                                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.PartId, new SelectList(Model.PartNos, "PartId", "Part", 0), "--Select Part--", new { @class = "form-control", required = "required" })
+
+                                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                    </div>*@
+                                @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.TextBoxFor(x => x.ProdLineLeader, new { placeholder = "Production LineLeader", @class = "form-control", autocomplete = "off", @required = true })
+                                    </div>*@
+                                @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ShiftLeader, new { placeholder = "Shift Leader", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>*@
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.CheckedBy, new { placeholder = "Checked By", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.VerifiedId, new SelectList(Model.ProdVerifies, "VerifiedId", "Verified", 0), "--select Verified By--", new { @class = "form-control", required = "required" })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ApprovedId, new SelectList(Model.ProdApproves, "ApprovedId", "Approved", 0), "--select Approved By--", new { @class = "form-control", required = "required" })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.AuditId, new SelectList(Model.ProdAudits, "AuditId", "Auditor", 0), "--select Audit By--", new { @class = "form-control", required = "required" })
+                                </div>
+
+                                @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.VerifiedBy, new { placeholder = "Verified By", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ApprovedBy, new { placeholder = "Approved By", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.AuditedBy, new { placeholder = "Audited By", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>*@
+
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box padding">
+                <div class="row table-container">
+                    <table class="table table-bordered table-hover" role="grid" aria-describedby="example3_info" id="QuastionTable">
+                        <thead>
+                            @*<tr>
+                                    <td style="color:red">
+                                        <b>NOTATION:-</b>
+                                        <br />
+                                        <b>
+                                            Good Sample indicates good. it must be OK.
+                                        </b>
+                                        <br />
+                                        <b>
+                                            Good Sample indicates abnormal. it must be NG.
+                                        </b>
+                                        <br />
+                                        <b>
+                                            Fail Sample indicates good. it must be NG.
+                                        </b>
+                                        <br />
+                                        <b>
+                                            Fail Sample indicates abnormal. it must be OK.
+                                        </b>
+
+                                    </td>
+                                </tr>*@
+                            <tr role="row">
+                                <th style="display:none">
+                                    RiskId
+                                </th>
+                                <th style="display:none">
+                                    Process No
+                                </th>
+
+                                <th>
+                                    Station Name
+                                </th>
+                                <th>
+                                    Activity Description
+                                </th>
+                                <th style="display:none">
+                                    Sampling Units
+                                </th>
+                                <th style="display:none">
+                                    DRI
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th style="display:none">
+                                    1S
+                                </th>
+                                <th style="display:none">
+                                    2S
+                                </th>
+                                <th style="display:none">
+                                    3S
+                                </th>
+                                <th style="display:none">
+                                    4S
+                                </th>
+                                <th style="display:none">
+                                    5S
+                                </th>
+                                <th>
+                                    Remarks
+                                </th>
+                                <th>
+                                    Upload
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                                <th style="display:none">
+                                    Image
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+    int row = 1;
+    int TotalCount = 0;
+
+    //int row2 = 1;
+    //int TCount = 0;
+
+    //int row3 = 1;
+    //int TCount2 = 0;
+                            }
+
+                            @foreach (System.Data.DataRow item in Model.dtChecklist.Rows)
+                            {
+                                <tr>
+                                    @{
+                                TotalCount = (Int32)@item["TotalCount"];
+                                //TCount = (Int32)@item["TCount"];
+                                //TCount2 = (Int32)@item["TCount2"];
+                                    }
+
+
+                                    <td style="display:none">
+                                        @item["RiskId"].ToString()
+                                    </td>
+
+
+                                    @if (row > (Int32)item["TotalCount"])
+                                    {
+                                        row = 1;
+
+
+                                    }
+                                    @*@if (row2 > (Int32)item["TCount"])
+                                        {
+                                            row2 = 1;
+
+
+                                        }
+                                        @if (row3 > (Int32)item["TCount2"])
+                                        {
+                                            row3 = 1;
+
+
+                                        }*@
+
+
+                                    @if (row == 1)
+                                    {
+                                        <td rowspan="@TotalCount" style="display:none">
+                                            @item["Module"].ToString()
+                                        </td>
+
+                                        <td rowspan="@TotalCount">
+                                            @item["Module"].ToString()
+                                        </td>
+                                    }
+
+                                    @*@if (row2 == 1)
+                                        {
+                                            <td rowspan="@TCount">
+                                                @item["Inspection"].ToString()
+                                            </td>
+                                        }
+                                        @if (row3 == 1)
+                                        {
+                                            <td rowspan="@TCount2">
+
+                                                @item["Frequency"].ToString()
+
+                                            </td>
+                                        }*@
+
+                                    <td>
+                                        @item["Points"].ToString()
+                                    </td>
+                                    <td style="display:none">
+                                        @item["Module"].ToString()
+                                    </td>
+                                    <td style="display:none">
+                                        @item["Dept"].ToString()
+                                    </td>
+                                    <td>
+                                        @Html.DropDownListFor(model => model.StatusId, new SelectList(Model.Statuses, "StatusId", "Status", 0), "--Select Status--", new { @class = "form-control", })
+                                    </td>
+                                    <td style="display:none">
+                                        <input type="checkbox" name="OneS" id="@item["RiskId"].ToString()" />
+                                    </td>
+                                    <td style="display:none">
+                                        <input type="checkbox" name="TwoS" id="@item["RiskId"].ToString()" />
+                                    </td>
+                                    <td style="display:none">
+                                        <input type="checkbox" name="ThreeS" id="@item["RiskId"].ToString()" />
+                                    </td>
+                                    <td style="display:none">
+                                        <input type="checkbox" name="FourS" id="@item["RiskId"].ToString()" />
+                                    </td>
+                                    <td style="display:none">
+                                        <input type="checkbox" name="FiveS" id="@item["RiskId"].ToString()" />
+                                    </td>
+                                    @*<td>
+                                            <input type="text" class="form-control" name="Sampling" />
+                                        </td>*@
+                                    <td>
+                                        <input type="text" class="form-control custom-dropdown" name="Namee" id="@item["RiskId"].ToString()" />
+                                    </td>
+                                    
+
+                                    @*<td>
+                                            <input type="text" class="form-control custom-dropdown" name="Result" id="@item["RiskId"].ToString()/>
+                                        </td>*@
+                                    <td>
+                                        <input class="form-control" type="file" name="Image" id="FileUpload1-@item["RiskId"].ToString()" />
+                                        <input class="btn btn-success" id="btnUpload-@item["RiskId"].ToString()" type="button" style="margin:5px;" onclick="uploadFile(@item["RiskId"].ToString())" value="Upload" />
+                                        <label id="lblUploadStatu-@item["RiskId"].ToString()"></label>
+                                    </td>
+                                    <td>
+                                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Save</button>
+                                    </td>
+                                    <td style="display:none">
+                                        <input type="text" id="Path-@item["RiskId"].ToString()" />
+                                    </td>
+
+                                    @if (row == TotalCount)
+                                    {
+                                        row = 1;
+                                    }
+                                    else
+                                    {
+                                        row += 1;
+                                    }
+
+                                    @*@if (row2 == TCount)
+                                        {
+                                            row2 = 1;
+                                        }
+                                        else
+                                        {
+                                            row2 += 1;
+                                        }
+
+                                        @if (row3 == TCount)
+                                        {
+                                            row3 = 1;
+                                        }
+                                        else
+                                        {
+                                            row3 += 1;
+                                        }*@
+
+                                </tr>
+
+
+
+                            }
+
+
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+
+                    </table>
+
+                </div>
+
+                <div class="row padding">
+                    <div class="col-xs-10 right">
+
+                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@*<div id="dialog-upload" title="Upload Attachments" style="display:none;" class="form-control">
+        <h4 id="CheckListIteam" class="alert-success"></h4>
+        <div class="col-xs-12 row">
+            <div class="col-xs-4">
+                File Upload :
+            </div>
+            <div class="col-xs-8">
+                <input class="form-control" type="file" id="FileUpload1" />
+                <input class="btn btn-success" type="button" style="margin:5px;" id="btnUpload" onclick="uploadFile()" value="Upload" />
+                <label style="color:green" id="lblUploadStatus">Succesfully Uploaded</label>
+            </div>
+        </div>
+        <div class="col-xs-12 row">
+            <input type="hidden" id="hdnDocId" />
+
+        </div>
+    </div>*@
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+
+
+
+<script>
+
+
+
+
+    //function Save() {
+    //    //  var table = $("#QuastionTable");
+    //    var CheckListResult = [];
+    //    var fills = [];
+    //    var i = 0;
+    //    var J = 0;
+    //    var k = 0;
+    //    debugger;
+
+
+
+    //    var table = $("table tbody");
+    //    var formData = new FormData();
+    //    var LineId = $("#LineId").val();
+    //    var ProjectId = $("#ProjectId").val();
+    //    var BatchId = $("#BatchId").val();
+    //    var ZoneId = $("#ZoneId").val();
+    //    var ProdLineLeader = $("#ProdLineLeader").val();
+    //    var ShiftLeader = $("#ShiftLeader").val();
+    //    var VerifiedBy = $("#VerifiedBy").val();
+    //    var CheckedBy = $("#CheckedBy").val();
+    //    var ApprovedBy = $("#ApprovedBy").val();
+    //    var AuditedBy = $("#AuditedBy").val();
+    //    var ProdId = $("#ProdId").val();
+    //    //var ModelId = $("#ModelId").val();
+    //    //var PartId = $("#PartId").val();
+    //    var flag = false;
+    //    var OneS = $("#OneS").val();
+    //    var TwoS = $("#TwoS").val();
+    //    var ThreeS = $("#ThreeS").val();
+    //    var FourS = $("#FourS").val();
+    //    var FiveS = $("#OneS").val();
+    //    if (LineId != 0 && ProjectId != 0 && BatchId != 0 && ZoneId != 0 && ProdLineLeader != "" && ShiftLeader != "" && VerifiedBy != "" && CheckedBy != "" && ApprovedBy != "" && AuditedBy != "" && ProdId != "") {
+
+    //        table.find('tr').each(function (i) {
+    //            var $tds = $(this).find('td'),
+    //                checkItemObservation = $tds.eq(7).find('input').val();
+    //            debugger;
+    //            if ((typeof checkItemObservation != "undefined")) {
+    //                var RiskId = $tds.eq(0).text().trim();
+
+    //                var StatusId = $tds.eq(6).find('select').val();
+    //                //var Sampling = $tds.eq(6).find('input').val();
+    //                var Namee = $tds.eq(12).find('input').val();
+    //                var Image = $tds.eq(15).find('input').val();
+
+    //                if (StatusId != 0) {
+    //                    if (StatusId == "") {
+    //                        $tds.eq(6).find('input').val("");
+    //                        $('#' + RiskId).css("border", '1px solid red');
+    //                    } else {
+    //                        $('#' + RiskId).css("border", '1px solid green');
+    //                    }
+    //                }
+
+    //                if ($('input[name="OneS"][id="' + RiskId + '"]').is(':checked')) {
+    //                    OneS = true;
+    //                }
+    //                else {
+    //                    OneS = false;
+    //                }
+
+    //                if ($('input[name="TwoS"][id="' + RiskId + '"]').is(':checked')) {
+    //                    TwoS = true;
+    //                }
+    //                else {
+    //                    TwoS = false;
+    //                }
+
+    //                if ($('input[name="ThreeS"][id="' + RiskId + '"]').is(':checked')) {
+    //                    ThreeS = true;
+    //                }
+    //                else {
+    //                    ThreeS = false;
+    //                }
+
+    //                if ($('input[name="FourS"][id="' + RiskId + '"]').is(':checked')) {
+    //                    FourS = true;
+    //                }
+    //                else {
+    //                    FourS = false;
+    //                }
+
+    //                if ($('input[name="FiveS"][id="' + RiskId + '"]').is(':checked')) {
+    //                    FiveS = true;
+    //                }
+    //                else {
+    //                    FiveS = false;
+    //                }
+
+
+    //                if (Namee == "" && StatusId == 2 && Image == "") {
+                        
+
+    //                    $tds.eq(12).find('input').val("");
+    //                    $('#' + RiskId).css("border", '1px solid red');
+    //                    $tds.eq(15).find('input').val("");
+    //                    $('#' + RiskId).css("border", '1px solid red');
+    //                    flag = true;
+    //                    return flag;
+
+    //                }
+    //                else {
+    //                    $('#' + RiskId).css("border", '1px solid green');
+    //                }
+
+
+
+    //            }
+    //            else {
+    //                var RiskId = $tds.eq(0).text().trim();
+
+    //                var StatusId = $tds.eq(4).find('select').val();
+    //                //var Sampling = $tds.eq(4).find('input').val();
+    //                var Namee = $tds.eq(10).find('input').val();
+    //                var Image = $tds.eq(13).find('input').val();
+    //                if (StatusId != 0) {
+    //                    if (StatusId == "") {
+    //                        $tds.eq(4).find('input').val("");
+    //                        $('#' + RiskId).css("border", '1px solid red');
+    //                    } else {
+    //                        $('#' + RiskId).css("border", '1px solid green');
+    //                    }
+    //                }
+
+    //                if ($('input[name="OneS"][id="' + RiskId + '"]').is(':checked')) {
+    //                    OneS = true;
+    //                }
+    //                else {
+    //                    OneS = false;
+    //                }
+
+    //                if ($('input[name="TwoS"][id="' + RiskId + '"]').is(':checked')) {
+    //                    TwoS = true;
+    //                }
+    //                else {
+    //                    TwoS = false;
+    //                }
+
+    //                if ($('input[name="ThreeS"][id="' + RiskId + '"]').is(':checked')) {
+    //                    ThreeS = true;
+    //                }
+    //                else {
+    //                    ThreeS = false;
+    //                }
+
+    //                if ($('input[name="FourS"][id="' + RiskId + '"]').is(':checked')) {
+    //                    FourS = true;
+    //                }
+    //                else {
+    //                    FourS = false;
+    //                }
+
+    //                if ($('input[name="FiveS"][id="' + RiskId + '"]').is(':checked')) {
+    //                    FiveS = true;
+    //                }
+    //                else {
+    //                    FiveS = false;
+    //                }
+
+
+    //                if (StatusId != 0) {
+    //                    if (StatusId == "") {
+    //                        $tds.eq(4).find('input').val("");
+    //                        $('#' + RiskId).css("border", '1px solid red');
+    //                    } else {
+    //                        $('#' + RiskId).css("border", '1px solid green');
+    //                    }
+    //                }
+
+    //                if (Namee == "" && StatusId == 2 && Image == "") {
+                        
+
+    //                    $tds.eq(10).find('input').val("");
+    //                    $('#' + RiskId).css("border", '1px solid red');
+    //                    $tds.eq(13).find('input').val("");
+    //                    $('#' + RiskId).css("border", '1px solid red');
+    //                    flag = true;
+    //                    return flag;
+    //                }
+    //                else {
+    //                    $('#' + RiskId).css("border", '1px solid green');
+    //                }
+
+
+                  
+    //            }
+
+
+
+
+
+
+
+
+    //            if ((RiskId != "" && StatusId != 0)) {
+    //                CheckListResult[J] = {
+    //                    'RiskId': RiskId, 'StatusId': StatusId, 'Namee': Namee, "Image": Image, "OneS": OneS, "TwoS": TwoS, "ThreeS": ThreeS, "FourS": FourS, "FiveS": FiveS
+    //                };
+    //                J++;
+    //            }
+
+
+
+    //        });
+    //        if (flag == false) {
+    //            var reqListObj = new Object();
+    //            reqListObj.ProdCheckListQualityAuditResults = CheckListResult;
+    //            reqListObj.LineId = LineId;
+    //            reqListObj.ProjectId = ProjectId;
+    //            reqListObj.BatchId = BatchId;
+    //            reqListObj.ZoneId = ZoneId;
+    //            reqListObj.ProdLineLeader = ProdLineLeader;
+    //            reqListObj.ShiftLeader = ShiftLeader;
+    //            reqListObj.VerifiedBy = VerifiedBy;
+    //            reqListObj.CheckedBy = CheckedBy;
+    //            reqListObj.ApprovedBy = ApprovedBy;
+    //            reqListObj.AuditedBy = AuditedBy;
+    //            reqListObj.ProdId = ProdId;
+    //            ;
+    //            //reqListObj.PartId = PartId;
+    //            if (CheckListResult.length > 0) {
+    //                $.ajax({
+    //                    type: "POST",
+    //                    contentType: "application/json; charset=utf-8",
+    //                    url: "/CheckList/SaveProdQualityAuditChecklist",
+    //                    data: JSON.stringify(reqListObj),
+    //                    success: function (data) {
+    //                        window.location.reload();
+    //                        //$("#btnSearch").click();
+    //                    },
+    //                    error: function () {
+    //                        // alert('error');
+    //                    }
+
+    //                })
+    //            }
+    //        }
+
+    //        else {
+    //            alert("Alteast one Part needed for Creating TO Request");
+    //        }
+    //    } else {
+    //        alert("Please Select LineId");
+    //    }
+    //}
+
+    //function Save() {
+    //    var CheckListResult = [];
+    //    var table = $("table tbody");
+    //    var LineId = $("#LineId").val();
+    //    var ProjectId = $("#ProjectId").val();
+    //    var BatchId = $("#BatchId").val();
+    //    var ZoneId = $("#ZoneId").val();
+    //    var ProdLineLeader = $("#ProdLineLeader").val();
+    //    var ShiftLeader = $("#ShiftLeader").val();
+    //    var VerifiedBy = $("#VerifiedBy").val();
+    //    var CheckedBy = $("#CheckedBy").val();
+    //    var ApprovedBy = $("#ApprovedBy").val();
+    //    var AuditedBy = $("#AuditedBy").val();
+    //    var ProdId = $("#ProdId").val();
+    //    var OneS, TwoS, ThreeS, FourS, FiveS; // Declare outside the loop
+
+    //    if (LineId != 0 && ProjectId != 0 && BatchId != 0 && ZoneId != 0 && ProdLineLeader != "" && ShiftLeader != "" && VerifiedBy != "" && CheckedBy != "" && ApprovedBy != "" && AuditedBy != "" && ProdId != "") {
+
+    //        table.find('tr').each(function (i) {
+    //            var $tds = $(this).find('td');
+    //            var RiskId = $tds.eq(0).text().trim();
+    //            var StatusId, Namee, Image;
+
+    //            // Determine correct cell indices based on table structure
+    //            if ($tds.length > 15) { // Assuming 16 columns or more for the first structure
+    //                StatusId = $tds.eq(6).find('select').val();
+    //                Namee = $tds.eq(12).find('input').val();
+    //                Image = $tds.eq(15).find('input').val();
+    //            } else { // Handle the second table structure
+    //                StatusId = $tds.eq(4).find('select').val();
+    //                Namee = $tds.eq(10).find('input').val();
+    //                Image = $tds.eq(13).find('input').val();
+    //            }
+
+    //            // Check if ANY data is entered in the row
+    //            if (StatusId != 0 || Namee != "" || Image != "") {
+
+    //                // Get 5S values, handling checkboxes correctly
+    //                OneS = $('input[name="OneS"][id="' + RiskId + '"]').is(':checked');
+    //                TwoS = $('input[name="TwoS"][id="' + RiskId + '"]').is(':checked');
+    //                ThreeS = $('input[name="ThreeS"][id="' + RiskId + '"]').is(':checked');
+    //                FourS = $('input[name="FourS"][id="' + RiskId + '"]').is(':checked');
+    //                FiveS = $('input[name="FiveS"][id="' + RiskId + '"]').is(':checked');
+
+    //                // Validation within the row (only if data is present)
+    //                if (StatusId == "") {
+    //                    $tds.eq(StatusId === 6 ? 6 : 4).find('select').css("border", '1px solid red'); // Highlight select
+    //                    return; // Stop processing this row if Status is missing
+    //                } else {
+    //                    $tds.eq(StatusId === 6 ? 6 : 4).find('select').css("border", ''); // Clear highlight
+    //                }
+
+    //                if (StatusId == 2 && (Namee == "" || Image == "")) {  //If the status is "2", then Name and Image are mandatory.
+    //                    $tds.eq(Namee === 12 ? 12 : 10).find('input').css("border", '1px solid red'); // Highlight Name
+    //                    $tds.eq(Image === 15 ? 15 : 13).find('input').css("border", '1px solid red'); // Highlight Image
+    //                    return; // Stop processing this row
+    //                } else {
+    //                    $tds.eq(Namee === 12 ? 12 : 10).find('input').css("border", ''); // Clear highlight
+    //                    $tds.eq(Image === 15 ? 15 : 13).find('input').css("border", ''); // Clear highlight
+    //                }
+
+
+    //                CheckListResult.push({ // Use push for cleaner array building
+    //                    'RiskId': RiskId,
+    //                    'StatusId': StatusId,
+    //                    'Namee': Namee,
+    //                    "Image": Image,
+    //                    "OneS": OneS,
+    //                    "TwoS": TwoS,
+    //                    "ThreeS": ThreeS,
+    //                    "FourS": FourS,
+    //                    "FiveS": FiveS
+    //                });
+    //            } // End of data entered check
+
+    //        }); // End of row loop
+
+    //        if (CheckListResult.length > 0) { // Only send AJAX if there's data
+    //            var reqListObj = { // Simplified object creation
+    //                ProdCheckListQualityAuditResults: CheckListResult,
+    //                LineId: LineId,
+    //                ProjectId: ProjectId,
+    //                BatchId: BatchId,
+    //                ZoneId: ZoneId,
+    //                ProdLineLeader: ProdLineLeader,
+    //                ShiftLeader: ShiftLeader,
+    //                VerifiedBy: VerifiedBy,
+    //                CheckedBy: CheckedBy,
+    //                ApprovedBy: ApprovedBy,
+    //                AuditedBy: AuditedBy,
+    //                ProdId: ProdId
+    //            };
+
+    //            $.ajax({
+    //                type: "POST",
+    //                contentType: "application/json; charset=utf-8",
+    //                url: "/CheckList/SaveProdQualityAuditChecklist",
+    //                data: JSON.stringify(reqListObj),
+    //                success: function (data) {
+    //                    window.location.reload();
+    //                },
+    //                error: function (error) {
+    //                    console.error("AJAX Error:", error); // Log the error for debugging
+    //                    alert("Error saving data. Please check the console for details."); //Alert user if error occurs.
+    //                }
+    //            });
+    //        } else {
+    //            alert("No data to save.");
+    //        }
+
+    //    } else {
+    //        alert("Please Select LineId and other mandatory fields.");
+    //    }
+    //}
+    
+    
+
+    function Save() {
+        var CheckListResult = [];
+        var table = $("table tbody");
+        var LineId = $("#LineId").val();
+        var ProjectId = $("#ProjectId").val();
+        var BatchId = $("#BatchId").val();
+        var ZoneId = $("#ZoneId").val();
+        var ProdLineLeader = $("#ProdLineLeader").val();
+        var ShiftLeaderId = $("#ShiftLeaderId").val();
+        var VerifiedId = $("#VerifiedId").val();
+        var CheckedBy = $("#CheckedBy").val();
+        var ApprovedId = $("#ApprovedId").val();
+        var AuditId = $("#AuditId").val();
+        var ProdId = $("#ProdId").val();
+        var OneS, TwoS, ThreeS, FourS, FiveS;
+
+        if (LineId != 0 && ProjectId != 0 && BatchId != 0 && ZoneId != 0 && ProdLineLeader != "" && ShiftLeaderId != 0 && VerifiedId != 0 && CheckedBy != "" && ApprovedId != 0 && AuditId != 0 && ProdId != "") {
+
+            table.find('tr').each(function (i) {
+                var $tds = $(this).find('td');
+                var RiskId = $tds.eq(0).text().trim();
+                var StatusId, Namee, Image;
+
+                if ($tds.length > 15) {
+                    StatusId = $tds.eq(6).find('select').val();
+                    Namee = $tds.eq(12).find('input').val();
+                    Image = $tds.eq(15).find('input').val();
+                } else {
+                    StatusId = $tds.eq(4).find('select').val();
+                    Namee = $tds.eq(10).find('input').val();
+                    Image = $tds.eq(13).find('input').val();
+                }
+
+                // Check if ANY data is entered in the row (StatusId is enough)
+                if (StatusId != 0) {  // Only StatusId is checked now.
+
+                    //OneS = $('input[name="OneS"][id="' + RiskId + '"]').is(':checked');
+                    //TwoS = $('input[name="TwoS"][id="' + RiskId + '"]').is(':checked');
+                    //ThreeS = $('input[name="ThreeS"][id="' + RiskId + '"]').is(':checked');
+                    //FourS = $('input[name="FourS"][id="' + RiskId + '"]').is(':checked');
+                    //FiveS = $('input[name="FiveS"][id="' + RiskId + '"]').is(':checked');
+
+                    if (StatusId == "") {
+                        $tds.eq(StatusId === 6 ? 6 : 4).find('select').css("border", '1px solid red');
+                        return;
+                    } else {
+                        $tds.eq(StatusId === 6 ? 6 : 4).find('select').css("border", '');
+                    }
+
+                    //if (Namee == "") {
+                    //    $tds.eq(Namee === 12 ? 12 : 10).find('select').css("border", '1px solid red');
+                    //    return;
+                    //} else {
+                    //    $tds.eq(Namee === 12 ? 12 : 10).find('select').css("border", '');
+                    //}
+
+                    
+                    //if (Image == "") {
+                    //    $tds.eq(Image === 15 ? 15 : 13).find('input').css("border", '1px solid red');
+                    //    return;
+                    //} else {
+                    //    $tds.eq(Image === 15 ? 15 : 13).find('input').css("border", '');
+                    //}
+
+
+                    CheckListResult.push({
+                        'RiskId': RiskId,
+                        'StatusId': StatusId,
+                        'Namee': Namee, // Namee is always included, even if empty
+                        "Image": Image
+                    });
+                } // End of data entered check
+
+            }); // End of row loop
+
+            if (CheckListResult.length > 0) {
+                var reqListObj = {
+                    ProdCheckListQualityAuditResults: CheckListResult,
+                    LineId: LineId,
+                    ProjectId: ProjectId,
+                    BatchId: BatchId,
+                    ZoneId: ZoneId,
+                    ProdLineLeader: ProdLineLeader,
+                    ShiftLeaderId: ShiftLeaderId,
+                    VerifiedId: VerifiedId,
+                    CheckedBy: CheckedBy,
+                    ApprovedId: ApprovedId,
+                    AuditId: AuditId,
+                    ProdId: ProdId
+                };
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/CheckList/SaveProdQualityAuditChecklist",
+                    data: JSON.stringify(reqListObj),
+                    success: function (data) {
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        console.error("AJAX Error:", error);
+                        alert("Error saving data. Please check the console for details.");
+                    }
+                });
+            } else {
+                alert("Please Select Status");
+            }
+
+        } else {
+            alert("Please Select LineId and other mandatory fields.");
+        }
+    }
+
+  
+
+    function uploadFile(id) {
+        debugger;
+        if (window.FormData !== undefined) {
+            var fileUpload = $("#FileUpload1-" + id).get(0);
+            var files = fileUpload.files;
+            if (files.length > 0) {
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                $.ajax({
+                    url: '/CheckList/UploadDocument',
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    success: function (result) {
+                        //var id = $('#hdnDocId').val();
+                        $('#Path-' + id).val(result);
+                        $('#lblUploadStatus-' + id).show();
+                        $('#btnUpload-' + id).css("display", "none");
+                        $('#lblUploadStatu-' + id).text("Succesfully Uploaded");
+                        $("#FileUpload1-" + id).val(null);
+                        //$('#hdnDocId').val(" ");
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+            } else {
+                alert("Choose the File");
+
+            }
+        } else {
+            alert("FormData is not supported.");
+        }
+
+    }
+
+</script>

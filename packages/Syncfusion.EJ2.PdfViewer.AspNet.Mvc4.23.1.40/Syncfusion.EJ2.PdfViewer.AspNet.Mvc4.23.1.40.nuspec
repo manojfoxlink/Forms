@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Syncfusion.EJ2.PdfViewer.AspNet.Mvc4</id>
+    <version>23.1.40</version>
+    <title>Syncfusion Pdf Viewer for Essential JS 2 Asp.Net MVC</title>
+    <authors>Syncfusion Inc.</authors>
+    <owners>Syncfusion Inc.</owners>
+    <licenseUrl>https://www.nuget.org/packages/Syncfusion.EJ2.PdfViewer.AspNet.Mvc4/23.1.40/license</licenseUrl>
+    <projectUrl>https://www.syncfusion.com/?utm_source=nuget&amp;utm_medium=listing</projectUrl>
+    <iconUrl>https://api.nuget.org/v3-flatcontainer/syncfusion.ej2.pdfviewer.aspnet.mvc4/23.1.40/icon</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Syncfusion Pdf Viewer for Essential JS 2 Asp.Net MVC is a .NET class library for converting PDF document into images and extracting PDF documents.</description>
+    <summary />
+    <releaseNotes>https://ej2.syncfusion.com/aspnetmvc/documentation/release-notes/23.1.40?utm_source=nuget&amp;utm_medium=listing</releaseNotes>
+    <copyright>Copyright 2001 - 2023 Syncfusion Inc.</copyright>
+    <tags>syncfusion syncfusion.ej2 essentialjs2 ej2 javascript js asp-mvc aspnetmvc .net pdfviewer pdf-viewer webviewer pdf</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0" />
+    </dependencies>
+  </metadata>
+</package>

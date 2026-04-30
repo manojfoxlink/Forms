@@ -1,0 +1,48 @@
+﻿<ul class="sidebar-menu">
+    <li class="header">MAIN NAVIGATION</li>
+
+    @if (Session["MenusList"] != null)
+    {
+        System.Data.DataTable dtMenus = (System.Data.DataTable)Session["MenusList"];
+        foreach (System.Data.DataRow dr in dtMenus.Rows)
+        {
+            string menuid = dr["MenuId"].ToString();
+            int cnt = 0;
+            if (dr["ParentMenuId"].ToString() == "")
+            {
+                <li class="treeview">
+                    <a href="@dr["Url"].ToString()">
+                        <i class="fa fa-edit"></i> <span>@dr["Menu"].ToString()</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    @foreach (System.Data.DataRow dr1 in dtMenus.Rows)
+                    {
+                        if (dr1["ParentMenuId"].ToString() == menuid)
+                        {
+                            cnt++;
+                        }
+                    }
+                    @if (cnt > 0)
+                    {
+                        <ul class="treeview-menu">
+
+                            @foreach (System.Data.DataRow dr2 in dtMenus.Rows)
+                            {
+                                if (dr2["ParentMenuId"].ToString() == menuid)
+                                {
+                                    <li><a href="@dr2["Url"].ToString()"><i class="fa fa-circle-o"></i>@dr2["Menu"].ToString()</a></li>
+                                }
+                            }
+                        </ul>
+                    }
+
+                </li>
+            }
+
+        }
+    }
+
+
+</ul>

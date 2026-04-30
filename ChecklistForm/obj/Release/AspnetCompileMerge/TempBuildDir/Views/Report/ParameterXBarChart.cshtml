@@ -1,0 +1,378 @@
+﻿@model ChecklistForm.Models.CheckListParameterXBarChart
+@using System.Data
+@{
+    ViewBag.Title = "ParameterXBarChart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .padding {
+        padding: 10px;
+    }
+
+    #example1_wrapper {
+        overflow: auto;
+    }
+</style>
+@using (Html.BeginForm("ParameterXBarChart", "Report"))
+{
+    @Html.AntiForgeryToken()
+    <div class="box box-solid box-default">
+        <div class="box-header">
+            <h3 class="box-title">Parameter XBarChart CheckList Report</h3>
+        </div>
+
+        @{
+    Html.RenderPartial("_ErrorMessage");
+        }
+        <div class="box-body">
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ShiftId, new SelectList(Model.Shifts, "shiftId", "ShiftName", 0), "--select Shift--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.TextBoxFor(model => model.FromDate, new { @class = "form-control", @Id = "datepicker", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "--Select Project--", new { @class = "form-control", onchange = "ddlAdhesiveByProject()", required = "required" })
+
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.AdhesiveId, new SelectList(Model.Adhesives, "AdhesiveId", "Adhesive", 0), "--Select Adhesive--", new { @class = "form-control", required = "required" })
+
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row padding">
+                <table class="table table-bordered table-hover" role="grid" aria-describedby="example3_info" id="QuastionTable">
+                    <thead>
+                        <tr role="row">
+                            <th style="display:none">
+                                ResultId
+                            </th>
+                            <th>
+                                Project
+                            </th>
+
+                            <th>
+                                Testing Parameter
+                            </th>
+                            <th>
+                                LSL
+                            </th>
+                            <th>
+                                Mean Value
+                            </th>
+                            <th>
+                                USL
+                            </th>
+                            <th>
+                                Actual Value
+                            </th>
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Feedback
+                            </th>
+                           @*@if (Model.dtReports.Rows[0]["FeedBack"].ToString() == null)
+                           {*@
+                              <th>
+                                Action
+                             </th>
+                           @*}*@
+                               
+                            
+                             <th>
+                                Created By
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @*@{
+                            int row = 1;
+                            int TotalCount = 0;
+                                                }*@
+                        @foreach (System.Data.DataRow item in Model.dtReports.Rows)
+                        {
+                            <tr>
+                                <td style="display:none">
+                                    @item["ResultId"].ToString()
+                                </td>
+                                <td>
+                                    @item["ProjectName"].ToString()
+                                </td>
+                               
+                                <td>
+                                    @item["Adhesive"].ToString()
+
+                                </td>
+                                <td>
+                                    @item["LowerLimit"].ToString()
+                                </td>
+                                <td>
+                                    @item["CenterLimit"].ToString()
+                                </td>
+                                <td>
+                                    @item["UpperLimit"].ToString()
+                                </td>
+                                <td>
+                                    @item["DataValue"].ToString()
+                                </td>
+                                <td style="color: @item["color"].ToString()">
+                                    @item["RootCause"].ToString()
+                                </td>
+                              
+                                        @if (String.IsNullOrEmpty(@item["FeedBack"].ToString()) && @item["RootCause"].ToString()=="NG")
+                                        {
+                                           <td>
+                                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                                    <input type="text" id="FeedBack" />
+                                                </div>
+                                            </td>
+                                        <td>
+                                            <button type="button" name="Command" id="btnSave" onclick="Save(@item["ResultId"].ToString())" value="SUMBITT" class="btn btn-primary btn-flat">Submit</button>
+                                        </td>
+                                        }
+
+                                        else
+                                        {
+                                            <td>
+                                             @item["FeedBack"].ToString()
+                                            </td>
+                                        
+                                        }
+                              
+                                
+                                
+                                
+                               @*@if ((Model.dtReports != null && Model.dtReports.Rows.Count > 0 && @item["RootCause"].ToString().Contains("NG") && @item["RootCause"].ToString().Contains("NULL")))
+                                {
+                                        
+                                }*@
+                                <td>
+                                    @item["CreatedBy"].ToString()
+                                </td>
+                                @*@if (row == TotalCount)
+                                    {
+                                        row = 1;
+                                    }
+                                    else
+                                    {
+                                        row += 1;
+                                    }*@
+                            </tr>
+
+
+
+                        }
+
+
+                    </tbody>
+                    <tfoot>
+
+                    </tfoot>
+
+                </table>
+        @if (Model.dtReports.Rows.Count > 0)
+            {
+
+                <div class="row padding">
+
+                    @Html.Partial("DashBoard")
+
+
+                </div>
+
+
+              }
+
+            </div>
+            @if (Model.dtReports.Rows.Count > 0)
+            {
+                <div class="row padding">
+
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-0">
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                        <label>Export Format File :</label>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                        @Html.DropDownListFor(model => model.ExportTypes, new SelectList(Model.ExportTypes, Model.ExportType), new { @class = "form-control select2 select2-hidden-accessible", target = "_blank", @style = "width: 100%;" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                        <button type="submit" name="Command" id="btnExport" value="Export" class="btn btn-primary btn-flat">Export File</button>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-1">
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    </div>
+}
+@*<div id="dialog-upload" title="Upload Images" style="display:none;" class="form-control">
+
+
+</div>*@
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+<script>
+    //function Save()
+    //{
+    //    var CheckListResult = [];
+    //    var fills = [];
+    //    var i = 0;
+    //    var J = 0;
+    //    var k = 0;
+
+    //    debugger;
+    //    var table = $("table tbody");
+    //    table.find('tr').each(function (i) {
+    //        var $tds = $(this).find('td'),
+    //                        checkItemObservation = $tds.eq(7).find('input').val();
+
+    //        var FeedBack = $tds.eq(7).find('input').val();
+
+    //        if (FeedBack != "") {
+    //            $tds.eq(7).find('input').val("");
+    //            $('#' + FeedBack).css("border", '1px solid red');
+    //        } else {
+    //            $('#' + FeedBack).css("border", '1px solid green');
+    //        }
+    //        if ((FeedBack != "")) {
+    //            CheckListResult[J] = {
+    //                'FeedBack': FeedBack
+    //            };
+    //            J++;
+    //        }
+    //        i++;
+    //    });
+    //    var reqListObj = new Object();
+    //    reqListObj.CheckListParameterXBarChart = CheckListResult;
+
+    //    if (CheckListResult.length > 0) {
+    //        $.ajax({
+    //            type: "POST",
+    //            contentType: "application/json; charset=utf-8",
+    //            url: "/Report/ParameterXBarChart",
+    //            data: JSON.stringify(reqListObj),
+    //            success: function (data) {
+    //                //   window.location.reload();
+    //               // $("#btnSearch").click();
+    //            },
+    //            error: function () {
+    //                // alert('error');
+    //            }
+
+    //        })
+    //    }
+    //    else {
+    //        alert("Alteast one Part needed for Creating TO Request");
+    //    }
+
+    //}
+    function Save(Id) {
+        debugger;
+        var table = $("#QuastionTable tbody");
+
+        var Feed = $("#FeedBack").val();
+
+        var ResultId = Id;
+        if(Feed !="")
+        {
+            table.find('tr').each(function (i) {
+                var $tds = $(this).find('td'),
+                    checkItemObservation = $tds.eq(8).find('value').val()
+            
+
+                if (checkItemObservation == undefined)
+                {
+                    var FeedBack = Feed;
+                }
+                else
+                {
+                    var FeedBack = $tds.eq(8).find('input').val();
+                }
+                
+                //var ResultId = $tds.eq(0).text().trim();
+                
+            
+            
+                
+                   
+                });
+
+                
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "/Report/Submit",
+                data: '{ FeedBack:"' + Feed + '",ResultId:"' + ResultId + '" }',
+                dataType: "html",
+                success: function (data) {
+                    // $("#btnSave").click();
+                    window.location.reload();
+                },
+                error: function () {
+                    //alert("Alteast one Part needed for Creating TO Request");
+                }
+
+            })
+            
+        }
+        else
+        {
+        
+            alert("Please Enter the FeedBack..");
+        }
+        
+        
+
+       
+                
+        //window.location.reload();
+        
+        
+      
+       
+    }
+
+       
+</script>

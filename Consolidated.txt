@@ -1,0 +1,82 @@
+USE [TimeOffice]
+GO
+/****** Object:  StoredProcedure [dbo].[AttendanceReport]    Script Date: 11-10-2023 11:03:18 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER Procedure [dbo].[AttendanceReport]
+@EmpId Int='',
+@FromDate NVARCHAR(10)='',
+@ToFromDate NVARCHAR(10)='',
+@EmployeeId NVARCHAR(10)=''
+as
+  Begin
+
+  IF(@EmpId='' OR @EmpId IS NULL OR @EmpId=0)
+     Begin
+	    Set @EmpId=''
+	 END
+	
+
+		select     EA.Id
+				   ,EF.Id AS EmpId
+		           ,EF.EmployeeId
+					,EF.EmpName
+					,convert(nvarchar,EA.InDate,101) InDate
+					,convert(nvarchar,EA.OutDate,101) OutDate
+					,UPPER(FORMAT(EA.InDate, 'ddd')) DAY
+					, EA.InTime
+					,EA.OutTime
+					,case when EA.OutTime='00:00:00' then '00:00:00'
+					else
+					 RIGHT('0' + CAST(DATEDIFF(S, DATEADD(day, DATEDIFF(day, 0, InDate), CONVERT(nvarchar,InTime)),DATEADD(day, DATEDIFF(day, 0, OutDate), CONVERT(nvarchar,OutTime))) / 3600 AS VARCHAR(2)),2)+ ':'
+                    + RIGHT('0' + CAST(DATEDIFF(S, DATEADD(day, DATEDIFF(day, 0, InDate), CONVERT(nvarchar,InTime)), DATEADD(day, DATEDIFF(day, 0, OutDate), CONVERT(nvarchar,OutTime))) % 3600/60 AS VARCHAR(2)),2)  end  Duration
+					
+					,MS.ShiftName
+					,MS.ShortName
+					,ATD.AttendenceStatus Status
+					,Case when ATD.Id=1  Then 'green'
+					      when ATD.Id=2 or ATD.Id=4 or ATD.Id=5   Then 'red'
+						  when ATD.Id=3  Then 'yellowgreen'
+						  
+						END Backcolor
+					FROM  [dbo].[EmployeeAttendence] EA With(NOLOCK)
+			         INNER JOIN EmployeeInformation EF With(NOLOCK)
+					         ON EA.EmpId=EF.Id
+					 INNER JOIN EmployeeDetails ED With(NOLOCK)
+					         ON ED.EmployeeId=EA.EmpId
+					 INNER JOIN MasterShifts MS With(NOLOCK)
+					         ON MS.ShiftId=EA.ShiftId
+					 INNER JOIN AttendenceStatus ATD With(NOLOCK)
+					         ON ATD.Id=CAST(EA.Status AS INT)
+			     WHERE  (EF.Id=@EmpId OR @EmpId='')
+				      --AND 
+					 -- (EF.EmployeeId=@EmployeeId OR @EmployeeId='')
+			        and convert(nvarchar,EA.InDate,101) between convert(nvarchar,CAST(@FromDate AS date),101)  and Convert(nvarchar,CAST(@ToFromDate AS date),101) 
+    END
+							
+
+
+					--	select * from EmployeeInformation where EmployeeId='C1301641'
+
+				--	select * from MasterPunchRowData where EmpId =979 --PunchDate='2023-01-07'
+
+						--UPDATE EmployeeAttendence SET Date='2023-05-07'   where convert(nvarchar,Date,103)='07/05/2023'  EmpId=409
+
+					--	select * from EmployeeAttendence  where convert(nvarchar,Date,103)='07/03/2023' 2023-06-072023-07-072023-03-07
+
+					
+					--SELECT FORMAT (cast('07/06/2023 ' as datetime), 'dddd, MMMM, yyyy') as date
+
+					--'07/03/2023'
+					--SELECT FORMAT (getdate()-1, 'MM/dd/yyyy') 
+
+					--select getdate()-1
+
+				--select	convert(nvarchar,'2023-07-01',103)
+				--select  convert(varchar, '2023-07-01', 101)
+			
+
+
+		

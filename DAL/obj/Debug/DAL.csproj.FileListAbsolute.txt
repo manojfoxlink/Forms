@@ -1,0 +1,42 @@
+G:\MyProject\Forms\DAL\bin\Debug\DAL.dll
+G:\MyProject\Forms\DAL\bin\Debug\DAL.pdb
+G:\MyProject\Forms\DAL\bin\Debug\DOL.dll
+G:\MyProject\Forms\DAL\bin\Debug\DOL.pdb
+G:\MyProject\Forms\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+G:\MyProject\Forms\DAL\obj\Debug\DAL.dll
+G:\MyProject\Forms\DAL\obj\Debug\DAL.pdb
+D:\Manoj\Forms\DAL\bin\Debug\DAL.dll
+D:\Manoj\Forms\DAL\bin\Debug\DAL.pdb
+D:\Manoj\Forms\DAL\bin\Debug\DOL.dll
+D:\Manoj\Forms\DAL\bin\Debug\DOL.pdb
+D:\Manoj\Forms\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+D:\Manoj\Forms\DAL\obj\Debug\DAL.dll
+D:\Manoj\Forms\DAL\obj\Debug\DAL.pdb
+E:\Forms\DAL\bin\Debug\DAL.dll
+E:\Forms\DAL\bin\Debug\DAL.pdb
+E:\Forms\DAL\bin\Debug\DOL.dll
+E:\Forms\DAL\bin\Debug\DOL.pdb
+E:\Forms\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\Forms\DAL\obj\Debug\DAL.dll
+E:\Forms\DAL\obj\Debug\DAL.pdb
+D:\MyProject\Forms\DAL\bin\Debug\DAL.dll
+D:\MyProject\Forms\DAL\bin\Debug\DAL.pdb
+D:\MyProject\Forms\DAL\bin\Debug\DOL.dll
+D:\MyProject\Forms\DAL\bin\Debug\DOL.pdb
+D:\MyProject\Forms\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+D:\MyProject\Forms\DAL\obj\Debug\DAL.dll
+D:\MyProject\Forms\DAL\obj\Debug\DAL.pdb
+E:\MyProject\Forms\DAL\bin\Debug\DAL.dll
+E:\MyProject\Forms\DAL\bin\Debug\DAL.pdb
+E:\MyProject\Forms\DAL\bin\Debug\DOL.dll
+E:\MyProject\Forms\DAL\bin\Debug\DOL.pdb
+E:\MyProject\Forms\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\MyProject\Forms\DAL\obj\Debug\DAL.dll
+E:\MyProject\Forms\DAL\obj\Debug\DAL.pdb
+D:\Old Data\MyProject\Forms\DAL\bin\Debug\DAL.dll
+D:\Old Data\MyProject\Forms\DAL\bin\Debug\DAL.pdb
+D:\Old Data\MyProject\Forms\DAL\bin\Debug\DOL.dll
+D:\Old Data\MyProject\Forms\DAL\bin\Debug\DOL.pdb
+D:\Old Data\MyProject\Forms\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+D:\Old Data\MyProject\Forms\DAL\obj\Debug\DAL.dll
+D:\Old Data\MyProject\Forms\DAL\obj\Debug\DAL.pdb

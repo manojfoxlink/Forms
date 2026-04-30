@@ -1,0 +1,306 @@
+﻿@model ChecklistForm.Models.RptParameterA246CTPaameterMCChecklistModelView
+@{
+    ViewBag.Title = "ParameterA246CTPaameterMCChecklist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<style>
+    .padding {
+        padding: 10px;
+    }
+
+    #example1_wrapper {
+        overflow: auto;
+    }
+
+    .table-container {
+        max-height: 500px; /* Adjust as needed */
+        overflow-y: auto; /* Enables vertical scrolling */
+        border: 1px solid #ccc;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f9f9f9; /* Optional: Background color */
+            z-index: 10; /* Keeps the header on top */
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table tbody td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+
+    #datepicker {
+        position: relative;
+        top: 100%;
+        left: 0;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 5px;
+        z-index: 1000;
+    }
+</style>
+
+@using (Html.BeginForm("ParameterA246CTPaameterMCChecklist", "Report"))
+{
+    @Html.AntiForgeryToken()
+    <div class="box box-solid box-default">
+        <div class="box-header">
+            <h3 class="box-title">A246C CTP Parameter MC Line1</h3>
+        </div>
+
+        @*@{
+            Html.RenderPartial("_ErrorMessage");
+                }*@
+        <div class="box-body">
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ShiftId, new SelectList(Model.Shifts, "shiftId", "ShiftName", 0), "--select Shift--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.TextBoxFor(model => model.FromDate, new { @class = "form-control", @Id = "datepicker", @required = "true" })
+
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "--select Project--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.DropDownListFor(model => model.MachineId, new SelectList(Model.Machines, "MachineId", "Machine", 0), "--select Machine--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+
+
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box padding">
+                <div class="row table-container">
+                    <table class="table table-bordered table-hover" role="grid" aria-describedby="example3_info" id="QuastionTable">
+                        <thead>
+                            <tr role="row">
+
+                                <th>
+                                    Station No
+                                </th>
+                                <th>
+                                    Station
+                                </th>
+                                <th>
+                                    Equipment Name/Model
+                                </th>
+                                <th>
+                                    Parameter items
+                                </th>
+                                <th>
+                                    Unit
+                                </th>
+                                <th>
+                                    LSL
+                                </th>
+                                <th>
+                                    USL
+                                </th>
+                                <th>
+                                    Value
+                                </th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            @*@foreach (System.Data.DataRow item in Model.dtReports.Rows)
+                                {
+
+
+                                    <tr>
+                                        <td>
+                                            @item["StationNo"].ToString()
+                                        </td>
+                                        <td>
+                                            @item["Station"].ToString()
+                                        </td>
+                                        <td>
+                                            @item["EquipmentModel"].ToString()
+                                        </td>
+                                        <td>
+                                            @item["Parameter"].ToString()
+                                        </td>
+                                        <td>
+                                            @item["unit"].ToString()
+                                        </td>
+                                        <td>
+                                            @item["LSL"].ToString()
+                                        </td>
+                                        <td>
+                                            @item["USL"].ToString()
+                                        </td>
+                                        <td>
+                                            @item["Value"].ToString()
+                                        </td>
+
+
+                                    </tr>
+
+
+
+                                }*@
+
+
+                            @{
+    int row = 1;
+    int TotalCount = 0;
+                            }
+                            @foreach (System.Data.DataRow item in Model.dtReports.Rows)
+                            {
+                                <tr>
+                                    @{
+                                TotalCount = (Int32)@item["TotalCount"];
+                                    }
+
+                                    @if (row > (Int32)item["TotalCount"])
+                                    {
+                                        row = 1;
+
+
+                                    }
+                                    <td style="display:none">
+                                        @item["LimitId"].ToString()
+                                    </td>
+                                    @if (row == 1)
+                                    {
+
+
+                                        <td rowspan="@TotalCount">
+
+                                            @item["StationNo"].ToString()
+                                        </td>
+                                        <td rowspan="@TotalCount">
+
+                                            @item["Station"].ToString()
+                                        </td>
+                                        <td rowspan="@TotalCount">
+
+                                            @item["EquipmentModel"].ToString()
+                                        </td>
+                                    }
+
+
+                                    <td>
+                                        @item["Parameter"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["unit"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["LSL"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["USL"].ToString()
+                                    <td style="color: @item["Color"];">
+                                        @item["Value"].ToString()
+                                    </td>
+                                    <td style="color: @item["Color"];">
+                                        @item["Result"].ToString()
+                                    </td>
+                                    @if (row == TotalCount)
+                                    {
+                                        row = 1;
+                                    }
+                                    else
+                                    {
+                                        row += 1;
+                                    }
+                                </tr>
+
+
+
+                            }
+
+
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+
+                    </table>
+
+
+
+
+
+
+                </div>
+            </div>
+
+
+            @if (Model.dtReports.Rows.Count > 0)
+            {
+                <div class="row padding">
+
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-0">
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                        <label>Export Format File :</label>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                        @Html.DropDownListFor(model => model.ExportTypes, new SelectList(Model.ExportTypes, Model.ExportType), new { @class = "form-control select2 select2-hidden-accessible", target = "_blank", @style = "width: 100%;" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                        <button type="submit" name="Command" id="btnExport" value="Export" class="btn btn-primary btn-flat">Export File</button>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-1">
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+

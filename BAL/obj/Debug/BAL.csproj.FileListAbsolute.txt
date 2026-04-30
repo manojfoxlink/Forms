@@ -1,0 +1,72 @@
+G:\MyProject\Forms\BAL\bin\Debug\BAL.dll
+G:\MyProject\Forms\BAL\bin\Debug\BAL.pdb
+G:\MyProject\Forms\BAL\bin\Debug\DAL.dll
+G:\MyProject\Forms\BAL\bin\Debug\DOL.dll
+G:\MyProject\Forms\BAL\bin\Debug\Microsoft.Owin.dll
+G:\MyProject\Forms\BAL\bin\Debug\Owin.dll
+G:\MyProject\Forms\BAL\bin\Debug\DAL.pdb
+G:\MyProject\Forms\BAL\bin\Debug\DOL.pdb
+G:\MyProject\Forms\BAL\bin\Debug\Microsoft.Owin.xml
+G:\MyProject\Forms\BAL\obj\Debug\BAL.csprojResolveAssemblyReference.cache
+G:\MyProject\Forms\BAL\obj\Debug\BAL.dll
+G:\MyProject\Forms\BAL\obj\Debug\BAL.pdb
+D:\Manoj\Forms\BAL\bin\Debug\BAL.dll
+D:\Manoj\Forms\BAL\bin\Debug\BAL.pdb
+D:\Manoj\Forms\BAL\bin\Debug\DAL.dll
+D:\Manoj\Forms\BAL\bin\Debug\DOL.dll
+D:\Manoj\Forms\BAL\bin\Debug\Microsoft.Owin.dll
+D:\Manoj\Forms\BAL\bin\Debug\Owin.dll
+D:\Manoj\Forms\BAL\bin\Debug\DAL.pdb
+D:\Manoj\Forms\BAL\bin\Debug\DOL.pdb
+D:\Manoj\Forms\BAL\bin\Debug\Microsoft.Owin.xml
+D:\Manoj\Forms\BAL\obj\Debug\BAL.csprojResolveAssemblyReference.cache
+D:\Manoj\Forms\BAL\obj\Debug\BAL.dll
+D:\Manoj\Forms\BAL\obj\Debug\BAL.pdb
+E:\Forms\BAL\bin\Debug\BAL.dll
+E:\Forms\BAL\bin\Debug\BAL.pdb
+E:\Forms\BAL\bin\Debug\DAL.dll
+E:\Forms\BAL\bin\Debug\DOL.dll
+E:\Forms\BAL\bin\Debug\Microsoft.Owin.dll
+E:\Forms\BAL\bin\Debug\Owin.dll
+E:\Forms\BAL\bin\Debug\DAL.pdb
+E:\Forms\BAL\bin\Debug\DOL.pdb
+E:\Forms\BAL\bin\Debug\Microsoft.Owin.xml
+E:\Forms\BAL\obj\Debug\BAL.csprojResolveAssemblyReference.cache
+E:\Forms\BAL\obj\Debug\BAL.dll
+E:\Forms\BAL\obj\Debug\BAL.pdb
+D:\MyProject\Forms\BAL\obj\Debug\BAL.csprojResolveAssemblyReference.cache
+D:\MyProject\Forms\BAL\bin\Debug\BAL.dll
+D:\MyProject\Forms\BAL\bin\Debug\BAL.pdb
+D:\MyProject\Forms\BAL\bin\Debug\DAL.dll
+D:\MyProject\Forms\BAL\bin\Debug\DOL.dll
+D:\MyProject\Forms\BAL\bin\Debug\Microsoft.Owin.dll
+D:\MyProject\Forms\BAL\bin\Debug\Owin.dll
+D:\MyProject\Forms\BAL\bin\Debug\DAL.pdb
+D:\MyProject\Forms\BAL\bin\Debug\DOL.pdb
+D:\MyProject\Forms\BAL\bin\Debug\Microsoft.Owin.xml
+D:\MyProject\Forms\BAL\obj\Debug\BAL.dll
+D:\MyProject\Forms\BAL\obj\Debug\BAL.pdb
+E:\MyProject\Forms\BAL\bin\Debug\BAL.dll
+E:\MyProject\Forms\BAL\bin\Debug\BAL.pdb
+E:\MyProject\Forms\BAL\bin\Debug\DAL.dll
+E:\MyProject\Forms\BAL\bin\Debug\DOL.dll
+E:\MyProject\Forms\BAL\bin\Debug\Microsoft.Owin.dll
+E:\MyProject\Forms\BAL\bin\Debug\Owin.dll
+E:\MyProject\Forms\BAL\bin\Debug\DAL.pdb
+E:\MyProject\Forms\BAL\bin\Debug\DOL.pdb
+E:\MyProject\Forms\BAL\bin\Debug\Microsoft.Owin.xml
+E:\MyProject\Forms\BAL\obj\Debug\BAL.csprojResolveAssemblyReference.cache
+E:\MyProject\Forms\BAL\obj\Debug\BAL.dll
+E:\MyProject\Forms\BAL\obj\Debug\BAL.pdb
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\BAL.dll
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\BAL.pdb
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\DAL.dll
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\DOL.dll
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\Microsoft.Owin.dll
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\Owin.dll
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\DAL.pdb
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\DOL.pdb
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\Microsoft.Owin.xml
+D:\Old Data\MyProject\Forms\BAL\obj\Debug\BAL.csprojResolveAssemblyReference.cache
+D:\Old Data\MyProject\Forms\BAL\obj\Debug\BAL.dll
+D:\Old Data\MyProject\Forms\BAL\obj\Debug\BAL.pdb

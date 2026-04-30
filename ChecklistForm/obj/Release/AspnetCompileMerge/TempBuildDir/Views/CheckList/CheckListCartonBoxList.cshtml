@@ -1,0 +1,473 @@
+﻿@model ChecklistForm.Models.CheckListCartonBoxListResultModelView
+
+@{
+    ViewBag.Title = "CheckListCartonBoxList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    Html.RenderPartial("_ErrorMessage");
+}
+<style>
+    .padding {
+        padding: 10px;
+        overflow: auto;
+    }
+</style>
+
+<div class="box box-solid box-default">
+    <div class="box-header">
+        @Html.ValidationSummary(false)
+        <h3 class="box-title">CartonBoxList</h3>
+    </div><!-- /.box-header -->
+    <div class="box-body">
+        @using (Html.BeginForm("CheckListCartonBoxList", "CheckList", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+        {
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+                                @*<div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.ModelId, new SelectList(Model.ModelNos, "ModelId", "Model", 0), "--Select Model--", new { @class = "form-control", onchange = "ddlGetPartNoByModel()", required = "required" })
+
+                                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                    </div>
+                                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                        @Html.DropDownListFor(model => model.PartId, new SelectList(Model.PartNos, "PartId", "Part", 0), "--Select Part--", new { @class = "form-control", required = "required" })
+
+                                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                    </div>*@
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ProdLineLeader, new { placeholder = "Production LineLeader", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.CheckedBy, new { placeholder = "CheckedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ApprovedBy, new { placeholder = "ApprovedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @*@if (Model.ProjectId == 0)
+        {*@
+            <div class="box padding ">
+                <input type="button" class="btn btn-success btn-flat" value="Add row" onclick="addRow('dataTable')" />
+                <div class="row">
+                    <table border="1" width="100%" id="dataTable">
+                        <thead>
+                            <tr role="row">
+                                <th>
+                                    Carton Number
+                                </th>
+                                <th>
+                                    Work Order
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Remarks
+                                </th>
+                                <th>
+                                    Packing Side
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Html.TextBoxFor(model => model.CheckListCartonBoxListResults[0].CartonNumber, new { placeholder = " Enter Work Order", @class = "form-control", @id = "txtCartonNumber" })</td>
+                                <td>@Html.TextBoxFor(model => model.CheckListCartonBoxListResults[0].WorkOrder, new { placeholder = "Enter Carton BoxNumber", @class = "form-control", @id = "txtWorkOrder" })</td>
+                                <td>@Html.TextBoxFor(model => model.CheckListCartonBoxListResults[0].Status, new { placeholder = "Enter NG Quantity", @class = "form-control", @id = "txtStatus" })</td>
+                                <td>@Html.TextBoxFor(model => model.CheckListCartonBoxListResults[0].Remarks, new { placeholder = "Enter Defect NG", @class = "form-control", @id = "txtRemarks" })</td>
+                                <td>@Html.TextBoxFor(model => model.CheckListCartonBoxListResults[0].PackingSide, new { placeholder = "Enter Qc Status", @class = "form-control", @id = "txtPackingSide" })</td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="hide">
+                    <table id="newrow" width="100%" border="1">
+                        <thead>
+                            <tr role="row">
+                                <th>
+                                    Carton Number
+                                </th>
+                                <th>
+                                    Work Order
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Remarks
+                                </th>
+                                <th>
+                                    Packing Side
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Html.TextBoxFor(model => model.CheckListCartonBoxListResults[0].CartonNumber, new { placeholder = " Enter Work Order", @class = "form-control", @id = "txtCartonNumber" })</td>
+                                <td>@Html.TextBoxFor(model => model.CheckListCartonBoxListResults[0].WorkOrder, new { placeholder = "Enter Carton BoxNumber", @class = "form-control", @id = "txtWorkOrder" })</td>
+                                <td>@Html.TextBoxFor(model => model.CheckListCartonBoxListResults[0].Status, new { placeholder = "Enter NG Quantity", @class = "form-control", @id = "txtStatus" })</td>
+                                <td>@Html.TextBoxFor(model => model.CheckListCartonBoxListResults[0].Remarks, new { placeholder = "Enter Defect NG", @class = "form-control", @id = "txtRemarks" })</td>
+                                <td>@Html.TextBoxFor(model => model.CheckListCartonBoxListResults[0].PackingSide, new { placeholder = "Enter Qc Status", @class = "form-control", @id = "txtPackingSide" })</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="row padding">
+                    <div class="col-xs-10 right">
+
+                        <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+
+
+                    </div>
+
+                </div>
+            </div>
+        @*}*@
+    </div>
+</div>
+
+
+@*<div id="dialog-upload" title="Upload Attachments" style="display:none;" class="form-control">
+        <h4 id="CheckListIteam" class="alert-success"></h4>
+        <div class="col-xs-12 row">
+            <div class="col-xs-4">
+                File Upload :
+            </div>
+            <div class="col-xs-8">
+                <input class="form-control" type="file" id="FileUpload1" />
+                <input class="btn btn-success" type="button" style="margin:5px;" id="btnUpload" onclick="uploadFile()" value="Upload" />
+                <label style="color:green" id="lblUploadStatus">Succesfully Uploaded</label>
+            </div>
+        </div>
+        <div class="col-xs-12 row">
+            <input type="hidden" id="hdnDocId" />
+
+        </div>
+    </div>*@
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+
+
+
+<script>
+    function addRow(tableID) {
+        debugger;
+
+        //$('#dataTable tbody').append(t1[0]);model.DimentionInsp
+        var t1 = $('#newrow').dataTable().fnGetNodes();
+
+        // initialize table
+        var t = $('#dataTable').DataTable();
+        var row = $('#dataTable tr').length;
+        // add row
+
+        //t.row.add( [1,2,3] ).draw();
+
+        var rowHtml = t1[0].outerHTML
+        console.log(rowHtml);
+        rowHtml = rowHtml.replace("txtCartonNumber", "txtCartonNumber" + row);
+        console.log(rowHtml);
+
+        rowHtml = rowHtml.replace("txtWorkOrder", "txtWorkOrder" + row);
+        console.log(rowHtml);
+        rowHtml = rowHtml.replace("txtStatus", "txtStatus" + row);
+        console.log(rowHtml);
+        rowHtml = rowHtml.replace("txtRemarks", "txtRemarks" + row);
+        console.log(rowHtml);
+        rowHtml = rowHtml.replace("txtPackingSide", "txtPackingSide" + row);
+        console.log(rowHtml);
+        //rowHtml = rowHtml.replace("txtProdll", "txtProdll" + row);
+        //console.log(rowHtml);
+        //rowHtml = rowHtml.replace("txtqcll", "txtqcll" + row);
+        //console.log(rowHtml);
+        t.row.add($(rowHtml)).draw();
+
+        //$('#ddlCable' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+        //$('#ddlSR' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlPlugShellC70' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlPlugShellC91' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlBootC70' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlBootC91' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlFacePlateC70' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlFacePlateC91' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //$('#ddlPapperCollar' + row).select2({
+        //    dropdownAutoWidth: true,
+        //    width: '100%'
+        //});
+
+        //    $(" #dataTable_wrapper").removeClass("dataTables_wrapper form-inline dt-bootstrap no-footer");
+
+        //    $('.select2-containerremove').remove();
+
+        //    $("#txtqty" + row).change(function () {
+        //        ValiditadeQty($(this).attr('class').split(' ').pop());
+        //    });
+
+        //    $("#txtRecQty" + row).change(function () {
+        //        ValiditadeQty($(this).attr('class').split(' ').pop());
+        //    });
+    }
+
+
+
+    function Save() {
+        //  var table = $("#QuastionTable");
+        var CheckListResult = [];
+        var fills = [];
+        var i = 0;
+        var J = 0;
+        var k = 0;
+        debugger;
+
+
+
+        var table = $("table tbody");
+        var formData = new FormData();
+        var LineId = $("#LineId").val();
+        //var ProjectId = $("#ProjectId").val();
+        var ProdLineLeader = $("#ProdLineLeader").val();
+        var CheckedBy = $("#CheckedBy").val();
+        var ApprovedBy = $("#ApprovedBy").val();
+        //var ModelId = $("#ModelId").val();
+        //var PartId = $("#PartId").val();
+        if (LineId != 0 && ProdLineLeader != "" && CheckedBy != "" && ApprovedBy != "") {
+            debugger;
+            table.find('tr').each(function (i) {
+                var $tds = $(this).find('td'),
+                    checkItemObservation = $tds.eq(4).find('input').val()
+
+                if ((typeof checkItemObservation != "undefined")) {
+                    //var TempId = $tds.eq(0).text().trim();
+
+                    var CartonNumber = $tds.eq(0).find('input').val();
+                    var WorkOrder = $tds.eq(1).find('input').val();
+                    var Status = $tds.eq(2).find('input').val();
+                    var Remarks = $tds.eq(3).find('input').val();
+                    var PackingSide = $tds.eq(4).find('input').val();
+                    //var Prodll = $tds.eq(5).find('input').val();
+                    //var qcll = $tds.eq(6).find('input').val();
+                    //var FacePlateId = $tds.eq(7).find('input').val();
+
+                    if (CartonNumber != "") {
+                        if (CartonNumber == "") {
+                            $tds.eq(0).find('input').val("");
+                            $('#' + CartonNumber).css("border", '1px solid red');
+                        } else {
+                            $('#' + CartonNumber).css("border", '1px solid green');
+                        }
+                    }
+                    else if (WorkOrder != "") {
+                        if (WorkOrder == "") {
+                            $tds.eq(1).find('input').val("");
+                            $('#' + WorkOrder).css("border", '1px solid red');
+                        } else {
+                            $('#' + WorkOrder).css("border", '1px solid green');
+                        }
+                    }
+
+                    else if (Status != "") {
+                        if (Status == "") {
+                            $tds.eq(2).find('input').val("");
+                            $('#' + Status).css("border", '1px solid red');
+                        } else {
+                            $('#' + Status).css("border", '1px solid green');
+                        }
+                    }
+
+                    else if (Remarks != "") {
+                        if (Remarks == "") {
+                            $tds.eq(3).find('input').val("");
+                            $('#' + Remarks).css("border", '1px solid red');
+                        } else {
+                            $('#' + Remarks).css("border", '1px solid green');
+                        }
+                    }
+
+                    else if (PackingSide != "") {
+                        if (PackingSide == "") {
+                            $tds.eq(4).find('input').val("");
+                            $('#' + PackingSide).css("border", '1px solid red');
+                        } else {
+                            $('#' + PackingSide).css("border", '1px solid green');
+                        }
+                    }
+
+                    //else if (Prodll != "") {
+                    //    if (Prodll == "") {
+                    //        $tds.eq(5).find('input').val("");
+                    //        $('#' + Prodll).css("border", '1px solid red');
+                    //    } else {
+                    //        $('#' + Prodll).css("border", '1px solid green');
+                    //    }
+                    //}
+
+
+                    //else if (qcll != "") {
+                    //    if (qcll == "") {
+                    //        $tds.eq(6).find('input').val("");
+                    //        $('#' + qcll).css("border", '1px solid red');
+                    //    } else {
+                    //        $('#' + qcll).css("border", '1px solid green');
+                    //    }
+                    //}
+
+                }
+                //else {
+
+                //    var SpecId = $tds.eq(0).text().trim();
+
+                //    var Value1 = $tds.eq(2).find('input').val();
+                //    var Value2 = $tds.eq(3).find('input').val();
+                //    var Value3 = $tds.eq(4).find('input').val();
+                //    var Value4 = $tds.eq(5).find('input').val();
+                //    var Value5 = $tds.eq(6).find('input').val();
+
+
+                //    if (Value1 != "") {
+                //        if (Value1 == "") {
+                //            $tds.eq(2).find('input').val("");
+                //            $('#' + SpecId).css("border", '1px solid red');
+                //        } else {
+                //            $('#' + SpecId).css("border", '1px solid green');
+                //        }
+                //    }
+                //    else if (Value2 != "") {
+                //        if (Value2 == "") {
+                //            $tds.eq(3).find('input').val("");
+                //            $('#' + SpecId).css("border", '1px solid red');
+                //        } else {
+                //            $('#' + SpecId).css("border", '1px solid green');
+                //        }
+                //    }
+
+                //    else if (Value3 != "") {
+                //        if (Value3 == "") {
+                //            $tds.eq(4).find('input').val("");
+                //            $('#' + SpecId).css("border", '1px solid red');
+                //        } else {
+                //            $('#' + SpecId).css("border", '1px solid green');
+                //        }
+                //    }
+
+                //    else if (Value4 != "") {
+                //        if (Value4 == "") {
+                //            $tds.eq(5).find('input').val("");
+                //            $('#' + SpecId).css("border", '1px solid red');
+                //        } else {
+                //            $('#' + SpecId).css("border", '1px solid green');
+                //        }
+                //    }
+
+                //    else if (Value5 != "") {
+                //        if (Value5 == "") {
+                //            $tds.eq(6).find('input').val("");
+                //            $('#' + SpecId).css("border", '1px solid red');
+                //        } else {
+                //            $('#' + SpecId).css("border", '1px solid green');
+                //        }
+                //    }
+                //}
+
+
+
+                if ((CartonNumber != "" && WorkOrder != "" && Status != "" && PackingSide != "" )) {
+                    CheckListResult[J] = {
+                        'CartonNumber': CartonNumber, 'WorkOrder': WorkOrder, 'Status': Status, 'Remarks': Remarks, 'PackingSide': PackingSide
+                    };
+                    J++;
+                }
+                i++;
+            });
+            var reqListObj = new Object();
+            reqListObj.CheckListCartonBoxListResults = CheckListResult;
+            reqListObj.LineId = LineId;
+            reqListObj.ProdLineLeader = ProdLineLeader;
+            reqListObj.CheckedBy = CheckedBy;
+            reqListObj.ApprovedBy = ApprovedBy;
+            if (CheckListResult.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/CheckList/SaveCheckListCartonBoxList",
+                    data: JSON.stringify(reqListObj),
+                    success: function (data) {
+                        window.location.reload();
+                        //$("#btnSearch").click();
+                    },
+                    error: function () {
+                        // alert('error');
+                    }
+
+                })
+            }
+            else {
+                alert("Alteast one Part needed for Creating TO Request");
+            }
+        } else {
+            alert("Please Select LineId");
+        }
+    }
+
+</script>
+

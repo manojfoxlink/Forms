@@ -1,0 +1,333 @@
+﻿@model ChecklistForm.Models.ParameterTempratureRecordModelView
+
+@{
+    ViewBag.Title = "ParameterA246CTempratureRecord";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .padding {
+        padding: 10px;
+    }
+
+    #example1_wrapper {
+        overflow: auto;
+    }
+</style>
+@using (Html.BeginForm("ParameterA246CTempratureRecord", "Report"))
+{
+    @Html.AntiForgeryToken()
+    <div class="box box-solid box-default">
+        <div class="box-header">
+            <h3 class="box-title">A246C Temprature Record</h3>
+        </div>
+
+      
+        <div class="box-body">
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ShiftId, new SelectList(Model.Shifts, "shiftId", "ShiftName", 0), "--select Shift--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-3 col-xs-12">
+                                    @Html.TextBoxFor(model => model.FromDate, new { @class = "form-control", @Id = "datepicker", required = "required" })
+
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row padding">
+                <table class="table table-bordered table-hover" role="grid" aria-describedby="example3_info" id="QuastionTable">
+                    <thead>
+                        <tr role="row">
+
+                            <th>
+                                Items
+                            </th>
+
+                            <th style="display:none">
+                                Temperature
+                            </th>
+                            <th>
+                                ActualValue
+                            </th>
+                            <th>
+                                Result
+                            </th>
+                            @*<th>
+                                    Upper Limit
+                                </th>
+                                <th>
+                                    Inspection Specification
+                                </th>
+                                <th>
+                                    Frequency
+                                </th>
+                                <th>
+                                    Period
+                                </th>
+                                <th>
+                                    Value1
+                                </th>
+                                <th>
+                                    Value2
+                                </th>
+                                <th>
+                                    Value3
+                                </th>
+                                <th>
+                                    Value4
+                                </th>
+                                <th>
+                                    Value5
+                                </th>
+                                <th>
+                                    Result
+                                </th>*@
+
+                            @*<th>
+
+                                </th>*@
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                        @foreach (System.Data.DataRow item in Model.dtReports.Rows)
+                        {
+                            <tr>
+                                
+
+                               
+
+                                @*@if (row1 > (Int32)item["TCount1"])
+                                    {
+                                        row1 = 1;
+                                    }
+                                    @if (row2 > (Int32)item["TCount2"])
+                                    {
+                                        row2 = 1;
+                                    }
+                                    @if (row3 > (Int32)item["TCount3"])
+                                    {
+                                        row3 = 1;
+                                    }*@
+                                
+
+                                    @*<td rowspan="@TotalCount">
+
+                                            @item["StationName"].ToString()
+
+                                        </td>*@
+                                    <td >
+                                        @item["Items"].ToString()
+                                    </td>
+
+                                    @*<td rowspan="@TotalCount">
+                                            @item["InspectionItem"].ToString()
+                                        </td>
+
+                                        <td rowspan="@TotalCount">
+                                            @item["LowerLimit"].ToString()
+                                        </td>
+
+                                        <td rowspan="@TotalCount">
+                                            @item["UpperLimit"].ToString()
+                                        </td>
+                                        <td rowspan="@TotalCount">
+                                            @item["InspectionSpecification"].ToString()
+                                        </td>
+
+                                        <td rowspan="@TotalCount">
+                                            @item["Freq"].ToString()
+                                        </td>*@
+                               
+
+                                @*@if (row1 == 1)
+                                    {
+
+                                        <td rowspan="@TCount1">
+
+                                            @item["InspectionItem"].ToString()
+
+                                        </td>
+                                    }
+                                    @if (row2 == 1)
+                                    {
+
+                                        <td rowspan="@TCount2">
+
+                                            @item["LowerLimit"].ToString()
+
+                                        </td>
+
+                                        <td rowspan="@TCount2">
+
+                                            @item["UpperLimit"].ToString()
+
+                                        </td>
+
+                                        <td rowspan="@TCount2">
+
+                                            @item["InspectionSpecification"].ToString()
+
+                                        </td>
+                                    }
+                                    @if (row3 == 1)
+                                    {
+
+                                        <td rowspan="@TCount3">
+
+                                            @item["LowerLimit"].ToString()
+
+                                        </td>
+
+                                        <td rowspan="@TCount3">
+
+                                            @item["UpperLimit"].ToString()
+
+                                        </td>
+
+                                        <td rowspan="@TCount3">
+
+                                            @item["InspectionSpecification"].ToString()
+
+                                        </td>
+                                    }*@
+
+                                <td style="display:none">
+                                    @item["Temperatures"].ToString()
+                                </td>
+                                <td>
+                                    @item["ActualValue"].ToString()
+                                </td>
+                                <td>
+                                    @item["Result"].ToString()
+                                </td>
+                                @*<td>
+                                        @item["Value2"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Value3"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Value4"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Value5"].ToString()
+                                    </td>
+                                    <td>
+                                        @item["Result"].ToString()
+                                    </td>*@
+                                @*<td>
+                                        <input type="text" class="form-control" name="result" id="@item["LimitId"].ToString()" />
+                                    </td>*@
+
+                                
+
+                                @*@if (row1 == TCount1)
+                                    {
+                                        row1 = 1;
+                                    }
+                                    else
+                                    {
+                                        row1 += 1;
+                                    }
+
+                                    @if (row2 == TCount2)
+                                    {
+                                        row2 = 1;
+                                    }
+                                    else
+                                    {
+                                        row2 += 1;
+                                    }
+
+                                    @if (row3 == TCount3)
+                                    {
+                                        row3 = 1;
+                                    }
+                                    else
+                                    {
+                                        row3 += 1;
+                                    }*@
+                            </tr>
+
+
+
+                        }
+
+
+                    </tbody>
+                    <tfoot>
+
+                    </tfoot>
+
+                </table>
+
+
+                @*@if (Model.dtReports.Rows.Count > 0)
+                {
+                    <div class="row padding">
+
+                        @Html.Partial("TemperatureRecord")
+                    </div>
+                }*@
+
+
+
+            </div>
+            @if (Model.dtReports.Rows.Count > 0)
+            {
+                <div class="row padding">
+
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-0">
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                        <label>Export Format File :</label>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                        @Html.DropDownListFor(model => model.ExportTypes, new SelectList(Model.ExportTypes, Model.ExportType), new { @class = "form-control select2 select2-hidden-accessible", target = "_blank", @style = "width: 100%;" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                        <button type="submit" name="Command" id="btnExport" value="Export" class="btn btn-primary btn-flat">Export File</button>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-1">
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />

@@ -1,0 +1,44 @@
+﻿
+<script>
+    window.setTimeout(function () {
+        $("#myAlert").fadeTo(500, 0).slideUp(500, function () {
+            $(this).remove();
+        });
+    }, 3000);
+</script>
+
+@{
+    var message = TempData["Alert"] ?? string.Empty;
+    var status = TempData["mgs"] ?? string.Empty;
+}
+@if (message != "")
+{
+    if (status == "Sucess")
+    {
+        <div class="alert alert-success fade in" id="myAlert">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Note!</strong>@message
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning fade in" id="myAlert">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Note!</strong>@message
+        </div>
+    }
+}
+@if (ViewData.ModelState["ERROR"] != null && ViewData.ModelState["ERROR"].Errors.Count() > 0)
+{
+
+    <div class="bs-example">
+        <div class="alert alert-danger" id="myAlert">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>ERROR! </strong>@Html.ValidationMessage("ERROR")
+        </div>
+    </div>
+}
+
+
+
+

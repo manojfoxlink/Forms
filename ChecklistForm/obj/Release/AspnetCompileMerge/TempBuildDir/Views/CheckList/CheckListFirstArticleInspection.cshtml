@@ -1,0 +1,694 @@
+﻿@model ChecklistForm.Models.CheckListFirstArticleInspectionViewModel
+@*@model ChecklistForm.Models.CheckListFirstArticleInspectViewModel*@
+
+@{
+    ViewBag.Title = "CheckListFirstArticleInspection";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    Html.RenderPartial("_ErrorMessage");
+}
+<style>
+    .padding {
+        padding: 10px;
+    }
+</style>
+@using (Html.BeginForm("CheckListFirstArticleInspection", "CheckList", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    <div class="box box-solid box-default">
+        <div class="box-header">
+
+            <h3 class="box-title">First Article Assurance Inspection Record</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+
+            <div class="box padding">
+                <div class="row" style="padding-top:15px">
+                    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.LineId, new SelectList(Model.Lines, "LineId", "LineName", 0), "--select Line--", new { @class = "form-control", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.Projects, "ProjectId", "ProjectName", 0), "--select Project--", new { @class = "form-control", onchange = "ddlModelNoByProject();ddlSRByProject();", required = "required" })
+
+
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ModelId, new SelectList(Model.ModelNos, "ModelId", "Model", 0), "--Select Model--", new { @class = "form-control", onchange = "ddlGetPartNoByModel()", required = "required" })
+
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.DropDownListFor(model => model.PartId, new SelectList(Model.PartNos, "PartId", "Part", 0), "--Select Part--", new { @class = "form-control", required = "required" })
+
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ProdLineLeader, new { placeholder = "Production LineLeader", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.CheckedBy, new { placeholder = "CheckedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ApprovedBy, new { placeholder = "ApprovedBy", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.ProductName, new { placeholder = "Product Name", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.WorkOrder, new { placeholder = "Work Order", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.DrawingVersion, new { placeholder = "Drawing Version", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.PackVersion, new { placeholder = "Pack Version", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                                <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12">
+                                    @Html.TextBoxFor(x => x.SamplingQty, new { placeholder = "Sampling Quantity", @class = "form-control", autocomplete = "off", @required = true })
+                                </div>
+                                <div class="col-lg-2 col-md-3 col-sm-1 col-xs-12">
+
+                                    <button type="submit" class="btn btn-success" name="Command" value="Search" id="btnSearch">Search</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box padding">
+                <div class="row">
+                    <table class="table table-bordered table-hover" role="grid" aria-describedby="example3_info" id="QuastionTable" border="1" align="center" style="vertical-align:middle;text-align:center">
+                        <thead>
+                            @*<tr>
+                    <td style="color:red">
+                        <b>NOTE:-</b><b>The inspection items of the initial parts of the work station can be adjusted according to the actual inspection items of each machine type</b>
+                        <br />
+                    </td>
+                </tr>*@
+                <tr role="row">
+                    <th style="display:none">
+                        ContentId
+                    </th>
+                    <th>
+                        Station
+                    </th>
+                    <th>
+                        Inspection Item
+                    </th>
+                    <th>
+
+                        Content
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Result
+                    </th>
+                    <th>
+                        Reject Describe
+                    </th>
+                </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int row = 1;
+                                int TotalCount = 0;
+
+                                int row2 = 1;
+                                int TCount = 0;
+                            }
+                           @foreach (System.Data.DataRow item in Model.dtChecklist.Rows)
+                                    {
+                                        <tr>
+                                            @{
+                                                TotalCount = (Int32)@item["TotalCount"];
+                                                TCount = (Int32)@item["TCount"];
+
+                                            }
+
+                                            <td style="display:none">
+                                                @item["ContentId"].ToString()
+                                            </td>
+
+                                            @if (row > (Int32)item["TotalCount"])
+                                            {
+                                                row = 1;
+
+
+                                            }
+                                            
+                                            @if (row2 > (Int32)item["TCount"])
+                                            {
+                                                row2 = 1;
+
+
+                                            }
+                                            
+                                            @if (row == 1)
+                                            {
+
+
+                                                <td rowspan="@TotalCount">
+
+                                                    @item["StationName"].ToString()
+
+
+
+                                                </td>
+                                            }
+                                            
+                                            @if (row2 == 1)
+                                            {
+                                                <td rowspan="@TCount">
+                                                    @item["ItemName"].ToString()
+                                                </td>
+
+
+                                            }
+                                            
+                                            <td>
+                                                @item["Content"].ToString()
+                                            </td>
+                                            <td>
+                                                @Html.DropDownList("SRId", new SelectList(Model.SRSS, "SRId", "SR", 0), "-- select Status --", new { @class = "form-control", @id = @item["ContentId"].ToString() })
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" name="Result" id="Path-@item["ContentId"].ToString()" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" name="RejectDescribe" id="Path-@item["ContentId"].ToString()" />
+                                            </td>
+
+                                            <td>
+                                                <button type="button" name="Command" id="btnSave" onclick="Save()" value="SUMBIT" class="btn btn-primary btn-flat">Save</button>
+                                            </td>
+                                            @if (row == TotalCount)
+                                            {
+                                                row = 1;
+                                            }
+                                            else
+                                            {
+                                                row += 1;
+                                            }
+
+                                            @if (row2 == TCount)
+                                            {
+                                                row2 = 1;
+                                            }
+                                            else
+                                            {
+                                                row2 += 1;
+                                            }
+                                        </tr>
+
+                                    }
+
+                        </tbody>
+
+                        <tfoot>
+
+                        </tfoot>
+
+                    </table>
+
+                </div>
+                <div class="row padding">
+                    <div class="col-xs-10 right">
+                        <button type="button" name="Command" id="btnSave" onclick="" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+                    </div>
+
+                </div>
+                @*<div class="row">
+                    
+                        <table class="table table-bordered table-hover" role="grid" aria-describedby="example3_info" id="QuastionTable1">
+                  <thead>
+                    <tr role="row">
+                        <th style="display:none">
+                            SpecId
+                        </th>
+                        <th>
+                            SPEC
+                        </th>
+
+                        <th>
+                            CHECK1
+                        </th>
+                        <th>
+                            CHECK2
+                        </th>
+                        <th>
+                            CHECK3
+                        </th>
+                        <th>
+                            CHECK4
+                        </th>
+                        <th>
+                            CHECK5
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.dsChecklist.Tables.Count>0)
+                    {
+                    foreach (System.Data.DataRow item in Model.dsChecklist.Tables[1].Rows)
+                    {
+                        <tr>
+                            <td style="display:none">
+                                @item["SpecId"].ToString()
+                            </td>
+                            <td>
+                                @item["Specification"].ToString()
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="Check1"  />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="Check2"  />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="Check3"  />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="Check4"  />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="Check5"  />
+                            </td>
+
+                            <td>
+                                <button type="button" name="Command" id="btnSave" onclick="Savee()" value="SUMBIT" class="btn btn-primary btn-flat">Save</button>
+                            </td>
+
+                        </tr>
+
+                      }
+                    }
+
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+
+            </table>
+
+</div>*@
+
+                @*<div class="row padding">
+                    <div class="col-xs-10 right">
+
+                        <button type="button" name="Command" id="btnSave" onclick="Savee()" value="SUMBIT" class="btn btn-primary btn-flat">Submit</button>
+
+
+                    </div>
+
+                </div>*@
+            </div>
+        </div>
+    </div>
+}
+
+@*<div id="dialog-upload" title="Upload Attachments" style="display:none;" class="form-control">
+        <h4 id="CheckListIteam" class="alert-success"></h4>
+        <div class="col-xs-12 row">
+            <div class="col-xs-4">
+                File Upload :
+            </div>
+            <div class="col-xs-8">
+                <input class="form-control" type="file" id="FileUpload1" />
+                <input class="btn btn-success" type="button" style="margin:5px;" id="btnUpload" onclick="uploadFile()" value="Upload" />
+                <label style="color:green" id="lblUploadStatus">Succesfully Uploaded</label>
+            </div>
+        </div>
+        <div class="col-xs-12 row">
+            <input type="hidden" id="hdnDocId" />
+
+        </div>
+    </div>*@
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link href="~/Content/jquery-ui-1.12.1.css" rel="stylesheet" />
+
+
+
+<script>
+
+
+
+
+    function Save() {
+        //  var table = $("#QuastionTable");
+        var CheckListResult = [];
+        var fills = [];
+        var i = 0;
+        var J = 0;
+        var k = 0;
+
+        debugger;
+
+
+        var table = $("#QuastionTable tbody");
+        var formData = new FormData();
+        var LineId = $("#LineId").val();
+        var ProjectId = $("#ProjectId").val();
+        var ProdLineLeader = $("#ProdLineLeader").val();
+        var CheckedBy = $("#CheckedBy").val();
+        var ApprovedBy = $("#ApprovedBy").val();
+        var ModelId = $("#ModelId").val();
+        var PartId = $("#PartId").val();
+        var ProductName = $("#ProductName").val();
+        var WorkOrder = $("#WorkOrder").val();
+        var DrawingVersion = $("#DrawingVersion").val();
+        var PackVersion = $("#PackVersion").val();
+        var SamplingQty = $("#SamplingQty").val();
+
+        if (LineId != 0 && ProjectId != 0 && ProdLineLeader != "" && CheckedBy != "" && ApprovedBy != "" && ModelId != 0 && PartId != 0 && ProductName != "" && WorkOrder != "" && DrawingVersion != "" && PackVersion != "" && SamplingQty !="") {
+
+            table.find('tr').each(function (i) {
+                var $tds = $(this).find('td'),
+
+                    
+                    checkItemObservation = $tds.eq(6).find('input').val()
+                    //checkItemObservation2 = $tds.eq(7).find('input').val()
+                    debugger;
+                   
+                    if ((typeof checkItemObservation != "undefined")) {
+                        var ContentId = $tds.eq(0).text().trim();
+                        var SRId = $tds.eq(4).find('select').val();
+                    var Result = $tds.eq(5).find('input').val();
+                    var RejectDescribe = $tds.eq(6).find('input').val();
+                    
+                  
+                    if (SRId == 0) {
+                        if (SRId == "") {
+                            $tds.eq(4).find('select').val();
+                            $('#' + ContentId).css("border", '1px solid red');
+                        } else {
+                            $('#' + ContentId).css("border", '1px solid green');
+                        }
+                    }
+
+                    if (Result != "") {
+                        if (Result == "") {
+                            $tds.eq(5).find('input').val("");
+                            $('#' + ContentId).css("border", '1px solid red');
+                        } else {
+                            $('#' + ContentId).css("border", '1px solid green');
+                        }
+                    }
+
+                    else if (RejectDescribe != "") {
+                        if (RejectDescribe == "") {
+                            $tds.eq(6).find('input').val("");
+                            $('#' + ContentId).css("border", '1px solid red');
+                        } else {
+                            $('#' + ContentId).css("border", '1px solid green');
+                        }
+                    }
+
+                    
+
+
+                }
+                else {
+                      var ContentId = $tds.eq(0).text().trim();
+                      var SRId = $tds.eq(2).find('select').val();
+                    var Result = $tds.eq(3).find('input').val();
+                    var RejectDescribe = $tds.eq(4).find('input').val();
+                    
+                    if (SRId == 0) {
+                        if (SRId == "") {
+                            $tds.eq(2).find('select').val();
+                            $('#' + ContentId).css("border", '1px solid red');
+                        } else {
+                            $('#' + ContentId).css("border", '1px solid green');
+                        }
+                    }
+
+                    if (Result != "") {
+                        if (Result == "") {
+                            $tds.eq(3).find('input').val("");
+                            $('#' + ContentId).css("border", '1px solid red');
+                        } else {
+                            $('#' + ContentId).css("border", '1px solid green');
+                        }
+                    }
+                    else if (RejectDescribe != "") {
+                        if (RejectDescribe == "") {
+                            $tds.eq(4).find('input').val("");
+                            $('#' + ContentId).css("border", '1px solid red');
+                        } else {
+                            $('#' + ContentId).css("border", '1px solid green');
+                        }
+                    }
+
+                    
+                }
+
+
+                    if ((Result != "" && RejectDescribe != "" && ContentId != 0)) {
+                    CheckListResult[J] = {
+                        'ContentId': ContentId,'SRId':SRId, 'Result': Result, 'RejectDescribe': RejectDescribe
+                    };
+                    J++;
+                }
+                i++;
+            });
+            var reqListObj = new Object();
+            reqListObj.CheckListFirstArticleInspections = CheckListResult;
+            reqListObj.LineId = LineId;
+            reqListObj.ProjectId = ProjectId;
+            reqListObj.ProdLineLeader = ProdLineLeader;
+            reqListObj.CheckedBy = CheckedBy;
+            reqListObj.ApprovedBy = ApprovedBy;
+            reqListObj.ModelId = ModelId;
+            reqListObj.PartId = PartId;
+            reqListObj.ProductName = ProductName;
+            reqListObj.WorkOrder = WorkOrder;
+            reqListObj.DrawingVersion = DrawingVersion;
+            reqListObj.PackVersion = PackVersion;
+            reqListObj.SamplingQty = SamplingQty;
+
+            if (CheckListResult.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/CheckList/SaveFirstArticleInspection",
+                    data: JSON.stringify(reqListObj),
+                    success: function (data) {
+                           window.location.reload();
+                        //$("#btnSearch").click();
+                    },
+                    error: function () {
+                        // alert('error');
+                    }
+
+                })
+            }
+            else {
+                alert("Alteast one Part needed for Creating TO Request");
+            }
+        } else {
+            alert("Please Select LineId");
+        }
+    }
+
+    //function Savee() {
+    //    //  var table = $("#QuastionTable");
+    //    var CheckListResult = [];
+    //    var fills = [];
+    //    var i = 0;
+    //    var J = 0;
+    //    var k = 0;
+
+    //    debugger;
+
+
+    //    var table = $("#QuastionTable1 tbody");
+    //    var formData = new FormData();
+
+    //    var LineId = $("#LineId").val();
+    //    var ProjectId = $("#ProjectId").val();
+
+    //    if (LineId != 0 && ProjectId != 0) {
+
+    //        table.find('tr').each(function (i) {
+    //            var $tds = $(this).find('td'),
+
+    //            checkItemObservation = $tds.eq(6).find('input').val()
+    //            checkItemObservation2 = $tds.eq(3).find('input').val()
+
+    //            debugger;
+
+                
+    //            if ((typeof checkItemObservation != "undefined")) {
+                    
+    //                var SpecId = $tds.eq(0).text().trim();
+
+    //                var Check1 = $tds.eq(2).find('input').val();
+    //                var Check2 = $tds.eq(3).find('input').val();
+    //                var Check3 = $tds.eq(4).find('input').val();
+    //                var Check4 = $tds.eq(5).find('input').val();
+    //                var Check5 = $tds.eq(6).find('input').val();
+
+
+                   
+
+    //                if (Check1 != "") {
+    //                    if (Check1 == "") {
+    //                        $tds.eq(2).find('input').val("");
+    //                        $('#' + SpecId).css("border", '1px solid red');
+    //                    } else {
+    //                        $('#' + SpecId).css("border", '1px solid green');
+    //                    }
+    //                }
+    //                else if (Check2 != "") {
+    //                    if (Check2 == "") {
+    //                        $tds.eq(3).find('input').val("");
+    //                        $('#' + SpecId).css("border", '1px solid red');
+    //                    } else {
+    //                        $('#' + SpecId).css("border", '1px solid green');
+    //                    }
+    //                }
+    //                else if (Check3 != "") {
+    //                    if (Check3 == "") {
+    //                        $tds.eq(4).find('input').val("");
+    //                        $('#' + SpecId).css("border", '1px solid red');
+    //                    } else {
+    //                        $('#' + SpecId).css("border", '1px solid green');
+    //                    }
+    //                }
+
+    //                else if (Check4 != "") {
+    //                    if (Check4 == "") {
+    //                        $tds.eq(5).find('input').val("");
+    //                        $('#' + SpecId).css("border", '1px solid red');
+    //                    } else {
+    //                        $('#' + SpecId).css("border", '1px solid green');
+    //                    }
+    //                }
+    //                else if (Check5 != "") {
+    //                    if (Check5 == "") {
+    //                        $tds.eq(6).find('input').val("");
+    //                        $('#' + SpecId).css("border", '1px solid red');
+    //                    } else {
+    //                        $('#' + SpecId).css("border", '1px solid green');
+    //                    }
+    //                }
+
+                    
+    //            }
+    //            else {
+    //                var ItemId = $tds.eq(0).text().trim();
+
+                    
+    //                var Check1 = $tds.eq(1).find('input').val();
+    //                var Check2 = $tds.eq(2).find('input').val();
+    //                var Check3 = $tds.eq(3).find('input').val();
+    //                var Check4 = $tds.eq(4).find('input').val();
+    //                var Check5 = $tds.eq(5).find('input').val();
+
+                    
+
+    //                if (Check1 != "") {
+    //                    if (Check1 == "") {
+    //                        $tds.eq(1).find('input').val("");
+    //                        $('#' + SpecId).css("border", '1px solid red');
+    //                    } else {
+    //                        $('#' + SpecId).css("border", '1px solid green');
+    //                    }
+    //                }
+    //                else if (Check2 != "") {
+    //                    if (Check2 == "") {
+    //                        $tds.eq(2).find('input').val("");
+    //                        $('#' + SpecId).css("border", '1px solid red');
+    //                    } else {
+    //                        $('#' + SpecId).css("border", '1px solid green');
+    //                    }
+    //                }
+    //                else if (Check3 != "") {
+    //                    if (Check3 == "") {
+    //                        $tds.eq(3).find('input').val("");
+    //                        $('#' + SpecId).css("border", '1px solid red');
+    //                    } else {
+    //                        $('#' + SpecId).css("border", '1px solid green');
+    //                    }
+    //                }
+
+    //                else if (Check4 != "") {
+    //                    if (Check4 == "") {
+    //                        $tds.eq(4).find('input').val("");
+    //                        $('#' + SpecId).css("border", '1px solid red');
+    //                    } else {
+    //                        $('#' + SpecId).css("border", '1px solid green');
+    //                    }
+    //                }
+    //                else if (Check5 != "") {
+    //                    if (Check5 == "") {
+    //                        $tds.eq(5).find('input').val("");
+    //                        $('#' + SpecId).css("border", '1px solid red');
+    //                    } else {
+    //                        $('#' + SpecId).css("border", '1px solid green');
+    //                    }
+    //                }
+    //            }
+
+
+
+
+
+                
+
+    //            if ((Check1 != "" && Check2 != "" && Check3 != "" && Check4 != "" && Check5 !="")) {
+    //                CheckListResult[J] = {
+    //                    'SpecId': SpecId,'Check1': Check1, 'Check2': Check2, 'Check3': Check3,'Check4': Check4, 'Check5': Check5
+    //                };
+    //                J++;
+    //            }
+    //            i++;
+    //        });
+    //        var reqListObj = new Object();
+    //        reqListObj.CheckListFirstArticleInspections = CheckListResult;
+    //        reqListObj.LineId = LineId;
+    //        reqListObj.ProjectId = ProjectId;
+
+
+    //        if (CheckListResult.length > 0) {
+    //            $.ajax({
+    //                type: "POST",
+    //                contentType: "application/json; charset=utf-8",
+    //                url: "/CheckList/SaveFirstArticleInspections",
+    //                data: JSON.stringify(reqListObj),
+    //                success: function (data) {
+    //                    //   window.location.reload();
+    //                    $("#btnSearch").click();
+    //                },
+    //                error: function () {
+    //                    // alert('error');
+    //                }
+
+    //            })
+    //        }
+    //        else {
+    //            alert("Alteast one Part needed for Creating TO Request");
+    //        }
+    //    } else {
+    //        alert("Please Select LineId");
+    //    }
+    //}
+</script>
+
+

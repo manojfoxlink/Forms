@@ -1,0 +1,14 @@
+G:\MyProject\Forms\DAL\bin\Release\DAL.dll
+G:\MyProject\Forms\DAL\bin\Release\DAL.pdb
+G:\MyProject\Forms\DAL\bin\Release\DOL.dll
+G:\MyProject\Forms\DAL\bin\Release\DOL.pdb
+G:\MyProject\Forms\DAL\obj\Release\DAL.csprojResolveAssemblyReference.cache
+G:\MyProject\Forms\DAL\obj\Release\DAL.dll
+G:\MyProject\Forms\DAL\obj\Release\DAL.pdb
+E:\MyProject\Forms\DAL\bin\Release\DAL.dll
+E:\MyProject\Forms\DAL\bin\Release\DAL.pdb
+E:\MyProject\Forms\DAL\bin\Release\DOL.dll
+E:\MyProject\Forms\DAL\bin\Release\DOL.pdb
+E:\MyProject\Forms\DAL\obj\Release\DAL.csprojResolveAssemblyReference.cache
+E:\MyProject\Forms\DAL\obj\Release\DAL.dll
+E:\MyProject\Forms\DAL\obj\Release\DAL.pdb
