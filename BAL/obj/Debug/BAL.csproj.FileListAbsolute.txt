@@ -67,6 +67,13 @@ D:\Old Data\MyProject\Forms\BAL\bin\Debug\Owin.dll
 D:\Old Data\MyProject\Forms\BAL\bin\Debug\DAL.pdb
 D:\Old Data\MyProject\Forms\BAL\bin\Debug\DOL.pdb
 D:\Old Data\MyProject\Forms\BAL\bin\Debug\Microsoft.Owin.xml
-D:\Old Data\MyProject\Forms\BAL\obj\Debug\BAL.csprojResolveAssemblyReference.cache
 D:\Old Data\MyProject\Forms\BAL\obj\Debug\BAL.dll
 D:\Old Data\MyProject\Forms\BAL\obj\Debug\BAL.pdb
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\Microsoft.ReportViewer.Common.dll
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\Microsoft.ReportViewer.DataVisualization.dll
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\Microsoft.ReportViewer.ProcessingObjectModel.DLL
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\Microsoft.ReportViewer.WebForms.dll
+D:\Old Data\MyProject\Forms\BAL\bin\Debug\Microsoft.SqlServer.Types.dll
+D:\Old Data\MyProject\Forms\BAL\obj\Debug\BAL.csproj.AssemblyReference.cache
+D:\Old Data\MyProject\Forms\BAL\obj\Debug\BAL.csproj.CoreCompileInputs.cache
+D:\Old Data\MyProject\Forms\BAL\obj\Debug\BAL.csproj.Up2Date

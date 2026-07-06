@@ -37,6 +37,8 @@ D:\Old Data\MyProject\Forms\DAL\bin\Debug\DAL.dll
 D:\Old Data\MyProject\Forms\DAL\bin\Debug\DAL.pdb
 D:\Old Data\MyProject\Forms\DAL\bin\Debug\DOL.dll
 D:\Old Data\MyProject\Forms\DAL\bin\Debug\DOL.pdb
-D:\Old Data\MyProject\Forms\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
 D:\Old Data\MyProject\Forms\DAL\obj\Debug\DAL.dll
 D:\Old Data\MyProject\Forms\DAL\obj\Debug\DAL.pdb
+D:\Old Data\MyProject\Forms\DAL\obj\Debug\DAL.csproj.AssemblyReference.cache
+D:\Old Data\MyProject\Forms\DAL\obj\Debug\DAL.csproj.CoreCompileInputs.cache
+D:\Old Data\MyProject\Forms\DAL\obj\Debug\DAL.csproj.Up2Date

@@ -25,4 +25,5 @@ D:\Old Data\MyProject\Forms\DOL\bin\Debug\DOL.dll
 D:\Old Data\MyProject\Forms\DOL\bin\Debug\DOL.pdb
 D:\Old Data\MyProject\Forms\DOL\obj\Debug\DOL.dll
 D:\Old Data\MyProject\Forms\DOL\obj\Debug\DOL.pdb
-D:\Old Data\MyProject\Forms\DOL\obj\Debug\DOL.csprojResolveAssemblyReference.cache
+D:\Old Data\MyProject\Forms\DOL\obj\Debug\DOL.csproj.AssemblyReference.cache
+D:\Old Data\MyProject\Forms\DOL\obj\Debug\DOL.csproj.CoreCompileInputs.cache
